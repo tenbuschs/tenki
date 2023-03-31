@@ -7,8 +7,8 @@ class recipe extends StatelessWidget {
   Widget build(BuildContext context){
     return new Container(
         child: new Center(
-            child: new Icon(Icons.cookie, size: 150.0, color: Colors.teal)
-        )
+            child: new Icon(Icons.cookie, size: 150.0, color: Colors.teal),
+        ),
     );
   }
 }
