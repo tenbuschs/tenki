@@ -78,6 +78,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
               ),
             ),
           ),
+
         ],
       ),
     );

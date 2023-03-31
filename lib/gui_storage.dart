@@ -36,7 +36,7 @@ Map<String, dynamic> storageMap = {
       "stockQuantity": 0,
       "buyQuantity": 2,
     },
-    {
+   /* {
       "name": "Zwiebeln",
       "location": "Keller",
       "unit": "kg",
@@ -99,7 +99,7 @@ Map<String, dynamic> storageMap = {
       "targetQuantity": 3,
       "stockQuantity": 2,
       "buyQuantity": 1,
-    },
+    },*/
     {
       "name": "Tomaten, gehackt",
       "location": "Vorratsschrank",
@@ -133,19 +133,17 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
   int selectedIndex = 0;
   PageController _pageController = PageController();
-
   Set<String> locations = {};
 
 
   void initState() {
     super.initState();
 
-    // iterate over the list of items and collect the unique locations in a set
+    // iterate over the list of items and collect the unique locations in a Map
     for (var item in storageMap["items"]) {
       locations.add(item["location"]);
     }
   }
-
 
 
   @override
@@ -156,7 +154,10 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
           children: [
             SizedBox(
                 width: 120,
-                child:  ListView.builder(
+                child:  Column(
+        children: [
+        Expanded(
+        child: ListView.builder(
                   itemCount: locations.length,
                   itemBuilder: (BuildContext context, int index) {
                     String location = locations.elementAt(index);
@@ -193,6 +194,35 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                     );
                   },
                 ),
+
+        ),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      hintText: 'New location',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+        ],
+                ),
+
+
+
+
             ),
             Expanded(
               child: Container(
@@ -208,6 +238,100 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
             )
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              // define text editing controllers for the input fields
+              TextEditingController nameController = TextEditingController();
+              TextEditingController unitController = TextEditingController();
+              TextEditingController targetQuantityController = TextEditingController();
+
+              // define the dialog content
+              return AlertDialog(
+                title: Text('Neues Lebensmittel'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      controller: nameController,
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                      ),
+                    ),
+                    TextField(
+                      controller: unitController,
+                      decoration: InputDecoration(
+                        labelText: 'Unit',
+                      ),
+                    ),
+                    TextField(
+                      controller: targetQuantityController,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        labelText: 'Target Quantity',
+                      ),
+                    ),
+                  ],
+                ),
+                actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.cancel_outlined),
+                    onPressed: () {
+                      // CLose Alert with No Operation
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                        Icons.check_circle,
+                        color: Colors.teal),
+                    onPressed: () {
+                      // retrieve the values entered by the user
+                      String name = nameController.text;
+                      String unit = unitController.text;
+                      int targetQuantity = int.tryParse(targetQuantityController.text) ?? 0;
+                      int stockQuantity = 0;
+                      int buyQuantity = targetQuantity-stockQuantity;
+
+                      // Create a new map object with the new entry details
+                      Map<String, dynamic> newEntry = {
+                        "name": name,
+                        "location": locations.elementAt(selectedIndex),
+                        "unit": unit,
+                        "targetQuantity": targetQuantity,
+                        "stockQuantity": stockQuantity,
+                        "buyQuantity": buyQuantity,
+                      };
+
+                      // Add the new entry to the existing items list in the storageMap
+                      List<Map<String, dynamic>> itemsList =
+                      List<Map<String, dynamic>>.from(storageMap["items"]);
+                      itemsList.addAll([newEntry]);
+
+                      storageMap["items"] = itemsList;
+
+                      // Refresh the TabView
+                     setState((){
+                        selectedIndex = selectedIndex;
+                        _pageController.jumpToPage(selectedIndex);
+                      });
+
+                      // Close AlertDialog
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.teal,
       ),
     );
   }
