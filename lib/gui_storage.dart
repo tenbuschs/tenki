@@ -35,7 +35,7 @@ Map<String, dynamic> storageMap = {
       "stockQuantity": 0,
       "buyQuantity": 2,
     },
-    /* {
+    {
       "name": "Zwiebeln",
       "location": "Keller",
       "unit": "kg",
@@ -98,7 +98,7 @@ Map<String, dynamic> storageMap = {
       "targetQuantity": 3,
       "stockQuantity": 2,
       "buyQuantity": 1,
-    },*/
+    },
     {
       "name": "Tomaten, gehackt",
       "location": "Vorratsschrank",
