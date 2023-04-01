@@ -48,6 +48,62 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                               _pageController.jumpToPage(selectedIndex);
                             });
                           },
+
+                          onLongPress: () {
+                            // Show delete button
+                            showModalBottomSheet(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Container(
+                                  height: 100,
+                                  color: Colors.redAccent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.delete, color: Colors.white),
+
+                                        onPressed: () {
+
+                                          if(locations.length>1) {
+                                            List<dynamic> items = data
+                                                .storageMap["items"];
+                                            items.removeWhere((item) =>
+                                            item["location"] ==
+                                                locations.toList()[index]);
+
+                                            setState(() {
+                                              // update data
+                                              data.storageMap["items"] = items;
+
+                                              // refresh view
+                                              List<
+                                                  String> locationsList = locations
+                                                  .toList();
+                                              locationsList.removeAt(index);
+                                              locations = locationsList.toSet();
+                                              selectedIndex = 0;
+                                              _pageController.jumpToPage(
+                                                  selectedIndex);
+                                            });
+                                          }
+                                          else{
+                                            // TODO: show the user, why it not works
+                                            print('Delet Location not possible');
+                                          }
+
+                                          Navigator.pop(context);
+                                        },
+
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+
+
                           child: Container(
                             child: Row(
                               children: [
@@ -233,6 +289,8 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
     );
   }
 }
+
+
 
 // Baut den Inhalt der Lagerorte
 class storageTabContent extends StatefulWidget {
