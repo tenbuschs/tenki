@@ -108,7 +108,7 @@ Map<String, dynamic> storageMap = {
       "buyQuantity": 0,
     },
     {
-      "name": "Lösch mich, drück 'x'",
+      "name": "Lösch mich (Swipe)",
       "location": "Kleiderschrank",
       "unit": "Testeinheit",
       "targetQuantity": 1,
@@ -129,6 +129,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
   int selectedIndex = 0;
   PageController _pageController = PageController();
   Set<String> locations = {};
+  TextEditingController newLocationController = TextEditingController();
 
   void initState() {
     super.initState();
@@ -198,6 +199,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                       children: [
                         Expanded(
                           child: TextField(
+                            controller: newLocationController,
                             decoration: InputDecoration(
                               hintText: 'New location',
                             ),
@@ -208,7 +210,27 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         ),
                         IconButton(
                           icon: Icon(Icons.add),
-                          onPressed: () {},
+                          onPressed: () {
+
+                            // add new location to location list if their is text in input field
+                            if(newLocationController.text!="") {
+                              locations.add(newLocationController.text);
+                              // make input field empty
+                              newLocationController.text = "";
+                            }
+                            else {
+                              print("Missing Text Input. Cant add new location");
+                            }
+                            print("new location list: $locations");
+
+                            // show new location in list and jump to it
+                            setState(() {
+                              selectedIndex = locations.length-1;
+                              _pageController.jumpToPage(selectedIndex);
+                            });
+                            // TODO: Automatic scroll to focused location
+
+                          },
                         ),
                       ],
                     ),
@@ -239,8 +261,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
               // define text editing controllers for the input fields
               TextEditingController nameController = TextEditingController();
               TextEditingController unitController = TextEditingController();
-              TextEditingController targetQuantityController =
-                  TextEditingController();
+              TextEditingController targetQuantityController =  TextEditingController();
 
               // define the dialog content
               return AlertDialog(
