@@ -329,7 +329,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
 // Baut den Inhalt der Lagerorte
 class storageTabContent extends StatefulWidget {
-  String location = 'as';
+  String location = '';
 
   storageTabContent({this.location = ''});
 
@@ -367,7 +367,8 @@ class _storageTabContentState extends State<storageTabContent> {
             padding: EdgeInsets.only(right: 10),
           ),
           onDismissed: (direction) {
-            // Implement the code to remove the item from the list here.
+            // remove the item from the list
+            storageMap["items"].removeWhere((item) => item["name"] == _items[index].values.first);
           },
           child: ListTile(
             title: Text(item['name']),
