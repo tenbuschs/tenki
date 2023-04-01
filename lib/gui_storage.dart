@@ -303,8 +303,7 @@ class _storageTabContentState extends State<storageTabContent> {
                       child: TextFormField(
                         initialValue: item['stockQuantity'].toString(),
                         keyboardType: TextInputType.number,
-                        onFieldSubmitted: (value) =>
-                        item['stockQuantity'] = int.parse(value),
+                        onFieldSubmitted: (value) => updateStockQuantity(value, item),
                         decoration: InputDecoration(
                           hintText: 'Bestand',
                           border: InputBorder.none,
@@ -320,8 +319,8 @@ class _storageTabContentState extends State<storageTabContent> {
                       child: TextFormField(
                         initialValue: item['targetQuantity'].toString(),
                         keyboardType: TextInputType.number,
-                        onFieldSubmitted: (value) =>
-                        item['targetQuantity'] = int.parse(value),
+                        onFieldSubmitted: (value) => updateTargetQuantity(value, item),
+
                         decoration: InputDecoration(
                           hintText: 'Soll',
                           border: InputBorder.none,
@@ -342,3 +341,34 @@ class _storageTabContentState extends State<storageTabContent> {
 }
 
 // Ending of storageTabContent
+
+
+void updateTargetQuantity(String value, Map<String, dynamic> item) {
+
+  if(double.parse(value)-item['stockQuantity']<=0)
+    {
+      item['buyQuantity'] =0;
+    }
+  else{
+    item['buyQuantity'] = double.parse(value)-item['stockQuantity'];
+  }
+
+  item['targetQuantity'] = double.parse(value);
+
+}
+
+
+void updateStockQuantity(String value, Map<String, dynamic> item) {
+
+
+  if(item['targetQuantity']-double.parse(value)<=0)
+  {
+    item['buyQuantity'] =0;
+  }
+  else{
+    item['buyQuantity'] = item['targetQuantity']-double.parse(value);
+  }
+
+  item['stockQuantity'] = double.parse(value);
+
+}
