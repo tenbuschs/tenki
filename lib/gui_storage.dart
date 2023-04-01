@@ -1,122 +1,7 @@
 import 'package:flutter/material.dart';
+import 'data.dart' as data;
 
-//Beispieldaten Lagerbestand
-Map<String, dynamic> storageMap = {
-  "items": [
-    {
-      "name": "Spinat TK",
-      "location": "Tiefkühltruhe",
-      "unit": "Beutel á 1 kg",
-      "targetQuantity": 1,
-      "stockQuantity": 0,
-      "buyQuantity": 1,
-    },
-    {
-      "name": "Fischstäbchen",
-      "location": "Tiefkühltruhe",
-      "unit": "Packung a 18 Stück",
-      "targetQuantity": 2,
-      "stockQuantity": 2,
-      "buyQuantity": 0,
-    },
-    {
-      "name": "Notfallpizza",
-      "location": "Tiefkühltruhe",
-      "unit": "Stück",
-      "targetQuantity": 3,
-      "stockQuantity": 2,
-      "buyQuantity": 1,
-    },
-    {
-      "name": "Kartoffeln",
-      "location": "Keller",
-      "unit": "Säcke á 2,5kg",
-      "targetQuantity": 2,
-      "stockQuantity": 0,
-      "buyQuantity": 2,
-    },
-    {
-      "name": "Zwiebeln",
-      "location": "Keller",
-      "unit": "kg",
-      "targetQuantity": 1,
-      "stockQuantity": 0,
-      "buyQuantity": 1,
-    },
-    {
-      "name": "Karotten",
-      "location": "Keller",
-      "unit": "kg",
-      "targetQuantity": 1,
-      "stockQuantity": 0.5,
-      "buyQuantity": 0.5,
-    },
-    {
-      "name": "Eier",
-      "location": "Vorratsschrank",
-      "unit": "Stück",
-      "targetQuantity": 20,
-      "stockQuantity": 10,
-      "buyQuantity": 10,
-    },
-    {
-      "name": "Jever Pils",
-      "location": "Kühlschrank",
-      "unit": "Flaschen",
-      "targetQuantity": 100,
-      "stockQuantity": 66,
-      "buyQuantity": 34,
-    },
-    {
-      "name": "Milch",
-      "location": "Kühlschrank",
-      "unit": "l",
-      "targetQuantity": 2,
-      "stockQuantity": 4,
-      "buyQuantity": 0,
-    },
-    {
-      "name": "Butter",
-      "location": "Kühlschrank",
-      "unit": "pck",
-      "targetQuantity": 4,
-      "stockQuantity": 2,
-      "buyQuantity": 2,
-    },
-    {
-      "name": "Fleischfreisalat",
-      "location": "Kühlschrank",
-      "unit": "Packung",
-      "targetQuantity": 1,
-      "stockQuantity": 0.6,
-      "buyQuantity": 0.4,
-    },
-    {
-      "name": "Spaghetti",
-      "location": "Vorratsschrank",
-      "unit": "Packung",
-      "targetQuantity": 3,
-      "stockQuantity": 2,
-      "buyQuantity": 1,
-    },
-    {
-      "name": "Tomaten, gehackt",
-      "location": "Vorratsschrank",
-      "unit": "Dosen",
-      "targetQuantity": 3,
-      "stockQuantity": 3,
-      "buyQuantity": 0,
-    },
-    {
-      "name": "Lösch mich (Swipe)",
-      "location": "Kleiderschrank",
-      "unit": "Testeinheit",
-      "targetQuantity": 1,
-      "stockQuantity": 1,
-      "buyQuantity": 0,
-    },
-  ],
-};
+
 
 class VerticalTabBar extends StatefulWidget {
   const VerticalTabBar({Key? key}) : super(key: key);
@@ -135,7 +20,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
     super.initState();
 
     // iterate over the list of items and collect the unique locations in a Map
-    for (var item in storageMap["items"]) {
+    for (var item in data.storageMap["items"]) {
       locations.add(item["location"]);
     }
   }
@@ -317,14 +202,15 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         "targetQuantity": targetQuantity,
                         "stockQuantity": stockQuantity,
                         "buyQuantity": buyQuantity,
+                        "shoppingCategory": "Sonstige",
                       };
 
                       // Add the new entry to the existing items list in the storageMap
                       List<Map<String, dynamic>> itemsList =
-                          List<Map<String, dynamic>>.from(storageMap["items"]);
+                          List<Map<String, dynamic>>.from(data.storageMap["items"]);
                       itemsList.addAll([newEntry]);
 
-                      storageMap["items"] = itemsList;
+                      data.storageMap["items"] = itemsList;
 
                       // Refresh the TabView
                       setState(() {
@@ -364,7 +250,7 @@ class _storageTabContentState extends State<storageTabContent> {
   @override
   void initState() {
     super.initState();
-    _items = storageMap['items']
+    _items = data.storageMap['items']
         .where((item) => item['location'] == widget.location)
         .toList();
   }
@@ -389,7 +275,7 @@ class _storageTabContentState extends State<storageTabContent> {
           ),
           onDismissed: (direction) {
             // remove the item from the list
-            storageMap["items"].removeWhere((item) => item["name"] == _items[index].values.first);
+            data.storageMap["items"].removeWhere((item) => item["name"] == _items[index].values.first);
           },
           child: ListTile(
             title: Text(item['name']),

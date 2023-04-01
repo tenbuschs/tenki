@@ -69,7 +69,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                       controller: _tabController,
                       children: [
                         storageTab.VerticalTabBar(),
-                        shoppingListTab.shoppingList(),
+                        shoppingListTab.ShoppingList(),
                         recipeTab.recipe(),
                       ],
                     ),
