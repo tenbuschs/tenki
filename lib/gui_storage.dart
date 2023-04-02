@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'data.dart' as data;
 
-
-
 class VerticalTabBar extends StatefulWidget {
   const VerticalTabBar({Key? key}) : super(key: key);
 
@@ -11,8 +9,7 @@ class VerticalTabBar extends StatefulWidget {
 }
 
 class _VerticalTabBarState extends State<VerticalTabBar> {
-
-  int selectedIndex=0;
+  int selectedIndex = 0;
   final PageController _pageController = PageController();
   Set<String> locations = {};
   TextEditingController newLocationController = TextEditingController();
@@ -43,17 +40,16 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         String location = locations.elementAt(index);
                         return GestureDetector(
                           onTap: () {
-                              setState(() {
-                                  selectedIndex = index;
-                                  _pageController.jumpToPage(locations.length+1);
-                                  /*  Iwi ist der pageController buggy. Eigentlich war der Plan:
+                            setState(() {
+                              selectedIndex = index;
+                              _pageController.jumpToPage(locations.length + 1);
+                              /*  Iwi ist der pageController buggy. Eigentlich war der Plan:
                                       _pageController.jumpToPage(selectedIndex);
                                       aber dann gibts Probleme bei index=0, da die Function auf != null prueft
                                       Aber dieser Workaround (Wert über dem Gültigkeitsbereich) klappt iwi aktuell
                                   */
-                              });
+                            });
                           },
-
                           onLongPress: () {
                             // Show delete button
                             showModalBottomSheet(
@@ -63,18 +59,18 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                   height: 100,
                                   color: Colors.redAccent,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       IconButton(
-                                        icon: const Icon(Icons.delete, color: Colors.white),
-
+                                        icon: const Icon(Icons.delete,
+                                            color: Colors.white),
                                         onPressed: () {
-
-                                          if(locations.length>1) {
-                                            List<dynamic> items = data
-                                                .storageMap["items"];
+                                          if (locations.length > 1) {
+                                            List<dynamic> items =
+                                                data.storageMap["items"];
                                             items.removeWhere((item) =>
-                                            item["location"] ==
+                                                item["location"] ==
                                                 locations.toList()[index]);
 
                                             setState(() {
@@ -82,22 +78,22 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                               data.storageMap["items"] = items;
 
                                               // refresh view
-                                              List<String> locationsList = locations.toList();
+                                              List<String> locationsList =
+                                                  locations.toList();
                                               locationsList.removeAt(index);
 
                                               locations = locationsList.toSet();
                                               selectedIndex = 0;
-                                              _pageController.jumpToPage(locations.length+1);
+                                              _pageController.jumpToPage(
+                                                  locations.length + 1);
                                             });
-                                          }
-                                          else{
+                                          } else {
                                             // TODO: show the user, why it not works
-                                           // print('Delet Location not possible');
+                                            // print('Delet Location not possible');
                                           }
 
                                           Navigator.pop(context);
                                         },
-
                                       ),
                                     ],
                                   ),
@@ -105,38 +101,37 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                               },
                             );
                           },
-
-                            child: Row(
-                              children: [
-                                AnimatedContainer(
-                                  duration: const Duration(milliseconds: 400),
-                                  height: (selectedIndex == index) ? 50 : 0,
-                                  width: 5,
-                                  color: Colors.teal,
+                          child: Row(
+                            children: [
+                              AnimatedContainer(
+                                duration: const Duration(milliseconds: 400),
+                                height: (selectedIndex == index) ? 50 : 0,
+                                width: 5,
+                                color: Colors.teal,
+                              ),
+                              Expanded(
+                                  child: AnimatedContainer(
+                                alignment: Alignment.center,
+                                duration: const Duration(milliseconds: 500),
+                                height: 50,
+                                color: (selectedIndex == index)
+                                    ? Colors.blueGrey.withOpacity(0.2)
+                                    : Colors.transparent,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 0, horizontal: 5),
+                                  child: Text(location),
                                 ),
-                                Expanded(
-                                    child: AnimatedContainer(
-                                  alignment: Alignment.center,
-                                  duration: const Duration(milliseconds: 500),
-                                  height: 50,
-                                  color: (selectedIndex == index)
-                                      ? Colors.blueGrey.withOpacity(0.2)
-                                      : Colors.transparent,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 0, horizontal: 5),
-                                    child: Text(location),
-                                  ),
-                                ))
-                              ],
-                            ),
-
+                              ))
+                            ],
+                          ),
                         );
                       },
                     ),
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         Expanded(
@@ -151,25 +146,22 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         IconButton(
                           icon: const Icon(Icons.add),
                           onPressed: () {
-
                             // add new location to location list if their is text in input field
-                            if(newLocationController.text!="") {
+                            if (newLocationController.text != "") {
                               locations.add(newLocationController.text);
                               // make input field empty
                               newLocationController.text = "";
-                            }
-                            else {
-                             // print("Missing Text Input. Cant add new location");
+                            } else {
+                              // print("Missing Text Input. Cant add new location");
                             }
                             //print("new location list: $locations");
 
                             // show new location in list and jump to it
                             setState(() {
-                              selectedIndex = locations.length-1;
+                              selectedIndex = locations.length - 1;
                               _pageController.jumpToPage(selectedIndex);
                             });
                             // TODO: Automatic scroll to focused location
-
                           },
                         ),
                       ],
@@ -200,7 +192,8 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
               // define text editing controllers for the input fields
               TextEditingController nameController = TextEditingController();
               TextEditingController unitController = TextEditingController();
-              TextEditingController targetQuantityController =  TextEditingController();
+              TextEditingController targetQuantityController =
+                  TextEditingController();
 
               // define the dialog content
               return AlertDialog(
@@ -261,7 +254,8 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
                       // Add the new entry to the existing items list in the storageMap
                       List<Map<String, dynamic>> itemsList =
-                          List<Map<String, dynamic>>.from(data.storageMap["items"]);
+                          List<Map<String, dynamic>>.from(
+                              data.storageMap["items"]);
                       itemsList.addAll([newEntry]);
 
                       data.storageMap["items"] = itemsList;
@@ -288,10 +282,9 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
   }
 }
 
-
-
 // Baut den Inhalt der Lagerorte
 class storageTabContent extends StatefulWidget {
+
   String location = '';
 
   storageTabContent({this.location = ''});
@@ -331,7 +324,8 @@ class _storageTabContentState extends State<storageTabContent> {
           ),
           onDismissed: (direction) {
             // remove the item from the list
-            data.storageMap["items"].removeWhere((item) => item["name"] == _items[index].values.first);
+            data.storageMap["items"].removeWhere(
+                (item) => item["name"] == _items[index].values.first);
           },
           child: ListTile(
             title: Text(item['name']),
@@ -359,7 +353,8 @@ class _storageTabContentState extends State<storageTabContent> {
                       child: TextFormField(
                         initialValue: item['stockQuantity'].toString(),
                         keyboardType: TextInputType.number,
-                        onFieldSubmitted: (value) => updateStockQuantity(value, item),
+                        onFieldSubmitted: (value) =>
+                            updateStockQuantity(value, item),
                         decoration: const InputDecoration(
                           hintText: 'Bestand',
                           border: InputBorder.none,
@@ -375,8 +370,8 @@ class _storageTabContentState extends State<storageTabContent> {
                       child: TextFormField(
                         initialValue: item['targetQuantity'].toString(),
                         keyboardType: TextInputType.number,
-                        onFieldSubmitted: (value) => updateTargetQuantity(value, item),
-
+                        onFieldSubmitted: (value) =>
+                            updateTargetQuantity(value, item),
                         decoration: const InputDecoration(
                           hintText: 'Soll',
                           border: InputBorder.none,
@@ -392,39 +387,27 @@ class _storageTabContentState extends State<storageTabContent> {
         );
       },
     );
-
   }
 }
 
 // Ending of storageTabContent
 
-
 void updateTargetQuantity(String value, Map<String, dynamic> item) {
-
-  if(double.parse(value)-item['stockQuantity']<=0)
-    {
-      item['buyQuantity'] =0;
-    }
-  else{
-    item['buyQuantity'] = double.parse(value)-item['stockQuantity'];
+  if (double.parse(value) - item['stockQuantity'] <= 0) {
+    item['buyQuantity'] = 0;
+  } else {
+    item['buyQuantity'] = double.parse(value) - item['stockQuantity'];
   }
 
   item['targetQuantity'] = double.parse(value);
-
 }
 
-
 void updateStockQuantity(String value, Map<String, dynamic> item) {
-
-
-  if(item['targetQuantity']-double.parse(value)<=0)
-  {
-    item['buyQuantity'] =0;
-  }
-  else{
-    item['buyQuantity'] = item['targetQuantity']-double.parse(value);
+  if (item['targetQuantity'] - double.parse(value) <= 0) {
+    item['buyQuantity'] = 0;
+  } else {
+    item['buyQuantity'] = item['targetQuantity'] - double.parse(value);
   }
 
   item['stockQuantity'] = double.parse(value);
-
 }

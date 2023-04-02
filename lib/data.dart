@@ -131,3 +131,12 @@ Map<String, dynamic> storageMap = {
     },
   ],
 };
+
+// List to save the state of the checkboxes in the shopping list
+List<Map<String, dynamic>> isChecked =
+    List<Map<String, dynamic>>.from(storageMap["items"]).map((item) {
+  return {
+    "name": item["name"],
+    "isChecked": false,
+  };
+}).toList();

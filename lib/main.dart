@@ -20,7 +20,8 @@ class TenkiHomePage extends StatefulWidget {
   _TenkiHomePageState createState() => _TenkiHomePageState();
 }
 
-class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProviderStateMixin {
+class _TenkiHomePageState extends State<TenkiHomePage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -63,7 +64,6 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,
@@ -78,7 +78,6 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
               ),
             ),
           ),
-
         ],
       ),
     );
