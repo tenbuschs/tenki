@@ -11,7 +11,8 @@ class VerticalTabBar extends StatefulWidget {
 }
 
 class _VerticalTabBarState extends State<VerticalTabBar> {
-  int selectedIndex = 0;
+
+  int selectedIndex=0;
   PageController _pageController = PageController();
   Set<String> locations = {};
   TextEditingController newLocationController = TextEditingController();
@@ -42,11 +43,16 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         String location = locations.elementAt(index);
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              print('setState $index');
-                              selectedIndex = index;
-                              _pageController.jumpToPage(selectedIndex);
-                            });
+                              setState(() {
+                                  print('setState $index');
+                                  selectedIndex = index;
+                                  _pageController.jumpToPage(locations.length+1);
+                                  /*  Iwi ist der pageController buggy. Eigentlich war der Plan:
+                                      _pageController.jumpToPage(selectedIndex);
+                                      aber dann gibts Probleme bei index=0, da die Function auf != null prueft
+                                      Aber dieser Workaround (Wert über dem Gültigkeitsbereich) klappt iwi aktuell
+                                  */
+                              });
                           },
 
                           onLongPress: () {
@@ -77,14 +83,12 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                               data.storageMap["items"] = items;
 
                                               // refresh view
-                                              List<
-                                                  String> locationsList = locations
-                                                  .toList();
+                                              List<String> locationsList = locations.toList();
                                               locationsList.removeAt(index);
+
                                               locations = locationsList.toSet();
                                               selectedIndex = 0;
-                                              _pageController.jumpToPage(
-                                                  selectedIndex);
+                                              _pageController.jumpToPage(locations.length+1);
                                             });
                                           }
                                           else{
