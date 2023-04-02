@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'gui_storage.dart' as storageTab;
-import 'gui_shopping-list.dart' as shoppingListTab;
-import 'gui_recipe.dart' as recipeTab;
+import 'gui_storage.dart' as storage_tab;
+import 'gui_shopping-list.dart' as shopping_list_tab;
+import 'gui_recipe.dart' as recipe_tab;
 
 void main() => runApp(TenkiApp());
 
@@ -20,7 +20,8 @@ class TenkiHomePage extends StatefulWidget {
   _TenkiHomePageState createState() => _TenkiHomePageState();
 }
 
-class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProviderStateMixin {
+class _TenkiHomePageState extends State<TenkiHomePage>
+    with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -39,7 +40,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('TENKI - für deinen smarten Alltag'),
+        title: const Text('TENKI - für deinen smarten Alltag'),
         backgroundColor: Colors.teal,
         bottom: TabBar(
           controller: _tabController,
@@ -60,17 +61,16 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
         children: [
           Expanded(
             child: Container(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-
                   Expanded(
                     child: TabBarView(
                       controller: _tabController,
                       children: [
-                        storageTab.VerticalTabBar(),
-                        shoppingListTab.shoppingList(),
-                        recipeTab.recipe(),
+                        const storage_tab.VerticalTabBar(),
+                        const shopping_list_tab.ShoppingList(),
+                        recipe_tab.Recipe(),
                       ],
                     ),
                   ),
