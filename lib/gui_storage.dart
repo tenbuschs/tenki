@@ -13,7 +13,7 @@ class VerticalTabBar extends StatefulWidget {
 class _VerticalTabBarState extends State<VerticalTabBar> {
 
   int selectedIndex=0;
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   Set<String> locations = {};
   TextEditingController newLocationController = TextEditingController();
 
@@ -44,7 +44,6 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                         return GestureDetector(
                           onTap: () {
                               setState(() {
-                                  print('setState $index');
                                   selectedIndex = index;
                                   _pageController.jumpToPage(locations.length+1);
                                   /*  Iwi ist der pageController buggy. Eigentlich war der Plan:
@@ -67,7 +66,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
                                       IconButton(
-                                        icon: Icon(Icons.delete, color: Colors.white),
+                                        icon: const Icon(Icons.delete, color: Colors.white),
 
                                         onPressed: () {
 
@@ -93,7 +92,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                           }
                                           else{
                                             // TODO: show the user, why it not works
-                                            print('Delet Location not possible');
+                                           // print('Delet Location not possible');
                                           }
 
                                           Navigator.pop(context);
@@ -107,12 +106,10 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                             );
                           },
 
-
-                          child: Container(
                             child: Row(
                               children: [
                                 AnimatedContainer(
-                                  duration: Duration(milliseconds: 400),
+                                  duration: const Duration(milliseconds: 400),
                                   height: (selectedIndex == index) ? 50 : 0,
                                   width: 5,
                                   color: Colors.teal,
@@ -120,7 +117,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                 Expanded(
                                     child: AnimatedContainer(
                                   alignment: Alignment.center,
-                                  duration: Duration(milliseconds: 500),
+                                  duration: const Duration(milliseconds: 500),
                                   height: 50,
                                   color: (selectedIndex == index)
                                       ? Colors.blueGrey.withOpacity(0.2)
@@ -133,28 +130,26 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                                 ))
                               ],
                             ),
-                          ),
+
                         );
                       },
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       children: [
                         Expanded(
                           child: TextField(
                             controller: newLocationController,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'New location',
                             ),
                           ),
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
+                        const SizedBox(width: 8),
                         IconButton(
-                          icon: Icon(Icons.add),
+                          icon: const Icon(Icons.add),
                           onPressed: () {
 
                             // add new location to location list if their is text in input field
@@ -164,9 +159,9 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                               newLocationController.text = "";
                             }
                             else {
-                              print("Missing Text Input. Cant add new location");
+                             // print("Missing Text Input. Cant add new location");
                             }
-                            print("new location list: $locations");
+                            //print("new location list: $locations");
 
                             // show new location in list and jump to it
                             setState(() {
@@ -184,7 +179,6 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
               ),
             ),
             Expanded(
-                child: Container(
               child: PageView(
                 controller: _pageController,
                 children: [
@@ -194,7 +188,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                   )
                 ],
               ),
-            ))
+            )
           ],
         ),
       ),
@@ -210,26 +204,26 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
               // define the dialog content
               return AlertDialog(
-                title: Text('Neues Lebensmittel'),
+                title: const Text('Neues Lebensmittel'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     TextField(
                       controller: nameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Name',
                       ),
                     ),
                     TextField(
                       controller: unitController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Unit',
                       ),
                     ),
                     TextField(
                       controller: targetQuantityController,
                       keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Target Quantity',
                       ),
                     ),
@@ -287,8 +281,8 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
             },
           );
         },
-        child: const Icon(Icons.add),
         backgroundColor: Colors.teal,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -327,13 +321,13 @@ class _storageTabContentState extends State<storageTabContent> {
           key: UniqueKey(),
           background: Container(
             color: Colors.red,
-            child: SizedBox(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.only(right: 10),
+            child: const SizedBox(
               height: 30, // Customize the height of the button.
               width: 30, // Customize the width of the button.
               child: Icon(Icons.delete, color: Colors.white),
             ),
-            alignment: Alignment.centerRight,
-            padding: EdgeInsets.only(right: 10),
           ),
           onDismissed: (direction) {
             // remove the item from the list
@@ -345,12 +339,12 @@ class _storageTabContentState extends State<storageTabContent> {
               children: [
                 Row(
                   children: [
-                    Text('      Einheit: '),
+                    const Text('      Einheit: '),
                     Expanded(
                       child: TextFormField(
                         initialValue: item['unit'].toString(),
                         onFieldSubmitted: (value) => item['unit'] = value,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Einheit',
                           border: InputBorder.none,
                         ),
@@ -360,13 +354,13 @@ class _storageTabContentState extends State<storageTabContent> {
                 ),
                 Row(
                   children: [
-                    Text('      Bestand: '),
+                    const Text('      Bestand: '),
                     Expanded(
                       child: TextFormField(
                         initialValue: item['stockQuantity'].toString(),
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (value) => updateStockQuantity(value, item),
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Bestand',
                           border: InputBorder.none,
                         ),
@@ -376,14 +370,14 @@ class _storageTabContentState extends State<storageTabContent> {
                 ),
                 Row(
                   children: [
-                    Text('      Soll: '),
+                    const Text('      Soll: '),
                     Expanded(
                       child: TextFormField(
                         initialValue: item['targetQuantity'].toString(),
                         keyboardType: TextInputType.number,
                         onFieldSubmitted: (value) => updateTargetQuantity(value, item),
 
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: 'Soll',
                           border: InputBorder.none,
                         ),
@@ -391,7 +385,7 @@ class _storageTabContentState extends State<storageTabContent> {
                     ),
                   ],
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

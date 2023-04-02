@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+//import 'package:flutter/material.dart';
 
 //Beispieldaten Lagerbestand
 Map<String, dynamic> storageMap = {

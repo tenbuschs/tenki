@@ -50,7 +50,7 @@ class _ShoppingListState extends State<ShoppingList> {
             ),
             ListView.builder(
               shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               itemCount: items.length,
               itemBuilder: (BuildContext context, int index) {
                 final item = items[index];
