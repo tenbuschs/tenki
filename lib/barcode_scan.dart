@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'off_database_interface.dart' as off;
+
 
 class BarcodeScanner extends StatefulWidget {
   @override
@@ -40,6 +42,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
     String barcode = await FlutterBarcodeScanner.scanBarcode(
         '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // Call Open Food Facts Database API with barcode
+    String productInfo = await off.ProductService.getProduct(barcode);
 
 
   }
