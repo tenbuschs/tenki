@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'data.dart' as data;
+import 'barcode_scan.dart' as barcode_scan_page;
+
 
 class VerticalTabBar extends StatefulWidget {
   const VerticalTabBar({Key? key}) : super(key: key);
@@ -223,6 +225,17 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                   ],
                 ),
                 actions: <Widget>[
+                  IconButton(
+                    icon: const Icon(Icons.barcode_reader),
+                    onPressed: (){
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return barcode_scan_page.BarcodeScanner();
+                            }
+                    );
+                  },
+                  ),
                   IconButton(
                     icon: const Icon(Icons.cancel_outlined),
                     onPressed: () {

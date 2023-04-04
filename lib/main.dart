@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'gui_storage.dart' as storage_tab;
 import 'gui_shopping-list.dart' as shopping_list_tab;
 import 'gui_recipe.dart' as recipe_tab;
+import 'barcode_scan.dart' as barcode_scan_page;  // nur als test hier eingebaut
 
 void main() => runApp(TenkiApp());
 
@@ -70,7 +71,8 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                       children: [
                         const storage_tab.VerticalTabBar(),
                         const shopping_list_tab.ShoppingList(),
-                        recipe_tab.Recipe(),
+                     //recipe_tab.Recipe(),
+                        barcode_scan_page.BarcodeScanner(),
                       ],
                     ),
                   ),
