@@ -278,7 +278,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                       // Refresh the TabView
                       setState(() {
                         selectedIndex = selectedIndex;
-                        _pageController.jumpToPage(selectedIndex);
+                        _pageController.jumpToPage(locations.length + 1);
                       });
 
                       // Close AlertDialog

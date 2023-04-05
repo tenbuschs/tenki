@@ -12,7 +12,7 @@ Map<String, dynamic> storageMap = {
       "buyQuantity": 1,
       "shoppingCategory": "Tiefkühl",
     },
-   /* {
+    {
       "name": "Fischstäbchen",
       "location": "Tiefkühltruhe",
       "unit": "Packung a 18 Stück",
@@ -119,7 +119,7 @@ Map<String, dynamic> storageMap = {
       "stockQuantity": 3,
       "buyQuantity": 0,
       "shoppingCategory": "Sonstige",
-    },*/
+    },
     {
       "name": "Lösch mich (Swipe)",
       "location": "Kleiderschrank",
