@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'data.dart' as data;
 import 'barcode_scan.dart' as barcode_scan_page;
 
-
 class VerticalTabBar extends StatefulWidget {
   const VerticalTabBar({Key? key}) : super(key: key);
 
@@ -21,7 +20,10 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
     // iterate over the list of items and collect the unique locations in a Map
     for (var item in data.storageMap["items"]) {
-      locations.add(item["location"]);
+      if (item["location"] != "xtra_item") {
+        //Extras are not shown in storage
+        locations.add(item["location"]);
+      }
     }
   }
 
@@ -227,14 +229,13 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                 actions: <Widget>[
                   IconButton(
                     icon: const Icon(Icons.barcode_reader),
-                    onPressed: (){
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return barcode_scan_page.BarcodeScanner();
-                            }
-                    );
-                  },
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return barcode_scan_page.BarcodeScanner();
+                          });
+                    },
                   ),
                   IconButton(
                     icon: const Icon(Icons.cancel_outlined),
@@ -249,10 +250,10 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                       // retrieve the values entered by the user
                       String name = nameController.text;
                       String unit = unitController.text;
-                      int targetQuantity =
-                          int.tryParse(targetQuantityController.text) ?? 0;
-                      int stockQuantity = 0;
-                      int buyQuantity = targetQuantity - stockQuantity;
+                      double targetQuantity =
+                          double.tryParse(targetQuantityController.text) ?? 0;
+                      double stockQuantity = 0;
+                      double buyQuantity = targetQuantity - stockQuantity;
 
                       // Create a new map object with the new entry details
                       Map<String, dynamic> newEntry = {
@@ -272,6 +273,7 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
                       itemsList.addAll([newEntry]);
 
                       data.storageMap["items"] = itemsList;
+                      data.isChecked.add({"name": name, "isChecked": false});
 
                       // Refresh the TabView
                       setState(() {
@@ -297,7 +299,6 @@ class _VerticalTabBarState extends State<VerticalTabBar> {
 
 // Baut den Inhalt der Lagerorte
 class storageTabContent extends StatefulWidget {
-
   String location = '';
 
   storageTabContent({this.location = ''});
