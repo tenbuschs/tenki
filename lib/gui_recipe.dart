@@ -6,8 +6,9 @@ class Recipe extends StatelessWidget {
     return Container(
       color: Colors.white,
       child: const Center(
-        child: Icon(Icons.cookie, size: 150.0, color: Colors.teal),
+        child: Icon(Icons.cookie, size: 160.0, color: Colors.teal),
       ),
     );
   }
+
 }
