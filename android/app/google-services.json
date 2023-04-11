@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "675339380935",
+    "project_id": "tenki-1d439",
+    "storage_bucket": "tenki-1d439.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:675339380935:android:47e88ededfa324469476e2",
+        "android_client_info": {
+          "package_name": "com.tenki.tenki"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "675339380935-8rpdpcq1gremddb9u4qcck5i86lgfl68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDi34fPPwYmqCxqHTg8I-kt4LPSHFNC_mI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "675339380935-8rpdpcq1gremddb9u4qcck5i86lgfl68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
