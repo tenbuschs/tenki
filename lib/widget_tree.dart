@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/home_page.dart';
+import 'package:tenki/logout_page.dart';
 import 'package:tenki/login_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/auth.dart';
@@ -20,7 +20,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return HomePage();
+          return TenkiHomePage();
         } else{
           return const LoginPage();
         }

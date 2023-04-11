@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tenki/auth.dart';
-//import 'package:tenki/Pages//auth.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -43,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
   Widget _title(){
-    return const Text('TENKI-Für den Smarten Alltag');
+    return const Text('TENKI - für deinen smarten Alltag');
   }
 
   Widget _entryField(String title,
@@ -61,7 +60,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _submitButton() {
-    return ElevatedButton(onPressed:
+    return ElevatedButton(
+      onPressed:
     isLogin ? signInWithEmailAndPassword : createUserWithEmailAndPassword,
       child: Text(isLogin ? 'Login' : 'Registrieren'),
     );
@@ -83,8 +83,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: _title()
-          ,
+          title: _title(),
+          backgroundColor: Colors.teal,
 
         ),
         body: Container(
