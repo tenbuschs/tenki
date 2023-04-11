@@ -1,9 +1,18 @@
-import 'package:flutter/material.dart';
-import 'package:tenki/Pages/widget_tree.dart';
-import '../gui_storage.dart' as storage_tab;
-import '../gui_shopping-list.dart' as shopping_list_tab;
-import '../gui_recipe.dart' as recipe_tab;
 
+import 'package:flutter/material.dart';
+import 'package:tenki/widget_tree.dart';
+import '../storage_tab.dart' as storage_tab;
+import '../shopping-list_tab.dart' as shopping_list_tab;
+import '../recipe_tab.dart' as recipe_tab;
+import 'package:firebase_core/firebase_core.dart';
+import 'logout_page.dart' as logout_page;
+
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const TenkiApp());
+}
 
 import 'package:firebase_core/firebase_core.dart';
 
@@ -20,8 +29,8 @@ class TenkiApp extends StatelessWidget {
 
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TENKI App',
-      home: const WidgetTree()
+        title: 'TENKI App',
+        home: const WidgetTree()
     );
   }
 }
@@ -52,7 +61,44 @@ class _TenkiHomePageState extends State<TenkiHomePage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('TENKI - für deinen smarten Alltag'),
-        backgroundColor: Colors.teal,
+              backgroundColor: Colors.teal,
+        actions: [
+          PopupMenuButton(
+            // add icon, by default "3 dot" icon
+            // icon: Icon(Icons.book)
+              itemBuilder: (context){
+                return [
+                  const PopupMenuItem<int>(
+                    value: 0,
+                    child: Text("My Account"),
+                  ),
+
+                  const PopupMenuItem<int>(
+                    value: 1,
+                    child: Text("Settings"),
+                  ),
+
+                  const PopupMenuItem<int>(
+                    value: 2,
+                    child: Text("Logout"),
+                  ),
+                ];
+              },
+              onSelected:(value){
+                if(value == 0){
+                  print("My account menu is selected.");
+                }else if(value == 1){
+                  print("Settings menu is selected.");
+                }else if(value == 2){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
+                  );
+                }
+              }
+          ),
+
+        ],
         bottom: TabBar(
           controller: _tabController,
           tabs: const <Widget>[
