@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:tenki/widget_tree.dart';
 import '../storage_tab.dart' as storage_tab;
@@ -14,14 +13,6 @@ Future<void> main() async {
   runApp(const TenkiApp());
 }
 
-import 'package:firebase_core/firebase_core.dart';
-
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
- runApp(const TenkiApp());
-}
 class TenkiApp extends StatelessWidget {
   const TenkiApp({Key?key}) :super(key: key);
 
@@ -102,7 +93,6 @@ class _TenkiHomePageState extends State<TenkiHomePage>
         bottom: TabBar(
           controller: _tabController,
           tabs: const <Widget>[
-
             Tab(
               icon: Icon(Icons.storage),
             ),
