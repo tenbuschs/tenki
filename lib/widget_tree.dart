@@ -1,5 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/logout_page.dart';
+
 import 'package:tenki/login_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/auth.dart';
