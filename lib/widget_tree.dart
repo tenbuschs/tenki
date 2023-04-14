@@ -21,7 +21,7 @@ class _WidgetTreeState extends State<WidgetTree> {
         if (snapshot.hasData) {
           return TenkiHomePage();
         } else{
-          return const LoginPage();
+          return LoginPage();
         }
       },
     );
