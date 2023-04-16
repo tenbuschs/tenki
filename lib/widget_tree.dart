@@ -3,7 +3,7 @@ import 'package:tenki/logout_page.dart';
 import 'package:tenki/login_register_page.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/auth.dart';
-import 'package:tenki/main.dart';
+import 'package:tenki/main_page.dart';
 
 class WidgetTree extends StatefulWidget{
   const WidgetTree({Key? key}): super(key:key);
@@ -19,7 +19,7 @@ class _WidgetTreeState extends State<WidgetTree> {
       stream: Auth().authStateChanges,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return TenkiHomePage();
+          return TenkiMainPage();
         } else{
           return LoginPage();
         }

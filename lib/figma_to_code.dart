@@ -30,23 +30,33 @@ class _BottomTabBarState extends State<BottomTabBar>
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 100,
       color: TenkiColor4(),
       child: TabBar(
         controller: _tabController,
-        tabs: const <Widget>[
-          Tab(
-            icon: Icon(Icons.storage),
+        tabs: <Widget>[
+          Container(
+            child: TenkiIcons.storage(size:50),
           ),
-          Tab(
-            icon: Icon(Icons.shopping_cart),
+          Container(
+            child: TenkiIcons.shoppingList(size:50),
           ),
-          Tab(
-            icon: Icon(Icons.cookie),
+          Container(
+            child: TenkiIcons.shopping_bag(size: 50),
           ),
-          Tab(
-            icon: Icon(Icons.cookie),
+          Container(
+            child: TenkiIcons.calendar(size:50),
           ),
         ],
+        indicator: BoxDecoration(
+          color: TenkiColor2(),
+          border: Border(
+            bottom: BorderSide(
+              color: TenkiColor5(),
+              width: 2.0,
+            ),
+          ),
+        ),
       ),
     );
 
