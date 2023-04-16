@@ -1,13 +1,66 @@
 import 'package:flutter/material.dart';
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'main.dart';
 
-class BottomTabBar extends StatelessWidget {
+
+
+
+class BottomTabBar extends StatefulWidget {
+  @override
+  _BottomTabBarState createState() => _BottomTabBarState();
+}
+
+class _BottomTabBarState extends State<BottomTabBar>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: TenkiColor4(),
+      child: TabBar(
+        controller: _tabController,
+        tabs: const <Widget>[
+          Tab(
+            icon: Icon(Icons.storage),
+          ),
+          Tab(
+            icon: Icon(Icons.shopping_cart),
+          ),
+          Tab(
+            icon: Icon(Icons.cookie),
+          ),
+          Tab(
+            icon: Icon(Icons.cookie),
+          ),
+        ],
+      ),
+    );
+
+    }
+  }
+
+
+    /*
+class BottomTabBar extends StatefulWidget {
   const BottomTabBar({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       height: 80,
       decoration: BoxDecoration(
         border: Border(
@@ -87,7 +140,7 @@ class BottomTabBar extends StatelessWidget {
     );
   }
 }
-
+*/
 
 
 

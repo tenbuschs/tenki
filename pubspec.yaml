@@ -99,3 +99,11 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Pontano Sans
+    - fonts:
+         - asset: tenki_material/fonts/PontanoSans-Bold.ttf
+         - asset: tenki_material/fonts/PontanoSans-Light.ttf
+         - asset: tenki_material/fonts/PontanoSans-Medium.ttf
+         - asset: tenki_material/fonts/PontanoSans-Regular.ttf
+         - asset: tenki_material/fonts/PontanoSans-SemiBold.ttf
