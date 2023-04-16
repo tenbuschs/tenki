@@ -5,6 +5,7 @@ import '../shopping-list_tab.dart' as shopping_list_tab;
 import '../recipe_tab.dart' as recipe_tab;
 import 'package:firebase_core/firebase_core.dart';
 import 'logout_page.dart' as logout_page;
+import 'figma_to_code.dart' as figma;
 
 
 Future<void> main() async {
@@ -128,6 +129,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
           ),
         ],
       ),
+      bottomNavigationBar:  figma.BottomTabBar(),
     );
   }
 }
