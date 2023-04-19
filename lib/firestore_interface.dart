@@ -94,7 +94,7 @@ class DatabaseInterface {
       'locationMap': {
         "locations" :[
           { 'title': 'Neuer Lagerort',
-            'iconId': 0,
+            'iconId': 16,
           },
         ],
       },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tenki/main_page.dart';
+import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'barcode_scan.dart' as barcode_scan_page;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_interface.dart';
@@ -528,10 +530,7 @@ Future<void> updateStockQuantity(
 
 */
 
-
-
-String currentLocation='';
-
+String currentLocation = '';
 
 class TwoColumnLocationView extends StatefulWidget {
   const TwoColumnLocationView({Key? key}) : super(key: key);
@@ -541,10 +540,9 @@ class TwoColumnLocationView extends StatefulWidget {
 }
 
 class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
-
   int selectedIndex = 0;
   final PageController _pageControllerStorage = PageController();
-  TextEditingController newLocationController = TextEditingController();
+
   bool _showOverlay = false;
   bool _showPopup = false;
 
@@ -578,42 +576,45 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
               final DocumentSnapshot<Map<String, dynamic>>? newData =
                   snapshot.data;
               late Map<String, dynamic>? currentLocations =
-              newData?.data()?['locationMap'];
+                  newData?.data()?['locationMap'];
 
               print(currentLocations?["locations"].length);
               return Stack(
-                children:[
+                children: [
                   ListView.builder(
-                    itemCount: (currentLocations?["locations"].length / 2).ceil(),
+                    itemCount:
+                        (currentLocations?["locations"].length / 2).ceil(),
                     itemBuilder: (BuildContext context, int index) {
                       int itemIndex = index * 2;
-                      print(currentLocations?['locations'][itemIndex]['iconId']);
+                      print(
+                          currentLocations?['locations'][itemIndex]['iconId']);
 
                       return Row(
                         children: [
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-
-                                if(currentLocations?['locations'][itemIndex]['title'] != "Neuer Lagerort") {
+                                if (currentLocations?['locations'][itemIndex]
+                                        ['title'] !=
+                                    "Neuer Lagerort") {
                                   setState(() {
                                     _showOverlay = true;
                                   });
 
                                   currentLocation =
-                                  currentLocations?['locations'][itemIndex]['title'];
-                                }
-                                else{
+                                      currentLocations?['locations'][itemIndex]
+                                          ['title'];
+                                } else {
                                   setState(() {
                                     _showPopup = true;
                                   });
                                 }
-
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(18),
                                 child: Container(
-                                  height: MediaQuery.of(context).size.width * 0.4,
+                                  height:
+                                      MediaQuery.of(context).size.width * 0.4,
                                   decoration: BoxDecoration(
                                     color: TenkiColor1(),
                                     border: Border.all(color: Colors.grey),
@@ -631,20 +632,24 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                           border: Border.all(
                                               color: Colors.grey, width: 2),
                                         ),
-                                        child: LocationIcons.getLocationItemById(
-                                            id: currentLocations?['locations']
-                                            [itemIndex]['iconId'],
-                                            size:
-                                            MediaQuery.of(context).size.width *
-                                                0.14),
+                                        child:
+                                            LocationIcons.getLocationItemById(
+                                                id: currentLocations?[
+                                                        'locations'][itemIndex]
+                                                    ['iconId'],
+                                                size: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.14),
                                       ),
                                       SizedBox(
-                                          height:
-                                          MediaQuery.of(context).size.width *
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
                                               0.03),
                                       Text(
-                                        currentLocations?['locations'][itemIndex]
-                                        ['title'],
+                                        currentLocations?['locations']
+                                            [itemIndex]['title'],
                                         style: TextStyle(fontSize: 16),
                                       ),
                                     ],
@@ -655,70 +660,90 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                           ),
                           Expanded(
                             child: itemIndex + 1 <
-                                currentLocations?["locations"].length
+                                    currentLocations?["locations"].length
                                 ? GestureDetector(
-                              onTap: () {
-                                // Do something when the second item is tapped
-                                print('Item $itemIndex tapped');
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Container(
-                                  height:
-                                  MediaQuery.of(context).size.width * 0.4,
-                                  decoration: BoxDecoration(
-                                    color: TenkiColor1(),
-                                    border: Border.all(color: Colors.grey),
-                                    borderRadius: BorderRadius.circular(3),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 75,
-                                        height: 75,
+                                    onTap: () {
+                                      if (currentLocations?['locations']
+                                              [itemIndex + 1]['title'] !=
+                                          "Neuer Lagerort") {
+                                        setState(() {
+                                          _showOverlay = true;
+                                        });
+
+                                        currentLocation =
+                                            currentLocations?['locations']
+                                                [itemIndex + 1]['title'];
+                                      } else {
+                                        setState(() {
+                                          _showPopup = true;
+                                        });
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(18),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
                                         decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: Colors.grey, width: 2),
+                                          color: TenkiColor1(),
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(3),
                                         ),
-                                        child:
-                                        LocationIcons.getLocationItemById(
-                                            id: currentLocations?[
-                                            'locations']
-                                            [itemIndex + 1]['iconId'],
-                                            size: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.14),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 75,
+                                              height: 75,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: Colors.grey,
+                                                    width: 2),
+                                              ),
+                                              child: LocationIcons
+                                                  .getLocationItemById(
+                                                      id: currentLocations?[
+                                                                  'locations']
+                                                              [itemIndex + 1]
+                                                          ['iconId'],
+                                                      size:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.14),
+                                            ),
+                                            SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.03),
+                                            Text(
+                                              currentLocations?['locations']
+                                                  [itemIndex + 1]['title'],
+                                              style: TextStyle(fontSize: 16),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.03),
-                                      Text(
-                                        currentLocations?['locations']
-                                        [itemIndex + 1]['title'],
-                                        style: TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
+                                    ),
+                                  )
                                 : Container(),
                           ),
                         ],
                       );
                     },
                   ),
-
-                  _showOverlay? Center(child: storageTabContent(location: currentLocation) )  : SizedBox(),
-                  _showPopup? Center(child: PopupAddLocation() )  : SizedBox(),
-
+                  _showOverlay
+                      ? Center(
+                          child: storageTabContent(location: currentLocation))
+                      : SizedBox(),
+                  _showPopup ? Center(child: PopupAddLocation()) : SizedBox(),
                 ],
               );
             } else {
@@ -728,13 +753,6 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
     );
   }
 }
-
-
-
-
-
-
-
 
 // Baut den Inhalt der Lagerorte
 class storageTabContent extends StatefulWidget {
@@ -748,7 +766,6 @@ class storageTabContent extends StatefulWidget {
 class _storageTabContentState extends State<storageTabContent> {
   List<Map<String, dynamic>> _items = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -756,7 +773,6 @@ class _storageTabContentState extends State<storageTabContent> {
 
   @override
   Widget build(BuildContext context) {
-    print("running widget");
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -783,7 +799,7 @@ class _storageTabContentState extends State<storageTabContent> {
               final DocumentSnapshot<Map<String, dynamic>>? newData =
                   snapshot.data;
               final Map<String, dynamic>? currentStorageMap =
-              newData?.data()?['storageMap'];
+                  newData?.data()?['storageMap'];
 
               // just the items for the current location
               _items = currentStorageMap?['items']
@@ -810,8 +826,8 @@ class _storageTabContentState extends State<storageTabContent> {
                       ),
                       onDismissed: (direction) {
                         // remove the item from the list
-                        currentStorageMap?["items"].removeWhere(
-                                (item) => item["name"] == _items[index].values.first);
+                        currentStorageMap?["items"].removeWhere((item) =>
+                            item["name"] == _items[index].values.first);
                       },
                       child: ListTile(
                         title: Text(item['name']),
@@ -825,7 +841,7 @@ class _storageTabContentState extends State<storageTabContent> {
                                     initialValue: item['unit'].toString(),
                                     onFieldSubmitted: (value) async {
                                       DatabaseInterface dbInterface =
-                                      DatabaseInterface();
+                                          DatabaseInterface();
                                       await dbInterface.updateItemByName(
                                           item["name"], {'unit': value});
                                     },
@@ -843,7 +859,7 @@ class _storageTabContentState extends State<storageTabContent> {
                                 Expanded(
                                   child: TextFormField(
                                     initialValue:
-                                    item['stockQuantity'].toString(),
+                                        item['stockQuantity'].toString(),
                                     keyboardType: TextInputType.number,
                                     onFieldSubmitted: (value) =>
                                         updateStockQuantity(value, item),
@@ -861,7 +877,7 @@ class _storageTabContentState extends State<storageTabContent> {
                                 Expanded(
                                   child: TextFormField(
                                     initialValue:
-                                    item['targetQuantity'].toString(),
+                                        item['targetQuantity'].toString(),
                                     keyboardType: TextInputType.number,
                                     onFieldSubmitted: (value) =>
                                         updateTargetQuantity(value, item),
@@ -922,20 +938,16 @@ Future<void> updateStockQuantity(
       .updateItemByName(item["name"], {'stockQuantity': double.parse(value)});
 }
 
-
-
-
-
-// Baut den Inhalt der Lagerorte
+// Baut Popup
 class PopupAddLocation extends StatefulWidget {
-
   const PopupAddLocation({Key? key}) : super(key: key);
   @override
   _PopupAddLocationState createState() => _PopupAddLocationState();
 }
 
 class _PopupAddLocationState extends State<PopupAddLocation> {
-
+  List<bool> _selected = List.generate(16, (index) => false);
+  TextEditingController newLocationController = TextEditingController();
 
   @override
   void initState() {
@@ -944,6 +956,169 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(color: Colors.green);
+    return SingleChildScrollView(
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.9,
+        height: MediaQuery.of(context).size.height * 0.7,
+        child: Container(
+          padding: EdgeInsets.all(20.0),
+          decoration: BoxDecoration(
+            color: TenkiColor3(),
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.black, width: 2),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                blurRadius: 10.0,
+                spreadRadius: 5.0,
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Center(
+                  child: Text(
+                "Neuer Lagerort...",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              )),
+              SizedBox(height: 15.0),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                ),
+                padding: const EdgeInsets.only(
+                  top: 9,
+                  bottom: 9,
+                ),
+                child: TextField(
+                  controller: newLocationController,
+                  textAlign: TextAlign.center,
+                  cursorColor: Colors.grey,
+                  decoration: InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
+                  ),
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+              SizedBox(height: 25.0),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.2,
+                height: MediaQuery.of(context).size.width * 0.2 * 4,
+                child: Container(
+                  color: TenkiColor1(),
+                  child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 4,
+                    ),
+                    itemCount: 16,
+                    itemBuilder: (BuildContext context, int index) {
+                      Widget iconData =
+                          locationIcons[index]; // get the icon data
+                      Color borderColor =
+                          _selected[index] ? Colors.red : Colors.transparent;
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _selected.fillRange(0, 16,
+                                false); // clear previously selected circle
+                            _selected[index] =
+                                true; // mark current circle as selected
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(12),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: borderColor,
+                                width: 2,
+                              ),
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                            ),
+                            child: iconData,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          // Close button action
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TenkiMainPage()),
+                          );
+                        },
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 1),
+                            color: TenkiColor4(),
+                          ),
+                          child: Icon(Icons.close),
+                        ),
+                      ),
+                      SizedBox(width: 20.0),
+                      InkWell(
+                        onTap: () async {
+                          // Confirm button action
+
+                          // TODO: Eingabprüfung
+
+                          DatabaseInterface dbInterface = DatabaseInterface();
+                          // Add example data map for current user
+                          await dbInterface.addLocation(
+                              newLocationController.text,
+                              _selected
+                                  .indexWhere((element) => element == true));
+
+                          //Close popup
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => TenkiMainPage()),
+                          );
+                        },
+                        child: Container(
+                          width: 40.0,
+                          height: 40.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 1),
+                            color: TenkiColor1(),
+                          ),
+                          child: Icon(Icons.check),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
