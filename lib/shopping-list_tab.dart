@@ -56,65 +56,75 @@ class _ShoppingListState extends State<ShoppingList> {
               };
             }).toList();
 
-            return Scaffold(
-                body: ListView.builder(
-                  itemCount: groupedItems.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    final category = groupedItems.keys.toList()[index];
-                    List<dynamic> items = groupedItems[category]!;
+            return Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    tileMode: TileMode.clamp),
+              ),
+              padding: const EdgeInsets.all(10.0),
+              child: Scaffold(
+                  body: ListView.builder(
+                    itemCount: groupedItems.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      final category = groupedItems.keys.toList()[index];
+                      List<dynamic> items = groupedItems[category]!;
 
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            category,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.teal,
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              category,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.teal,
+                              ),
                             ),
                           ),
-                        ),
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final item = items[index];
+                          ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: items.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final item = items[index];
 
-                            return CheckboxListTile(
-                              title: Text(item['buyQuantity'].toString() +
-                                  "x " +
-                                  item['name']),
-                              subtitle: Text(item['unit']),
-                              value: isChecked.firstWhere(
-                                (itemList) => itemList["name"] == item['name'],
-                              )["isChecked"],
-                              onChanged: (bool? value) async {
-                                if (value == true) {
-                                  DatabaseInterface dbInterface =
-                                      DatabaseInterface();
-                                  await dbInterface.updateItemByName(
-                                      item["name"], {
-                                    'stockQuantity': item['stockQuantity'] +
-                                        item['buyQuantity'],
-                                    'buyQuantity': 0
-                                  });
-                                }
+                              return CheckboxListTile(
+                                title: Text(item['buyQuantity'].toString() +
+                                    "x " +
+                                    item['name']),
+                                subtitle: Text(item['unit']),
+                                value: isChecked.firstWhere(
+                                  (itemList) => itemList["name"] == item['name'],
+                                )["isChecked"],
+                                onChanged: (bool? value) async {
+                                  if (value == true) {
+                                    DatabaseInterface dbInterface =
+                                        DatabaseInterface();
+                                    await dbInterface.updateItemByName(
+                                        item["name"], {
+                                      'stockQuantity': item['stockQuantity'] +
+                                          item['buyQuantity'],
+                                      'buyQuantity': 0
+                                    });
+                                  }
 
-                                //refresh view
-                                setState(() {});
-                              },
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                floatingActionButton: _buttonAddExtraItem(context));
+                                  //refresh view
+                                  setState(() {});
+                                },
+                              );
+                            },
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                  floatingActionButton: _buttonAddExtraItem(context)),
+            );
           } else {
             return const Center(child: Text("Unexpected Error"));
           }

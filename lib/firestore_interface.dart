@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 String uid = FirebaseAuth.instance.currentUser!.uid;
 
 class DatabaseInterface {
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
@@ -77,4 +78,50 @@ class DatabaseInterface {
     };
     await storageMapRef.update(updatedStorageMapData);
   }
-}
+
+
+
+
+
+
+
+
+  Future<void> addExampleLocationMap() async {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    CollectionReference locationMaps =
+    FirebaseFirestore.instance.collection('locationMaps');
+    await locationMaps.doc(uid).set({
+      'locationMap': {
+        "locations" :[
+          { 'title': 'Neuer Lagerort',
+            'iconId': 0,
+          },
+        ],
+      },
+    });
+  }
+
+  Future<void> addLocation(String title, int iconId) async {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    CollectionReference locationMaps =
+    FirebaseFirestore.instance.collection('locationMaps');
+    DocumentReference docRef = locationMaps.doc(uid);
+    DocumentSnapshot docSnapshot = await docRef.get();
+    Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+    List<dynamic> locations = data['locationMap']['locations'];
+    locations.insert(locations.length - 1, {'title': title, 'iconId': iconId});
+    await docRef.update({'locationMap.locations': locations});
+  }
+
+
+
+
+
+}// Ending class
+
+
+
+
+
+
+

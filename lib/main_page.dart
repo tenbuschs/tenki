@@ -22,10 +22,15 @@ class _TenkiMainPageState extends State<TenkiMainPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final List<String> _tabTitles = ['Vorrat', 'Rezepte', 'Einkaufsliste', 'Planer'];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: _tabTitles.length, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -38,15 +43,17 @@ class _TenkiMainPageState extends State<TenkiMainPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: TenkiIcons.tenki(size: 40),
-        title: Text('TENKI - für deinen smarten Alltag', style: TextStyle(
-          color: Colors.black,
-        ),),
+        leading: TenkiIcons.tenki(size: 38),
+        //TODO: Leading as button to welcome page
+        title: Center(
+          child: Text(_tabTitles[_tabController.index], style: TextStyle(
+            color: Colors.black,
+          ),),
+        ),
         backgroundColor: TenkiColor2(),
         actions: [
           PopupMenuButton(
-            // add icon, by default "3 dot" icon
-            // icon: Icon(Icons.book)
+              icon: Icon(Icons.more_vert, color:Colors.black),
               itemBuilder: (context){
                 return [
                   const PopupMenuItem<int>(
@@ -82,18 +89,20 @@ class _TenkiMainPageState extends State<TenkiMainPage>
 
       ),
       body: Column(
+
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(10.0),
+
               child: Column(
                 children: [
                   Expanded(
                     child: TabBarView(
+
                       controller: _tabController,
                       children: [
                         // storage_tab
-                        const storage_tab.VerticalTabBar(),
+                        const storage_tab.TwoColumnLocationView(),
                         //recipe_tab
                         recipe_tab.Recipe(),
                         // shopping-list_tab
