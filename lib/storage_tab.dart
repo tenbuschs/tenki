@@ -897,7 +897,9 @@ class _storageTabContentState extends State<storageTabContent> {
                   },
                 );
               } else {
-                return Center(child: Text("Leerer Lagerort"));
+                 // define the dialog content
+                                   return PopupAddItem(location: widget.location);
+
               }
             } else {
               return Center(child: Text("UnexpectedError"));
@@ -978,14 +980,13 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Center(
-                  child: Text(
-                "Neuer Lagerort...",
+              const Center(
+                  child: Text("Neuer Lagerort...",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               )),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
@@ -999,24 +1000,24 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                   controller: newLocationController,
                   textAlign: TextAlign.center,
                   cursorColor: Colors.grey,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     focusedBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 20,
                   ),
                 ),
               ),
-              SizedBox(height: 25.0),
+              const SizedBox(height: 25.0),
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.2,
                 height: MediaQuery.of(context).size.width * 0.2 * 4,
                 child: Container(
                   color: TenkiColor1(),
                   child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                     ),
                     itemCount: 16,
@@ -1035,7 +1036,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                           });
                         },
                         child: Container(
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Container(
                             decoration: BoxDecoration(
                               border: Border.all(
@@ -1076,10 +1077,10 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                             border: Border.all(color: Colors.black, width: 1),
                             color: TenkiColor4(),
                           ),
-                          child: Icon(Icons.close),
+                          child:const Icon(Icons.close),
                         ),
                       ),
-                      SizedBox(width: 20.0),
+                      const SizedBox(width: 20.0),
                       InkWell(
                         onTap: () async {
                           // Confirm button action
@@ -1108,7 +1109,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                             border: Border.all(color: Colors.black, width: 1),
                             color: TenkiColor1(),
                           ),
-                          child: Icon(Icons.check),
+                          child: const Icon(Icons.check),
                         ),
                       ),
                     ],
@@ -1120,5 +1121,124 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
         ),
       ),
     );
+  }
+}
+
+
+
+
+
+
+
+// Baut
+class PopupAddItem extends StatefulWidget {
+  //const PopupAddItem({Key? key}) : super(key: key);
+
+  String location = '';
+  PopupAddItem({this.location = ''});
+
+  @override
+  _PopupAddItemState createState() => _PopupAddItemState();
+}
+
+class _PopupAddItemState extends State<PopupAddItem> {
+
+
+  // define text editing controllers for the input fields
+  TextEditingController nameController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController targetQuantityController =
+  TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+              title: const Text('Neues Lebensmittel'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Name',
+                    ),
+                  ),
+                  TextField(
+                    controller: unitController,
+                    decoration: const InputDecoration(
+                      labelText: 'Unit',
+                    ),
+                  ),
+                  TextField(
+                    controller: targetQuantityController,
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                      labelText: 'Target Quantity',
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.barcode_reader),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return barcode_scan_page.BarcodeScanner();
+                        });
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.cancel_outlined),
+                  onPressed: () {
+                    // CLose Alert with No Operation
+                    Navigator.of(context).pop();
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.check_circle, color: Colors.teal),
+                  onPressed: () async {
+                    // retrieve the values entered by the user
+                    String name = nameController.text;
+                    String unit = unitController.text;
+                    double targetQuantity =
+                        double.tryParse(targetQuantityController.text) ?? 0;
+                    double stockQuantity = 0;
+                    double buyQuantity = targetQuantity - stockQuantity;
+
+                    // Create a new map object with the new entry details
+                    Map<String, dynamic> newEntry = {
+                      "name": name,
+                      "location": widget.location,
+                      "unit": unit,
+                      "targetQuantity": targetQuantity,
+                      "stockQuantity": stockQuantity,
+                      "buyQuantity": buyQuantity,
+                      "shoppingCategory": "Sonstige",
+                    };
+
+                    // call function to add the new item
+                    DatabaseInterface dbInterface = DatabaseInterface();
+                    await dbInterface.addItemToStorageMap(newEntry);
+
+                    // Refresh the TabView
+                    setState(() {
+                      //selectedIndex = selectedIndex;
+                      //_pageController.jumpToPage(locations.length + 1);
+                    });
+
+                    // Close AlertDialog
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+
   }
 }
