@@ -104,7 +104,7 @@ class _TenkiMainPageState extends State<TenkiMainPage>
                         // storage_tab
                         const storage_tab.TwoColumnLocationView(),
                         //recipe_tab
-                        figma.BottomTabBar(),
+                        recipe_tab.Recipe(),
                         // shopping-list_tab
                         const shopping_list_tab.ShoppingList(),
                         // calender_tab
