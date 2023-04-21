@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
+import 'tenki_material/category_items.dart';
 
 
 String currentLocation = '';
@@ -589,26 +590,37 @@ class _StorageTabContentState extends State<StorageTabContent> {
                                           ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                          width:8,
-                                      ),
+                                      const SizedBox(width:8),
+
+                                      //Container for Shopping Category
                                       Container(
                                         height: 160,
-                                        color: TenkiColor4(),
-                                        child: const Center(
-                                          child: Text(
-                                            'Vllt bald eine Kategorie... ',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 24,
+                                        width: 160,
+                                        color: TenkiColor3(),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                           Container(
+                                              width: 60,
+                                              height: 60,
+                                              padding: const EdgeInsets.all(8.0),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.white,
+                                                  border: Border.all(color: Colors.grey, width:1)
+                                              ),
+                                              child: HelperCategoryItems.getCategoryWidget(item['shoppingCategory'].toString()),
+
                                             ),
-                                          ),
+                                            const SizedBox(height: 5),
+                                            Text(item['shoppingCategory'].toString()),
+
+                                          ],
                                         ),
                                       ),
-                                      const SizedBox(
-                                        width:8,
-                                      ),
+                                      const SizedBox(width:8),
+                                      //Container for MHD
                                       Container(
                                         height: 160,
                                         color: TenkiColor4(),
