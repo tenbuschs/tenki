@@ -117,6 +117,65 @@ class DatabaseInterface {
 
 
 
+/*
+* Delets a location and all items, that are stored in it
+* */
+  Future<void> deleteLocationAndItems(String locationTitle) async {
+    try {
+      final uid = FirebaseAuth.instance.currentUser!.uid;
+
+      // Get the locationMap document and remove the location with the given title
+      final DocumentReference<Map<String, dynamic>> locationDocumentReference =
+      FirebaseFirestore.instance.collection('locationMaps').doc(uid);
+      final DocumentSnapshot<Map<String, dynamic>> locationSnapshot =
+      await locationDocumentReference.get();
+      final Map<String, dynamic> locationMap = locationSnapshot.data()!['locationMap'];
+      List<Map<String, dynamic>> locations =
+      List<Map<String, dynamic>>.from(locationMap['locations']);
+      int locationIndex = -1;
+      for (int i = 0; i < locations.length; i++) {
+        if (locations[i]['title'] == locationTitle) {
+          locationIndex = i;
+          break;
+        }
+      }
+      if (locationIndex == -1) {
+        //print('Location not found.');
+        return;
+      }
+      locations.removeAt(locationIndex);
+      locationMap['locations'] = locations;
+      await locationDocumentReference.set({'locationMap': locationMap});
+
+      // Get the storageMap document and remove items that are associated with the deleted location
+      final DocumentReference<Map<String, dynamic>> storageDocumentReference =
+      FirebaseFirestore.instance.collection('storageMaps').doc(uid);
+      final DocumentSnapshot<Map<String, dynamic>> storageSnapshot =
+      await storageDocumentReference.get();
+      final Map<String, dynamic> storageMap = storageSnapshot.data()!['storageMap'];
+      List<Map<String, dynamic>> items =
+      List<Map<String, dynamic>>.from(storageMap['items']);
+      List<Map<String, dynamic>> updatedItems = [];
+      for (int i = 0; i < items.length; i++) {
+        if (items[i]['location'] != locationTitle) {
+          updatedItems.add(items[i]);
+        }
+      }
+      storageMap['items'] = updatedItems;
+      await storageDocumentReference.set({'storageMap': storageMap});
+    } catch (e) {
+     // print('Error deleting location and items: $e');
+    }
+  }
+
+
+
+
+
+
+
+
+
 }// Ending class
 
 

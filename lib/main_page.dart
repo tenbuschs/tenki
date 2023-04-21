@@ -6,7 +6,7 @@ import '../recipe_tab.dart' as recipe_tab;
 import 'calender_tab.dart' as calender_tab;
 import 'logout_page.dart' as logout_page;
 
-
+import 'figma_to_code.dart' as figma;
 
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
@@ -104,7 +104,7 @@ class _TenkiMainPageState extends State<TenkiMainPage>
                         // storage_tab
                         const storage_tab.TwoColumnLocationView(),
                         //recipe_tab
-                        recipe_tab.Recipe(),
+                        figma.BottomTabBar(),
                         // shopping-list_tab
                         const shopping_list_tab.ShoppingList(),
                         // calender_tab
