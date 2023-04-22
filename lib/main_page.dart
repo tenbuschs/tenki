@@ -4,12 +4,10 @@ import '../storage_tab.dart' as storage_tab;
 import '../shopping-list_tab.dart' as shopping_list_tab;
 import '../recipe_tab.dart' as recipe_tab;
 import 'calender_tab.dart' as calender_tab;
-import 'logout_page.dart' as logout_page;
-
-import 'figma_to_code.dart' as figma;
 
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'tenki_material/appbars.dart';
 
 
 
@@ -42,52 +40,7 @@ class _TenkiMainPageState extends State<TenkiMainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: TenkiIcons.tenki(size: 38),
-        //TODO: Leading as button to welcome page
-        title: Center(
-          child: Text(_tabTitles[_tabController.index], style: TextStyle(
-            color: Colors.black,
-          ),),
-        ),
-        backgroundColor: TenkiColor2(),
-        actions: [
-          PopupMenuButton(
-              icon: Icon(Icons.more_vert, color:Colors.black),
-              itemBuilder: (context){
-                return [
-                  const PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("My Account"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 1,
-                    child: Text("Settings"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 2,
-                    child: Text("Logout"),
-                  ),
-                ];
-              },
-              onSelected:(value){
-                if(value == 0){
-                  print("My account menu is selected.");
-                }else if(value == 1){
-                  print("Settings menu is selected.");
-                }else if(value == 2){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
-                  );
-                }
-              }
-          ),
-        ],
-
-      ),
+      appBar: AppBars.mainAppBar(_tabTitles[_tabController.index], context),
       body: Column(
 
         children: [
