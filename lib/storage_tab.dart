@@ -200,6 +200,51 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                         });
                                       }
                                     },
+                              onLongPress: () {
+                                if (currentLocations?['locations'][itemIndex+1]
+                                ['title'] !=
+                                    "Neuer Lagerort") {
+                                  // Show delete button
+                                  showModalBottomSheet(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Container(
+                                        height: 120,
+                                        color: Colors.redAccent,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.delete,
+                                                  color: Colors.white,
+                                                  size: 35),
+                                              onPressed: () async {
+                                                DatabaseInterface dbInterface =
+                                                DatabaseInterface();
+                                                await dbInterface
+                                                    .deleteLocationAndItems(
+                                                    currentLocations?[
+                                                    'locations']
+                                                    [itemIndex+1]
+                                                    ['title']);
+                                                //close ModalBottomSheet
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            Text(currentLocations?['locations']
+                                            [itemIndex+1]['title'] +
+                                                " samt Inhalt dauerhaft löschen?",
+                                              style: const TextStyle(color: Colors.white, fontSize: 16),),
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  //"Neuer Lagerort" is not allowed to be deletable
+                                }
+                              },
                                     child: Padding(
                                       padding: const EdgeInsets.all(18),
                                       child: Container(
