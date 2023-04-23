@@ -6,10 +6,16 @@ import 'main.dart';
 
 
 
+
+
+
+
+
 class BottomTabBar extends StatefulWidget {
   @override
   _BottomTabBarState createState() => _BottomTabBarState();
 }
+
 
 class _BottomTabBarState extends State<BottomTabBar>
     with SingleTickerProviderStateMixin {
@@ -30,37 +36,163 @@ class _BottomTabBarState extends State<BottomTabBar>
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 100,
-      color: TenkiColor4(),
-      child: TabBar(
-        controller: _tabController,
-        tabs: <Widget>[
-          Container(
-            child: TenkiIcons.storage(size:50),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width:2),
+            color: TenkiColor3(),
           ),
-          Container(
-            child: TenkiIcons.shoppingList(size:50),
-          ),
-          Container(
-            child: TenkiIcons.shopping_bag(size: 50),
-          ),
-          Container(
-            child: TenkiIcons.calendar(size:50),
-          ),
-        ],
-        indicator: BoxDecoration(
-          color: TenkiColor2(),
-          border: Border(
-            bottom: BorderSide(
-              color: TenkiColor5(),
-              width: 2.0,
-            ),
+          child: Row(
+            children: [
+              Container(
+                height: 160,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      height: 80,
+                      width:200,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xfff5f5f5),
+                        ),
+                        child: Text(
+                                "Artikelname",
+                                textAlign: TextAlign.center,
+                              ),
+
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.all(15),
+                      height: 80,
+                      width:200,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Color(0xfff5f5f5),
+                        ),
+                        child: Text(
+                          "Einheit",
+                          textAlign: TextAlign.center,
+                        ),
+
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                height: 160,
+                color: Colors.transparent,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 80,
+                      padding: EdgeInsets.all(15),
+                      child: Container(
+                        child: Row(
+                          children: [
+                            Container(
+                                width: 60,
+                                color: Colors.transparent,
+                                child: const Text(
+                                  "Aktuell:",
+                                  textAlign: TextAlign.center,
+                                )
+                            ),
+                            Container(
+                              width:80,
+                              color: Colors.white,
+                              child: TextFormField(
+                               // initialValue: item['stockQuantity'].toString(),
+                                keyboardType: TextInputType.number,
+                               // onFieldSubmitted: (value) => updateStockQuantity(value, item),
+                                decoration: const InputDecoration(
+                                  hintText: 'Bestand',
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    ),
+                    Container(
+                        height: 80,
+                        padding: EdgeInsets.all(15),
+                        child: Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                  width: 60,
+                                  color: Colors.transparent,
+                                  child: const Text(
+                                    "Soll:",
+                                    textAlign: TextAlign.center,
+                                  )
+                              ),
+                              Container(
+                                width:80,
+                                color: Colors.white,
+                                child: TextFormField(
+                                  //initialValue: item['targetQuantity'].toString(),
+                                  keyboardType: TextInputType.number,
+                                  //onFieldSubmitted: (value) => updateTargetQuantity(value, item),
+                                  decoration: const InputDecoration(
+                                    hintText: 'Soll',
+                                    border: InputBorder.none,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 160,
+                color: Colors.green,
+                child: const Center(
+                  child: Text(
+                    'Vllt bald eine Kategorie... ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                height: 160,
+                color: Colors.grey,
+                child: const Center(
+                  child: Text(
+                    'Hier steht iwan das MHD... ',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
     );
 
-    }
+
+
+  }
   }
 
 

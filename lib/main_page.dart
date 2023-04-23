@@ -4,12 +4,10 @@ import '../storage_tab.dart' as storage_tab;
 import '../shopping-list_tab.dart' as shopping_list_tab;
 import '../recipe_tab.dart' as recipe_tab;
 import 'calender_tab.dart' as calender_tab;
-import 'logout_page.dart' as logout_page;
-
-
 
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'tenki_material/appbars.dart';
 
 
 
@@ -22,10 +20,15 @@ class _TenkiMainPageState extends State<TenkiMainPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+  final List<String> _tabTitles = ['Vorrat', 'Rezepte', 'Einkaufsliste', 'Planer'];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: _tabTitles.length, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
   }
 
   @override
@@ -37,63 +40,22 @@ class _TenkiMainPageState extends State<TenkiMainPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: TenkiIcons.tenki(size: 40),
-        title: Text('TENKI - für deinen smarten Alltag', style: TextStyle(
-          color: Colors.black,
-        ),),
-        backgroundColor: TenkiColor2(),
-        actions: [
-          PopupMenuButton(
-            // add icon, by default "3 dot" icon
-            // icon: Icon(Icons.book)
-              itemBuilder: (context){
-                return [
-                  const PopupMenuItem<int>(
-                    value: 0,
-                    child: Text("My Account"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 1,
-                    child: Text("Settings"),
-                  ),
-
-                  const PopupMenuItem<int>(
-                    value: 2,
-                    child: Text("Logout"),
-                  ),
-                ];
-              },
-              onSelected:(value){
-                if(value == 0){
-                  print("My account menu is selected.");
-                }else if(value == 1){
-                  print("Settings menu is selected.");
-                }else if(value == 2){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
-                  );
-                }
-              }
-          ),
-        ],
-
-      ),
+      appBar: AppBars.mainAppBar(_tabTitles[_tabController.index], context),
       body: Column(
+
         children: [
           Expanded(
             child: Container(
-              padding: const EdgeInsets.all(10.0),
+
               child: Column(
                 children: [
                   Expanded(
                     child: TabBarView(
+
                       controller: _tabController,
                       children: [
                         // storage_tab
-                        const storage_tab.VerticalTabBar(),
+                        const storage_tab.TwoColumnLocationView(),
                         //recipe_tab
                         recipe_tab.Recipe(),
                         // shopping-list_tab

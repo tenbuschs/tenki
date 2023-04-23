@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/auth.dart';
 
+
 class LogoutPage extends StatelessWidget{
   LogoutPage({Key? key}) : super(key: key);
 

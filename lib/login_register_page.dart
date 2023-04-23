@@ -128,7 +128,8 @@ class _LoginPageState extends State<LoginPage> {
       DatabaseInterface dbInterface = DatabaseInterface();
       // Add example data map for current user
       await dbInterface.addExampleDataMap();
-      print("add example data");
+      await dbInterface.addExampleLocationMap();
+
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;

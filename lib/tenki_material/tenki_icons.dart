@@ -13,6 +13,7 @@
 import 'package:flutter/material.dart';
 
 
+
 class TenkiIcons {
 
   static Widget add({double size = 24, Color color = Colors.black}) {
@@ -143,3 +144,5 @@ class TenkiIcons {
   }
 
 }
+
+
