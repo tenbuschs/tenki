@@ -6,6 +6,7 @@ import 'package:tenki/profile_page.dart' as profile_page;
 import 'package:tenki/settings_page.dart' as settings_page;
 import 'package:tenki/about_tenki_page.dart' as about_tenki_page;
 import 'package:tenki/feedback_page.dart' as feedback_page;
+import 'package:tenki/homepage.dart' as homepage;
 
 
 class AppBars{
@@ -13,8 +14,15 @@ class AppBars{
   static AppBar mainAppBar(String title, BuildContext context){
 
     return AppBar(
-      leading: TenkiIcons.tenki(size: 38),
-      //TODO: Leading as button to welcome page
+      leading: GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+        );
+      },
+      child: TenkiIcons.tenki(size: 38),
+    ),
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,

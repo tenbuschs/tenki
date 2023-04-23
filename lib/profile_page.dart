@@ -13,7 +13,7 @@ class _MyTenkiState extends State<MyTenki> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBars.dropdownAppBar("Mein TENKI", context),
-      body: const Center(child: Text("Hier bald den Profil..."))
+      body: const Center(child: Text("Hier bald dein Profil..."))
     );
 
 
