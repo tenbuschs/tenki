@@ -12,7 +12,7 @@ class _AboutTenkiState extends State<AboutTenki> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBars.dropdownAppBar("About TENKI", context),
+        appBar: AppBars.dropdownAppBar("Über TENKI", context),
         body: const Center(child: Text("Hier bald Infos über TENKI..."))
     );
 
