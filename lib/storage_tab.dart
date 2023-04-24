@@ -782,8 +782,8 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: TenkiColor3(),
-            borderRadius: BorderRadius.circular(10.0),
-            border: Border.all(color: Colors.black, width: 2),
+            borderRadius: BorderRadius.circular(5.0),
+            border: Border.all(color: Colors.black54, width: 1),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
@@ -798,13 +798,14 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
             children: <Widget>[
               const Center(
                   child: Text(
-                "Neuer Lagerort...",
+                "Neuer Lagerort:",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               )),
               const SizedBox(height: 15.0),
               Container(
+                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -815,13 +816,17 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                 ),
                 child: TextField(
                   controller: newLocationController,
-                  textAlign: TextAlign.center,
-                  cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.grey),
+                  textAlign: TextAlign.left,
+                  decoration: InputDecoration(
+                  labelText: 'Name',
+                  labelStyle: TextStyle(color: TenkiColor1()),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: TenkiColor4(),
                     ),
                   ),
+                ),
+                cursorColor: TenkiColor4(),
                   style: const TextStyle(
                     fontSize: 20,
                   ),
@@ -843,7 +848,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                       Widget iconData =
                           locationIcons[index]; // get the icon data
                       Color borderColor =
-                          _selected[index] ? Colors.red : Colors.transparent;
+                          _selected[index] ? Colors.black87 : TenkiColor4();
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -859,7 +864,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: borderColor,
-                                width: 2,
+                                width: 1.5,
                               ),
                               shape: BoxShape.circle,
                               color: Colors.white,

@@ -1,0 +1,26 @@
+final List<String> _tabTitles = [
+    'Vorrat',
+    'Rezepte',
+    'Einkaufsliste',
+    'Planer'
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: _tabTitles.length, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
+
+
+
+  appBar: AppBars.mainAppBar(_tabTitles[_tabController.index], context),
