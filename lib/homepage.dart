@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../storage_tab.dart' as storage_tab;
-import '../shopping-list_tab.dart' as shopping_list_tab;
-import '../recipe_tab.dart' as recipe_tab;
+import 'storage_tab.dart' as storage_tab;
+import 'shopping-list_tab.dart' as shopping_list_tab;
+import 'recipe_tab.dart' as recipe_tab;
 import 'calender_tab.dart' as calender_tab;
 
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/appbars.dart';
+
 
 class TenkiHomePage extends StatefulWidget {
   @override
@@ -18,34 +19,14 @@ class _TenkiHomePageState extends State<TenkiHomePage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
-  final List<String> _tabTitles = [
-    'Vorrat',
-    'Rezepte',
-    'Einkaufsliste',
-    'Planer'
-  ];
 
-  @override
-  void initState() {
-    super.initState();
-    _tabController = TabController(length: _tabTitles.length, vsync: this);
-    _tabController.addListener(() {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
-    final double remainingHeight = MediaQuery.of(context).size.height - 280.0;
+    final double remainingHeight = MediaQuery.of(context).size.height - 200.0;
 
     return Scaffold(
-      appBar: AppBars.mainAppBar(_tabTitles[_tabController.index], context),
+
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -103,12 +84,12 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pop(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    storage_tab.TwoColumnLocationView()),
-                          );
+                              builder: (context) =>
+                                  storage_tab.build(), // Use TwoColumnLocationView widget
+                            ),);
                         },
                         child: Container(
                           width: double.infinity,
@@ -135,7 +116,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pop(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => recipe_tab.Recipe()),
@@ -199,7 +180,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                       ),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pop(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => calender_tab.Calender()),
