@@ -87,7 +87,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  main_page.TenkiMainPage(), // Use TwoColumnLocationView widget
+                                  main_page.TenkiMainPage(initialIndex: 0,), // Use TwoColumnLocationView widget
                             ),);
                         },
                         child: Container(

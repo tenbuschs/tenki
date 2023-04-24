@@ -29,7 +29,7 @@ class _ShoppingListState extends State<ShoppingList> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: Text("Waiting..."));
+            return const Center(child: Text("Lädt..."));
           } else if (snapshot.hasError) {
             return Center(child: Text(snapshot.error.toString()));
           } else if (snapshot.hasData) {
