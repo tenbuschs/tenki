@@ -7,6 +7,9 @@ import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
 import 'tenki_material/category_items.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
+
 
 String currentLocation = '';
 
@@ -814,9 +817,10 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                   top: 9,
                   bottom: 9,
                 ),
-                child: TextField(
+                child:
+                TextField(
                   controller: newLocationController,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   decoration: InputDecoration(
                   labelText: 'Name',
                   labelStyle: TextStyle(color: TenkiColor1()),
@@ -828,8 +832,10 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                 ),
                 cursorColor: TenkiColor4(),
                   style: const TextStyle(
-                    fontSize: 20,
-                  ),
+                    fontSize: 20,),
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZÄÖÜäöüß ]')
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 25.0),

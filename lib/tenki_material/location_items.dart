@@ -3,22 +3,22 @@ import 'tenki_icons.dart';
 
 
 List<Widget> locationIcons = [
-  TenkiIcons.grain(),
-  TenkiIcons.chili(),
-  TenkiIcons.carot(),
-  TenkiIcons.cookie(),
-  TenkiIcons.cow(),
-  TenkiIcons.grain(),
-  TenkiIcons.chili(),
-  TenkiIcons.carot(),
-  TenkiIcons.cookie(),
-  TenkiIcons.cow(),
-  TenkiIcons.grain(),
-  TenkiIcons.chili(),
-  TenkiIcons.carot(),
-  TenkiIcons.cookie(),
-  TenkiIcons.cow(),
+  TenkiIcons.frosty(),
   TenkiIcons.thermometer(),
+  TenkiIcons.door(),
+  TenkiIcons.spider(),
+  TenkiIcons.igloo(),
+  TenkiIcons.medical(),
+  TenkiIcons.house(),
+  TenkiIcons.factory(),
+  TenkiIcons.dungeon(),
+  TenkiIcons.bin(),
+  TenkiIcons.couch(),
+  TenkiIcons.box(),
+  TenkiIcons.box_open(),
+  TenkiIcons.biohazard(),
+  TenkiIcons.archive(),
+  TenkiIcons.chesss_rook(),
 ];
 
 class LocationIcons{
@@ -56,7 +56,7 @@ class LocationIcons{
       case 14:
         return TenkiIcons.archive(size:size, color: color);
       case 15:
-        return TenkiIcons.chess_rook(size:size, color: color);
+        return TenkiIcons.chesss_rook(size:size, color: color);
       case 16:
         return TenkiIcons.add(size: size, color: color);
       default:
