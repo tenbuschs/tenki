@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'storage_tab.dart' as storage_tab;
-import 'shopping-list_tab.dart' as shopping_list_tab;
-import 'recipe_tab.dart' as recipe_tab;
-import 'calender_tab.dart' as calender_tab;
+
+import 'main_page.dart' as main_page;
 
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
-import 'tenki_material/appbars.dart';
+
 
 
 class TenkiHomePage extends StatefulWidget {
@@ -43,7 +41,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                     style: TextStyle(
                       fontSize: 72,
                       color: TenkiColor5(),
-                    ),
+                      fontWeight: FontWeight.w300,                 ),
                   ),
                   SizedBox(height: 16),
                   Text(
@@ -52,6 +50,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                     style: TextStyle(
                       fontSize: 18,
                       color: TenkiColor5(),
+                      fontWeight: FontWeight.w300,
                     ),
                   ),
                 ],
@@ -88,7 +87,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  storage_tab.build(), // Use TwoColumnLocationView widget
+                                  main_page.TenkiMainPage(), // Use TwoColumnLocationView widget
                             ),);
                         },
                         child: Container(
@@ -97,6 +96,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             'Vorrat',
                             textAlign: TextAlign.center,
                             style: TextStyle(
+                              fontWeight: FontWeight.w300,
                               fontSize: 24,
                               color: TenkiColor5(),
                             ),
@@ -119,7 +119,8 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => recipe_tab.Recipe()),
+                              builder: (context) =>
+                              main_page.TenkiMainPage(initialIndex: 1)),
                           );
                         },
                         child: Container(
@@ -130,6 +131,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             style: TextStyle(
                               fontSize: 24,
                               color: TenkiColor5(),
+                              fontWeight: FontWeight.w300,
                             ),
                           ),
                         ),
@@ -151,7 +153,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    shopping_list_tab.ShoppingList()),
+                                    main_page.TenkiMainPage(initialIndex: 2)),
                           );
                         },
                         child: Container(
@@ -162,6 +164,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                             style: TextStyle(
                               fontSize: 24,
                               color: TenkiColor5(),
+                              fontWeight: FontWeight.w300,
                             ),
                           ),
                         ),
@@ -183,7 +186,8 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => calender_tab.Calender()),
+                                builder: (context) =>
+                                    main_page.TenkiMainPage(initialIndex: 3)),
                           );
                         },
                         child: Text(
@@ -192,6 +196,7 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                           style: TextStyle(
                             fontSize: 24,
                             color: TenkiColor5(),
+                            fontWeight: FontWeight.w300,
                           ),
                         ),
                       ),

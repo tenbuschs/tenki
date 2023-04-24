@@ -107,3 +107,5 @@ flutter:
          - asset: tenki_material/fonts/PontanoSans-Medium.ttf
          - asset: tenki_material/fonts/PontanoSans-Regular.ttf
          - asset: tenki_material/fonts/PontanoSans-SemiBold.ttf
+           weight: 300
+

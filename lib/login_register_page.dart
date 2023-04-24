@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tenki/auth.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'register_page.dart';
+import 'homepage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -11,6 +13,7 @@ class LoginPage extends StatefulWidget {
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
+
 class ForgotPasswordDialog extends StatefulWidget {
   const ForgotPasswordDialog({Key? key}) : super(key: key);
 
@@ -51,7 +54,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
           decoration: InputDecoration(
             labelText: 'E-Mail-Adresse',
             labelStyle: TextStyle(
-                color: TenkiColor1()
+              color: TenkiColor1(),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -60,8 +63,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
             ),
           ),
         ),
-          ),
-
+      ),
       actions: <Widget>[
         TextButton(
           child: Text(
@@ -117,7 +119,6 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   }
 }
 
-
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
@@ -133,6 +134,11 @@ class _LoginPageState extends State<LoginPage> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
+      if (userCredential.user != null) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => TenkiHomePage()),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
@@ -151,11 +157,33 @@ class _LoginPageState extends State<LoginPage> {
       // Add example data map for current user
       await dbInterface.addExampleDataMap();
       await dbInterface.addExampleLocationMap();
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => TenkiHomePage()),
+      );
     } on FirebaseAuthException catch (e) {
       setState(() {
         errorMessage = e.message;
       });
     }
+  }
+
+  Widget _loginButton() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.6,
+      child: ElevatedButton(
+        onPressed: signInWithEmailAndPassword,
+        child: Text(
+          'Login',
+          style: TextStyle(
+            color: Colors.white,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          primary: TenkiColor1(),
+          minimumSize: Size(double.infinity, 35),
+        ),
+      ),
+    );
   }
 
   Widget _title() {
@@ -229,17 +257,18 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _loginOrRegisterButton() {
+  Widget _registerButton() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.6,
-      child: TextButton(
+      child: ElevatedButton(
         onPressed: () {
-          setState(() {
-            isLogin = !isLogin;
-          });
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => RegisterPage()),
+          );
         },
         child: Text(
-          isLogin ? 'Registrieren' : 'Login',
+          'Registrieren',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -250,6 +279,10 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  Widget _loginOrRegisterButton() {
+    return isLogin ? _registerButton() : _loginButton();
   }
 
   Widget _forgotPasswordButton() {

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tenki/auth.dart';
 import 'tenki_material/appbars.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'login_register_page.dart';
 
 class LogoutPage extends StatelessWidget {
   LogoutPage({Key? key}) : super(key: key);
@@ -11,13 +12,17 @@ class LogoutPage extends StatelessWidget {
 
   Future<void> signOut(BuildContext context) async {
     await Auth().signOut();
-    Navigator.of(context).pop();
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+    );
   }
+
 
   Widget _confirmationMessage() {
     return Text(
       'Möchtest du dich mit der E-Mail: \n${user?.email} \nabmelden?',
-      style: TextStyle(fontSize: 20),
+      style: TextStyle(fontSize: 20, fontFamily: 'Pontana Sans'),
       textAlign: TextAlign.center,
     );
   }
@@ -31,6 +36,7 @@ class LogoutPage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         textStyle: TextStyle(
           fontSize: 20,
+            fontFamily: 'Pontana Sans',
           color: TenkiColor1(),
         ),
       ),
@@ -46,6 +52,7 @@ class LogoutPage extends StatelessWidget {
         side: BorderSide(color: TenkiColor4()),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         textStyle: TextStyle(
+          fontFamily: 'Pontana Sans',
           color: TenkiColor5(),
           fontSize: 20,
         ),

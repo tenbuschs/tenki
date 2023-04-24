@@ -36,25 +36,25 @@ class AppBars{
               return [
                 const PopupMenuItem<int>(
                   value: 0,
-                  child: Text("Mein TENKI"),
+                  child: Text("Mein TENKI", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
 
                 const PopupMenuItem<int>(
                   value: 1,
-                  child: Text("Einstellungen"),
+                  child: Text("Einstellungen", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
 
                 const PopupMenuItem<int>(
                   value: 2,
-                  child: Text("Über uns"),
+                  child: Text("Über uns", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
                 const PopupMenuItem<int>(
                   value: 3,
-                  child: Text("Feedback"),
+                  child: Text("Feedback", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
                 const PopupMenuItem<int>(
                   value: 4,
-                  child: Text("Logout"),
+                  child: Text("Logout", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
               ];
             },
