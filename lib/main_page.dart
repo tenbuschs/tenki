@@ -12,6 +12,10 @@ import 'tenki_material/appbars.dart';
 
 
 class TenkiMainPage extends StatefulWidget {
+  final int initialIndex; // add this line
+
+  const TenkiMainPage({Key? key, this.initialIndex = 0}) : super(key: key); // modify this line
+
   @override
   _TenkiMainPageState createState() => _TenkiMainPageState();
 }
@@ -25,11 +29,16 @@ class _TenkiMainPageState extends State<TenkiMainPage>
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabTitles.length, vsync: this);
+    _tabController = TabController(
+      length: _tabTitles.length,
+      vsync: this,
+      initialIndex: widget.initialIndex, // use the initialIndex parameter here
+    );
     _tabController.addListener(() {
       setState(() {});
     });
   }
+
 
   @override
   void dispose() {
