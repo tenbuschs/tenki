@@ -309,7 +309,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
+          backgroundColor: Colors.transparent,
           minimumSize: Size(double.infinity, 35),
         ),
       ),
