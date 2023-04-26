@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tenki/auth.dart';
+import 'package:tenki/verify.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
 import 'homepage.dart';
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
       );
       if (userCredential.user != null) {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => TenkiHomePage()),
+          MaterialPageRoute(builder: (context) => VerifyPage()),
         );
       }
     } on FirebaseAuthException catch (e) {
@@ -186,6 +186,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+
+
   Widget _title() {
     return Text(
       'TENKI Login',
@@ -195,7 +197,6 @@ class _LoginPageState extends State<LoginPage> {
       textAlign: TextAlign.center,
     );
   }
-/// To Do: Passwort ausblenden
 
   Widget _entryField(String title, TextEditingController controller,
       {bool isPassword = false}) {
@@ -286,6 +287,9 @@ class _LoginPageState extends State<LoginPage> {
     return isLogin ? _registerButton() : _loginButton();
   }
 
+
+  @override
+
   Widget _forgotPasswordButton() {
     return Container(
       width: MediaQuery.of(context).size.width * 0.6,
@@ -311,7 +315,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

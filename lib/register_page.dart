@@ -7,9 +7,9 @@ import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'homepage.dart';
 import 'login_register_page.dart';
-
+import 'package:tenki/household.dart';
+import 'package:tenki/verify.dart';
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -17,7 +17,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String? errorMessage = '';
-  bool _obscureText = true;
+  bool _obscureText = false;
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -79,6 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
       width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: () async {
+
           if (_formKey.currentState!.validate()) {
             if (_controllerEmail.text.isEmpty || _controllerPassword.text.isEmpty) {
               setState(() {
@@ -112,9 +113,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     actions: [
                       TextButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => LoginPage()),
+                            MaterialPageRoute(builder: (context) => VerifyPage()),
                           );
                         },
                         child: Text("OK"),
@@ -206,6 +206,7 @@ class _RegisterPageState extends State<RegisterPage> {
           }
           return null;
         },
+
       ),
     );
   }
@@ -240,11 +241,12 @@ class _RegisterPageState extends State<RegisterPage> {
             color: TenkiColor1(),
             fontSize: 16,
             decoration: TextDecoration.underline,
-          ),
+              ),
           textAlign: TextAlign.center,
-        ),
+            ),
       ),
     );
+
   }
 
   @override
@@ -296,6 +298,17 @@ class _RegisterPageState extends State<RegisterPage> {
                   _submitButton(),
                   _emptyField(),
                   _loginLink(),
+                  ElevatedButton(
+                      onPressed: (){
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => RandomNumberGenerator(),
+                            ),
+                          );
+                      },
+                      child: Text(
+                        "Haushalt beitreten"),
+                  ),
                 ],
               ),
             ),

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'tenki_material/appbars.dart';
 
@@ -20,5 +21,3 @@ class _MyTenkiState extends State<MyTenki> {
 
   }
 }
-
-

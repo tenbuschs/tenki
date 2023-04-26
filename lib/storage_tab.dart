@@ -7,9 +7,6 @@ import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
 import 'tenki_material/category_items.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-
 
 String currentLocation = '';
 
@@ -785,8 +782,8 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
           padding: const EdgeInsets.all(20.0),
           decoration: BoxDecoration(
             color: TenkiColor3(),
-            borderRadius: BorderRadius.circular(5.0),
-            border: Border.all(color: Colors.black54, width: 1),
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.black, width: 2),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
@@ -801,14 +798,13 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
             children: <Widget>[
               const Center(
                   child: Text(
-                "Neuer Lagerort:",
+                "Neuer Lagerort...",
                 style: TextStyle(
                   fontSize: 20,
                 ),
               )),
               const SizedBox(height: 15.0),
               Container(
-                height: 50,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -817,25 +813,18 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                   top: 9,
                   bottom: 9,
                 ),
-                child:
-                TextField(
+                child: TextField(
                   controller: newLocationController,
                   textAlign: TextAlign.center,
-                  decoration: InputDecoration(
-                  labelText: 'Name',
-                  labelStyle: TextStyle(color: TenkiColor1()),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: TenkiColor4(),
+                  cursorColor: Colors.grey,
+                  decoration: const InputDecoration(
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.grey),
                     ),
                   ),
-                ),
-                cursorColor: TenkiColor4(),
                   style: const TextStyle(
-                    fontSize: 20,),
-                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'[a-zA-ZÄÖÜäöüß ]')
-                    ),
-                  ],
+                    fontSize: 20,
+                  ),
                 ),
               ),
               const SizedBox(height: 25.0),
@@ -854,7 +843,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                       Widget iconData =
                           locationIcons[index]; // get the icon data
                       Color borderColor =
-                          _selected[index] ? Colors.black87 : TenkiColor4();
+                          _selected[index] ? Colors.red : Colors.transparent;
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -870,7 +859,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: borderColor,
-                                width: 1.5,
+                                width: 2,
                               ),
                               shape: BoxShape.circle,
                               color: Colors.white,

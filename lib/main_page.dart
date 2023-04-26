@@ -113,6 +113,3 @@ class _TenkiMainPageState extends State<TenkiMainPage>
     );
   }
 }
-
-
-
