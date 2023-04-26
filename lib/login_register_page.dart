@@ -7,6 +7,10 @@ import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
 import 'homepage.dart';
+import 'household.dart';
+import 'tenki_material/appbars.dart';
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -24,6 +28,8 @@ class ForgotPasswordDialog extends StatefulWidget {
 class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+
 
   @override
   void dispose() {
@@ -122,6 +128,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool _obscureText = true;
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -202,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
       {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           labelText: title,
@@ -212,12 +219,26 @@ class _LoginPageState extends State<LoginPage> {
               color: TenkiColor1(),
             ),
           ),
+          suffixIcon: isPassword
+              ? IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
+              : null,
         ),
         cursorColor: TenkiColor4(),
-        obscureText: isPassword,
+        obscureText: isPassword ? _obscureText : false,
       ),
     );
   }
+
 
   Widget _errormessage() {
     return Text(
@@ -266,7 +287,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RegisterPage()),
+            MaterialPageRoute(builder: (context) => Household()),
           );
         },
         child: Text(
@@ -315,13 +336,12 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-        backgroundColor: TenkiColor1(),
-      ),
+      appBar: AppBars.loginAppBar('TENKI Login', context),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery.of(context).size.height,
