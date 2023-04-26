@@ -132,6 +132,65 @@ class TenkiIcons {
     return _buildIcon('wine', size, color);
   }
 
+  static Widget door({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('door', size, color);
+  }
+
+  static Widget spider({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('spider', size, color);
+  }
+
+  static Widget igloo({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('igloo', size, color);
+  }
+
+  static Widget medical({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('medical', size, color);
+  }
+
+  static Widget house({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('house', size, color);
+  }
+
+  static Widget factory({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('factory', size, color);
+  }
+
+  static Widget dungeon({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('dungeon', size, color);
+  }
+
+  static Widget bin({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('bin', size, color);
+  }
+
+  static Widget couch({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('couch', size, color);
+  }
+
+  static Widget box({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('box', size, color);
+  }
+
+  static Widget box_open({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('box_open', size, color);
+  }
+
+  static Widget biohazard({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('biohazard', size, color);
+  }
+
+  static Widget archive({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('archive', size, color);
+  }
+
+  static Widget chesss_rook({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('chesss_rook', size, color);
+  }
+
+
+
+
   // method to build a icon
   static Widget _buildIcon(String iconName, double size, Color color) {
     return Center(

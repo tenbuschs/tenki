@@ -6,6 +6,7 @@ import 'package:tenki/profile_page.dart' as profile_page;
 import 'package:tenki/settings_page.dart' as settings_page;
 import 'package:tenki/about_tenki_page.dart' as about_tenki_page;
 import 'package:tenki/feedback_page.dart' as feedback_page;
+import 'package:tenki/homepage.dart' as homepage;
 
 
 class AppBars{
@@ -13,8 +14,15 @@ class AppBars{
   static AppBar mainAppBar(String title, BuildContext context){
 
     return AppBar(
-      leading: TenkiIcons.tenki(size: 38),
-      //TODO: Leading as button to welcome page
+      leading: GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+        );
+      },
+      child: TenkiIcons.tenki(size: 38),
+    ),
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,
@@ -28,25 +36,25 @@ class AppBars{
               return [
                 const PopupMenuItem<int>(
                   value: 0,
-                  child: Text("Mein TENKI"),
+                  child: Text("Mein TENKI", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
 
                 const PopupMenuItem<int>(
                   value: 1,
-                  child: Text("Einstellungen"),
+                  child: Text("Einstellungen", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
 
                 const PopupMenuItem<int>(
                   value: 2,
-                  child: Text("Logout"),
+                  child: Text("Über uns", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
                 const PopupMenuItem<int>(
                   value: 3,
-                  child: Text("About us"),
+                  child: Text("Feedback", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
                 const PopupMenuItem<int>(
                   value: 4,
-                  child: Text("Feedback"),
+                  child: Text("Logout", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
               ];
             },
@@ -56,27 +64,28 @@ class AppBars{
                   context,
                   MaterialPageRoute(builder: (context) => profile_page.MyTenki()),
                 );
-              }else if(value == 1){
+              } else if(value == 1){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => settings_page.Settings()),
                 );
-              }else if(value == 2){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
-                );
-              }else if(value==3){
+              } else if(value == 2){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => about_tenki_page.AboutTenki()),
                 );
-              }else if(value==4){
+              } else if(value == 3){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => feedback_page.Feedback()),
                 );
+              } else if(value == 4){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
+                );
               }
+
 
             }
         ),
@@ -102,7 +111,7 @@ class AppBars{
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black, size: 35),
+          icon: const Icon(Icons.close, color: Colors.black, size: 35),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -110,6 +119,24 @@ class AppBars{
       ],
     );
   }
+
+
+  static AppBar loginAppBar(String title, BuildContext context){
+
+    return AppBar(
+      leading: TenkiIcons.tenki(size: 38),
+      backgroundColor: TenkiColor2(),
+      //TODO: Leading as button to welcome page
+      title: Center(
+        child: Text(title,
+          style: const TextStyle(
+            color: Colors.black,
+          ),),
+      ),
+
+    );
+  }
+
 
 
 
