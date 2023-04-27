@@ -7,6 +7,10 @@ import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
 import 'homepage.dart';
+import 'household.dart';
+import 'tenki_material/appbars.dart';
+
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -24,6 +28,8 @@ class ForgotPasswordDialog extends StatefulWidget {
 class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+
 
   @override
   void dispose() {
@@ -122,6 +128,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
 class _LoginPageState extends State<LoginPage> {
   String? errorMessage = '';
   bool isLogin = true;
+  bool _obscureText = true;
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -135,9 +142,22 @@ class _LoginPageState extends State<LoginPage> {
         password: _controllerPassword.text,
       );
       if (userCredential.user != null) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => VerifyPage()),
-        );
+        if (userCredential.user!.emailVerified) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => TenkiHomePage()),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                'Bitte bestätige deine E-Mail-Adresse, wir haben dir eine Mail dazu geschickt.',
+              ),
+              duration: Duration(seconds: 5),
+            ),
+          );
+          // Send verification email again
+          userCredential.user!.sendEmailVerification();
+        }
       }
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -145,6 +165,7 @@ class _LoginPageState extends State<LoginPage> {
       });
     }
   }
+
 
   Future<void> createUserWithEmailAndPassword() async {
     try {
@@ -169,7 +190,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginButton() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.6,
       child: ElevatedButton(
         onPressed: signInWithEmailAndPassword,
         child: Text(
@@ -187,7 +211,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-
   Widget _title() {
     return Text(
       'TENKI Login',
@@ -202,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
       {bool isPassword = false}) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
           labelText: title,
@@ -212,16 +235,30 @@ class _LoginPageState extends State<LoginPage> {
               color: TenkiColor1(),
             ),
           ),
+          suffixIcon: isPassword
+              ? IconButton(
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
+              : null,
         ),
         cursorColor: TenkiColor4(),
-        obscureText: isPassword,
+        obscureText: isPassword ? _obscureText : false,
       ),
     );
   }
 
+
   Widget _errormessage() {
     return Text(
-        errorMessage == '' ? '' : 'Bitte E-Mail und Passwort eingeben!');
+        errorMessage == '' ? '' : 'Bitte überprüfe deine Eingaben!');
   }
 
   Widget _loginText() {
@@ -240,7 +277,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.6,
       child: ElevatedButton(
         onPressed: isLogin
             ? signInWithEmailAndPassword
@@ -261,12 +301,15 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _registerButton() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.6,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RegisterPage()),
+            MaterialPageRoute(builder: (context) => Household()),
           );
         },
         child: Text(
@@ -289,10 +332,12 @@ class _LoginPageState extends State<LoginPage> {
 
 
   @override
-
   Widget _forgotPasswordButton() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.6,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.6,
       child: TextButton(
         onPressed: () {
           showDialog(
@@ -315,38 +360,44 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-        backgroundColor: TenkiColor1(),
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
-              begin: Alignment.bottomCenter,
-              end: Alignment.topCenter,
-              tileMode: TileMode.clamp,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBars.loginAppBar('TENKI Login', context),
+        body: SingleChildScrollView(
+          child: Container(
+            height: MediaQuery
+                .of(context)
+                .size
+                .height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                tileMode: TileMode.clamp,
+              ),
             ),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _loginText(),
-                _entryField('E-Mail', _controllerEmail),
-                _entryField('Passwort', _controllerPassword, isPassword: true),
-                _errormessage(),
-                _submitButton(),
-                _loginOrRegisterButton(),
-                _forgotPasswordButton(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  _loginText(),
+                  _entryField('E-Mail', _controllerEmail),
+                  _entryField(
+                      'Passwort', _controllerPassword, isPassword: true),
+                  _errormessage(),
+                  _submitButton(),
+                  _loginOrRegisterButton(),
+                  _forgotPasswordButton(),
+                ],
+              ),
             ),
           ),
         ),
