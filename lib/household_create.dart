@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:tenki/household.dart';
 import 'package:tenki/login_register_page.dart';
 import 'package:tenki/register_page.dart';
 import 'login_register_page.dart';
 import 'tenki_material/appbars.dart';
 import 'tenki_material/tenki_colors.dart';
+import 'firestore_interface.dart';
+
 
 class HouseholdCreate extends StatelessWidget {
+
+  TextEditingController _controllerHouseholdName=TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +40,7 @@ class HouseholdCreate extends StatelessWidget {
               Container(
                 width: 300,
                 child: TextFormField(
+                  controller: _controllerHouseholdName,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Gib einen Namen für den Haushalt ein',
@@ -54,6 +61,10 @@ class HouseholdCreate extends StatelessWidget {
               SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
+                  //Todo Create household firebase
+                  HouseholdFunctions.prepareNewHousehold(_controllerHouseholdName.text);
+
+
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterPage()),

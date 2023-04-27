@@ -1,7 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'dart:math';
 
 String uid = FirebaseAuth.instance.currentUser!.uid;
+int hid = 0;
+String hname ="";
+
+class HouseholdFunctions{
+
+  static void prepareNewHousehold(String name){
+
+    Random random = new Random();
+    int min = 10000;
+    int max = 99999;
+    hid = min + random.nextInt(max - min);
+    hname = name;
+
+
+    print(hid);
+    print(hname);
+  }
+
+}
+
+
 
 class DatabaseInterface {
 
@@ -15,24 +37,6 @@ class DatabaseInterface {
     await storageMaps.doc(uid).set({
       'storageMap': {
         "items": [
-          {
-            "name": "Beispiel 1",
-            "location": "Beispiellager 1",
-            "unit": "Packung a 18 Stück",
-            "targetQuantity": 2,
-            "stockQuantity": 2,
-            "buyQuantity": 0,
-            "shoppingCategory": "Tiefkühl",
-          },
-          {
-            "name": "Beispiel 2",
-            "location": "Beispielort 2",
-            "unit": "kg",
-            "targetQuantity": 1,
-            "stockQuantity": 0,
-            "buyQuantity": 1,
-            "shoppingCategory": "Obst und Gemüse",
-          },
         ],
       },
     });
@@ -115,8 +119,6 @@ class DatabaseInterface {
 
 
 
-
-
 /*
 * Delets a location and all items, that are stored in it
 * */
@@ -171,8 +173,34 @@ class DatabaseInterface {
 
 
 
+//TOdo: Document mit user information
+
+  Future<void> addUserMap() async {
+    uid = FirebaseAuth.instance.currentUser!.uid;
+    CollectionReference userMaps =
+    FirebaseFirestore.instance.collection('userMaps');
+    await userMaps.doc(uid).set({
+      'userMap': {
+        "household_id": hid
+        //"first_name":,
+        //"last_name": ,
+      },
+    });
+
+    print(hid);
+  }
 
 
+  Future<void> addHouseholdMap() async {
+    CollectionReference householdMaps =
+    FirebaseFirestore.instance.collection('householdMaps');
+    await householdMaps.doc(hid.toString()).set({
+      'householdMap': {
+        "household_name": hname,
+        //"key_user"
+      },
+    });
+  }
 
 
 
