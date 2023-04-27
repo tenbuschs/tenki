@@ -122,22 +122,18 @@ class AppBars{
 
 
   static AppBar loginAppBar(String title, BuildContext context){
-
     return AppBar(
       leading: TenkiIcons.tenki(size: 38),
       backgroundColor: TenkiColor2(),
-      //TODO: Leading as button to welcome page
-      title: Center(
-        child: Text(title,
-          style: const TextStyle(
-            color: Colors.black,
-          ),),
+      centerTitle: true, // add this line to center the title text
+      title: Text(
+        title,
+        style: const TextStyle(
+          color: Colors.black,
+        ),
       ),
-
     );
   }
-
-
 
 
 }

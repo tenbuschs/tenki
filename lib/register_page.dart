@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tenki/auth.dart';
-import 'package:tenki/main_page.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
-import 'homepage.dart';
 import 'login_register_page.dart';
-import 'package:tenki/household.dart';
 import 'package:tenki/verify.dart';
+import 'tenki_material/appbars.dart';
+
+
 class RegisterPage extends StatefulWidget {
 
   @override
@@ -17,7 +17,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String? errorMessage = '';
-  bool _obscureText = false;
+  bool _obscureText = true;
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
@@ -44,7 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
         builder: (_) =>
             AlertDialog(
               title: Text("Erfolgreich registriert!"),
-              content: Text("Du kannst dich jetzt einloggen."),
+              content: Text("Bitte bestätige deine E-Mail Adresse kurz, wir haben dir eine Mail geschickt."),
               actions: [
                 TextButton(
                   onPressed: () {
@@ -52,7 +52,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       MaterialPageRoute(builder: (context) => LoginPage()),
                     );
                   },
-                  child: Text("OK"),
+                  child: Text("Weiter zum Login"),
                 ),
               ],
             ),
@@ -105,23 +105,59 @@ class _RegisterPageState extends State<RegisterPage> {
                 await dbInterface.addExampleDataMap();
                 await dbInterface.addExampleLocationMap();
                 // show success message
+                ///TO DO das sieht noch shit aus
                 showDialog(
                   context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text("Erfolgreich registriert!"),
-                    content: Text("Sie können sich jetzt einloggen."),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => VerifyPage()),
-                          );
-                        },
-                        child: Text("OK"),
+                  builder: (_) => Dialog(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(7.0),
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.all(16.0),
+                      decoration: BoxDecoration(
+                        color: Color(0xFFF9F7F1),
+                        borderRadius: BorderRadius.circular(7.0),
                       ),
-                    ],
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Erfolgreich registriert!",
+                            style: TextStyle(
+                              color: TenkiColor5(),
+                              fontSize: 20.0,
+                            ),
+                          ),
+                          SizedBox(height: 26.0),
+                          Text(
+                            "Bitte bestätige deine E-Mail Adresse kurz, wir haben dir eine Mail dazu geschickt.",
+                            style: TextStyle(
+                              color: TenkiColor5(),
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          SizedBox(height: 16.0),
+                          TextButton(
+                            onPressed: () {
+                              setState(() {
+                                Navigator.pop(context);
+                              });
+                              Navigator.of(context).pushReplacement( ///To Do: irgendwie muss sich dieses Fenster wieder schleißen!
+                                MaterialPageRoute(builder: (context) => LoginPage()),
+                              );
+                            },
+                            child: Text(
+                              "Weiter zum Login",
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                color: TenkiColor1(),
+                              ),
+                            ),
+                          )
+                          ,],
+                      ),
                   ),
-                );
+                ));
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'email-already-in-use') {
                   setState(() {
@@ -155,16 +191,12 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
         style: ElevatedButton.styleFrom(
-          primary: TenkiColor1(),
+          backgroundColor: TenkiColor1(),
           minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
   }
-
-
-
-
 
   Widget _emptyField() {
     return SizedBox(height: 15);
@@ -206,16 +238,13 @@ class _RegisterPageState extends State<RegisterPage> {
           }
           return null;
         },
-
       ),
     );
   }
 
-  /// TO DO: Icon Unsichtbar/Sichtbar
-
-  Widget _registerText() {
+    Widget _registerText() {
     return Text(
-      'Bitte gib deine Registrierungsdaten ein:',
+      'Bitte gib eine gültige Mailadresse an und wähle ein Passwort!',
       style: TextStyle(
         color: TenkiColor5(),
         fontSize: 16,
@@ -236,7 +265,7 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         },
         child: Text(
-          'Sie haben bereits ein Konto? Hier einloggen!',
+          'Du hast bereits ein Konto? Hier entlang!',
           style: TextStyle(
             color: TenkiColor1(),
             fontSize: 16,
@@ -246,16 +275,12 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
       ),
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: _title(),
-        backgroundColor: TenkiColor1(),
-      ),
+      appBar: AppBars.loginAppBar('Registrieren', context),
       body: SingleChildScrollView(
         child: Container(
           height: MediaQuery
@@ -279,6 +304,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   _registerText(),
+                  _emptyField(),
                   _entryField('E-Mail', _controllerEmail),
                   _entryField(
                       'Passwort', _controllerPassword, isPassword: true),
@@ -298,17 +324,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   _submitButton(),
                   _emptyField(),
                   _loginLink(),
-                  ElevatedButton(
-                      onPressed: (){
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => RandomNumberGenerator(),
-                            ),
-                          );
-                      },
-                      child: Text(
-                        "Haushalt beitreten"),
-                  ),
                 ],
               ),
             ),

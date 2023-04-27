@@ -7,16 +7,18 @@ import 'login_register_page.dart';
 
 class LogoutPage extends StatelessWidget {
   LogoutPage({Key? key}) : super(key: key);
-
   final User? user = Auth().currentUser;
 
   Future<void> signOut(BuildContext context) async {
     await Auth().signOut();
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
+          (route) => false,
     );
+
   }
+
 
 
   Widget _confirmationMessage() {
