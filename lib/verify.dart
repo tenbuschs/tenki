@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/main_page.dart';
+import 'package:tenki/login_register_page.dart';
 import 'package:tenki/register_page.dart';
-import 'package:tenki/household.dart';
+import 'firestore_interface.dart';
 
 class VerifyPage extends StatefulWidget {
   @override
@@ -68,9 +68,17 @@ class _VerifyPageState extends State<VerifyPage> {
 
     if (user!.emailVerified) {
       timer.cancel();
+      // Create database interface instance
+      DatabaseInterface dbInterface = DatabaseInterface();
+      // Add example data map for current user
+      dbInterface.addExampleDataMap();
+      dbInterface.addExampleLocationMap();
+      dbInterface.addUserMap();
+      dbInterface.addHouseholdMap();
+
 
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => RandomNumberGenerator()),
+        MaterialPageRoute(builder: (context) => LoginPage()),
       );
     }
   }
