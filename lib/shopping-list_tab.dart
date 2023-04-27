@@ -247,6 +247,12 @@ class _ShoppingListState extends State<ShoppingList> {
             TextEditingController buyQuantityController =
                 TextEditingController();
 
+
+
+
+
+
+
             // define the dialog content
             return AlertDialog(
               title: const Text('Extra Item'),
@@ -315,6 +321,13 @@ class _ShoppingListState extends State<ShoppingList> {
                 ),
               ],
             );
+
+
+
+
+
+
+
           },
         );
       },
