@@ -8,6 +8,7 @@ import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
 import 'tenki_material/category_items.dart';
 import 'tenki_material/units.dart';
+import 'tenki_material/category_items.dart';
 
 String currentLocation = '';
 
@@ -943,6 +944,8 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
   }
 }
 
+
+int selectedIconIndex=0;
 // Baut
 class PopupAddItem extends StatefulWidget {
   //const PopupAddItem({Key? key}) : super(key: key);
@@ -959,8 +962,8 @@ class _PopupAddItemState extends State<PopupAddItem> {
   TextEditingController nameController = TextEditingController();
   TextEditingController targetQuantityController = TextEditingController();
   TextEditingController stockQuantityController = TextEditingController();
-
   String? selectedUnit='-Bitte wählen-';
+
 
   @override
   void initState() {
@@ -1063,17 +1066,12 @@ class _PopupAddItemState extends State<PopupAddItem> {
           ),
           const SizedBox(height: 15),
           HorizontalSelection(
-            items: [
-              Icons.home,
-              Icons.search,
-              Icons.favorite,
-              Icons.shopping_cart,
-              Icons.settings,
-            ],
+            itemIcons: categoryItems,
             onSelect: (int index) {
-              print('Selected index: $index');
+                // NOP
             },
           ),
+
 
 
 
@@ -1083,7 +1081,11 @@ class _PopupAddItemState extends State<PopupAddItem> {
         IconButton(
           icon: const Icon(Icons.barcode_reader),
           onPressed: () {
-            // Todo: Replace
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                      return barcode_scan_page.BarcodeScanner();
+            });
           },
         ),
         IconButton(
@@ -1096,7 +1098,29 @@ class _PopupAddItemState extends State<PopupAddItem> {
         IconButton(
           icon: const Icon(Icons.check_circle, color: Colors.teal),
           onPressed: () async {
-            // Todo: Replace
+            // retrieve the values entered by the user
+            String name = nameController.text;
+            String? unit = selectedUnit;
+            double targetQuantity =
+                double.tryParse(targetQuantityController.text) ?? 0;
+            double stockQuantity = 0;
+            double buyQuantity = targetQuantity - stockQuantity;
+
+            // Create a new map object with the new entry details
+            Map<String, dynamic> newEntry = {
+              "name": name,
+              "location": widget.location,
+              "unit": unit,
+              "targetQuantity": targetQuantity,
+              "stockQuantity": stockQuantity,
+              "buyQuantity": buyQuantity,
+              "shoppingCategory": categories[selectedIconIndex],
+            };
+
+            // call function to add the new item
+            DatabaseInterface dbInterface = DatabaseInterface();
+            await dbInterface.addItemToStorageMap(newEntry);
+
 
             // Close AlertDialog
             Navigator.of(context).pop();
@@ -1112,94 +1136,6 @@ class _PopupAddItemState extends State<PopupAddItem> {
 
 
 
-
-
-
-
-
-    /*AlertDialog(
-      title: const Text('Neues Lebensmittel'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
-            ),
-          ),
-          TextField(
-            controller: unitController,
-            decoration: const InputDecoration(
-              labelText: 'Unit',
-            ),
-          ),
-          TextField(
-            controller: targetQuantityController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Target Quantity',
-            ),
-          ),
-        ],
-      ),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.barcode_reader),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return barcode_scan_page.BarcodeScanner();
-                });
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.cancel_outlined),
-          onPressed: () {
-            // CLose Alert with No Operation
-            Navigator.of(context).pop();
-          },
-        ),
-        IconButton(
-          icon: const Icon(Icons.check_circle, color: Colors.teal),
-          onPressed: () async {
-            // retrieve the values entered by the user
-            String name = nameController.text;
-            String unit = selectedUnit;
-            double targetQuantity =
-                double.tryParse(targetQuantityController.text) ?? 0;
-            double stockQuantity = 0;
-            double buyQuantity = targetQuantity - stockQuantity;
-
-            // Create a new map object with the new entry details
-            Map<String, dynamic> newEntry = {
-              "name": name,
-              "location": widget.location,
-              "unit": unit,
-              "targetQuantity": targetQuantity,
-              "stockQuantity": stockQuantity,
-              "buyQuantity": buyQuantity,
-              "shoppingCategory": "Sonstige",
-            };
-
-            // call function to add the new item
-            DatabaseInterface dbInterface = DatabaseInterface();
-            await dbInterface.addItemToStorageMap(newEntry);
-
-            // Close AlertDialog
-            Navigator.of(context).pop();
-          },
-        ),
-      ],
-    );*/
-
-
-
-
-
-
-
   }
 }
 
@@ -1207,58 +1143,62 @@ class _PopupAddItemState extends State<PopupAddItem> {
 
 
 
-
-
 class HorizontalSelection extends StatefulWidget {
-  final List<IconData> items; // updated parameter type
+  final List<Widget> itemIcons; // updated parameter type
   final Function(int) onSelect;
 
-  HorizontalSelection({required this.items, required this.onSelect});
+  HorizontalSelection({required this.itemIcons, required this.onSelect});
 
   @override
   _HorizontalSelectionState createState() => _HorizontalSelectionState();
 }
 
 class _HorizontalSelectionState extends State<HorizontalSelection> {
-  int selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      width:200,
-      height: 50,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: widget.items.length,
-        itemBuilder: (BuildContext context, int index) {
-          return GestureDetector(
-            onTap: () {
-              setState(() {
-                selectedIndex = index;
-                widget.onSelect(selectedIndex);
-              });
-            },
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(
-                    color: selectedIndex == index ? Colors.blue : Colors.transparent,
-                    width: 2,
+    return Column(
+      children: [
+        Container(
+          color: Colors.white,
+          width:200,
+          height: 50,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: widget.itemIcons.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIconIndex = index;
+                    widget.onSelect(selectedIconIndex);
+                  });
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: selectedIconIndex == index ? Colors.blue : Colors.transparent,
+                        width: 2,
+                      ),
+                    ),
                   ),
+                  child: widget.itemIcons[index],
+                  /*Icon(
+                    widget.itemIcons[index], // updated to use Icon widget
+                    color: selectedIconIndex == index ? Colors.blue : Colors.grey,
+                    size: 24,
+                  ),*/
                 ),
-              ),
-              child: Icon(
-                widget.items[index], // updated to use Icon widget
-                color: selectedIndex == index ? Colors.blue : Colors.grey,
-                size: 24,
-              ),
-            ),
-          );
-        },
-      ),
+              );
+            },
+          ),
+        ),
+        Text(categories[selectedIconIndex]),
+      ],
+
     );
   }
 }

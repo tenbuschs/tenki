@@ -24,7 +24,7 @@ List<String> categories = [
 
 List<Widget> categoryItems = [
   TenkiIcons.carot(size: 35, color: TenkiColor1()),           // Obst & Gemüse
-  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo Backwaren
+  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo: Backwaren
   TenkiIcons.cow(size: 35, color: TenkiColor1()),             // Milchprodukte
   TenkiIcons.fish(size: 35, color: TenkiColor1()),            // Fleisch und Fisch
   TenkiIcons.chili(size: 35, color: TenkiColor1()),           // Zutaten & Gewürze
