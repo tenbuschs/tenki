@@ -220,8 +220,22 @@ class DatabaseInterface {
 
 
 
-}// Ending class
 
+
+  static Future<void> addFeedback({
+    required String text,
+    required DateTime dateTime,
+  }) async {
+    final feedbackRef = FirebaseFirestore.instance.collection('feedback');
+    await feedbackRef.add({
+      'text': text,
+      'userId': uid,
+      'dateTime': dateTime.toIso8601String(),
+    });
+  }
+
+
+}// Ending class
 
 
 

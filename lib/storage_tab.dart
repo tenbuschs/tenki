@@ -319,6 +319,8 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                         ],
                       );
                     },
+
+
                   ),
                   _showOverlay
                       ? Center(
