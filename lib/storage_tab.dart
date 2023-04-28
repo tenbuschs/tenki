@@ -439,8 +439,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                           child: Text(
                             widget.location,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
+                              fontSize: 18.0,
                             ),
                           ),
                         ),
@@ -1096,7 +1095,7 @@ class _PopupAddItemState extends State<PopupAddItem> {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.check_circle, color: Colors.teal),
+          icon: Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
           onPressed: () async {
             // retrieve the values entered by the user
             String name = nameController.text;
@@ -1126,6 +1125,37 @@ class _PopupAddItemState extends State<PopupAddItem> {
             Navigator.of(context).pop();
           },
         ),
+
+
+        /*Container(
+          width: 30.0,
+          height: 30.0,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.grey, width: 0.5),
+            color: TenkiColor4(),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: const Offset(1, 3),
+              ),
+            ],
+          ),
+          child: Center(
+            child: IconButton(
+              icon: const Icon(Icons.add, size: 20),
+              onPressed: () {
+             //TODO
+              },
+            ),
+          ),
+        ),
+*/
+
+
+
       ],
       backgroundColor: TenkiColor3(),
       shape: RoundedRectangleBorder(
@@ -1144,62 +1174,103 @@ class _PopupAddItemState extends State<PopupAddItem> {
 
 
 class HorizontalSelection extends StatefulWidget {
-  final List<Widget> itemIcons; // updated parameter type
+  final List<Widget> itemIcons;
   final Function(int) onSelect;
+  final Key? key;
 
-  HorizontalSelection({required this.itemIcons, required this.onSelect});
+  const HorizontalSelection({
+    required this.itemIcons,
+    required this.onSelect,
+    this.key,
+  }) : super(key: key);
 
   @override
   _HorizontalSelectionState createState() => _HorizontalSelectionState();
 }
 
+
 class _HorizontalSelectionState extends State<HorizontalSelection> {
+  final ScrollController _scrollController = ScrollController();
+  int _selectedIconIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final index = (_scrollController.offset / 60).round();
+    if (index != _selectedIconIndex && index >= 0 && index < widget.itemIcons.length) {
+      setState(() {
+        _selectedIconIndex = index;
+        widget.onSelect(_selectedIconIndex);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Container(
-          color: Colors.white,
-          width:200,
-          height: 50,
+          width: 200,
+          height: 55,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            border: Border.all(color: Colors.grey, width: 1),
+            color: Colors.grey[200],
+          ),
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: widget.itemIcons.length,
+            controller: _scrollController,
+            itemCount: widget.itemIcons.length + 2,
             itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(
-                onTap: () {
-                  setState(() {
-                    selectedIconIndex = index;
-                    widget.onSelect(selectedIconIndex);
-                  });
-                },
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+              if (index == 0 || index == widget.itemIcons.length + 1) {
+                return const SizedBox(width: 70);
+              }
+              final itemIndex = index - 1;
+
+              if(categories[itemIndex]!="uncategorised") {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
                   alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(
-                        color: selectedIconIndex == index ? Colors.blue : Colors.transparent,
-                        width: 2,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _selectedIconIndex == itemIndex
+                          ? Colors.white
+                          : Colors.grey[350],
+                      border: Border.all(
+                        color: _selectedIconIndex == itemIndex
+                            ? TenkiColor1()
+                            : Colors.grey,
+                        width: _selectedIconIndex == itemIndex ? 3 : 0.5,
                       ),
                     ),
+                    child: widget.itemIcons[itemIndex],
                   ),
-                  child: widget.itemIcons[index],
-                  /*Icon(
-                    widget.itemIcons[index], // updated to use Icon widget
-                    color: selectedIconIndex == index ? Colors.blue : Colors.grey,
-                    size: 24,
-                  ),*/
-                ),
-              );
+                );
+              }
+              else{
+                return const SizedBox(width:0.1);
+              }
             },
           ),
         ),
-        Text(categories[selectedIconIndex]),
+        const SizedBox(height: 2),
+        Text(categories[_selectedIconIndex]),
       ],
-
     );
   }
 }
+
 
