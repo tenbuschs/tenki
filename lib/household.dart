@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'tenki_material/tenki_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/register_page.dart';
@@ -10,9 +9,11 @@ import 'package:flutter/services.dart';
 
 
 class Household extends StatelessWidget {
+  const Household({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Haushalt',
       home: RandomNumberGenerator(),
     );
@@ -20,12 +21,13 @@ class Household extends StatelessWidget {
 }
 
 class RandomNumberGenerator extends StatefulWidget {
+  const RandomNumberGenerator({Key? key}) : super(key: key);
+
   @override
-  _RandomNumberGeneratorState createState() => _RandomNumberGeneratorState();
+  State<RandomNumberGenerator> createState() => _RandomNumberGeneratorState();
 }
 
 class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
-  int _household = 0;
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
   bool _showErstellenButton = true;
@@ -50,7 +52,7 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
     return Scaffold(
       appBar: AppBars.loginAppBar('Haushalt', context),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
             begin: Alignment.bottomCenter,
@@ -70,10 +72,10 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                   fontSize: 18.0,
                 ),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Visibility(
                 visible: _showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
@@ -84,16 +86,14 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         ),
                       );
                     },
-                    child: Text('Haushalt erstellen'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor1(),
-
                     ),
+                    child: const Text('Haushalt erstellen'),
                   ),
                 ),
               ),
-
-              SizedBox(height: 7),
+              const SizedBox(height: 7),
               Visibility(
                 visible: _showBeitretenTextField,
                 child: Form(
@@ -121,10 +121,10 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         if (value!.isEmpty) {
                           return 'Bitte gib einen Haushaltscode ein';
                         }
-                        if (value?.length != 5) {
+                        if (value.length != 5) {
                           return 'Ein Haushaltscode muss 5 Stellen haben!';
                         }
-                        if (int.tryParse(value!) == null) {
+                        if (int.tryParse(value) == null) {
                           return 'Bitte gib einen gültigen Code ein';
                         }
                         return null;
@@ -135,22 +135,23 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
               ),
               Visibility(
                 visible: _showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
                       _toggleTextField();
                     },
-                    child: Text('Haushalt beitreten'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TenkiColor1(),)
+                      backgroundColor: TenkiColor1(),
+                    ),
+                    child: const Text('Haushalt beitreten'),
                   ),
                 ),
               ),
 
               Visibility(
                 visible: !_showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
                     onPressed: () {
@@ -163,30 +164,29 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         );
                       }
                     },
-                    child: Text('Beitreten'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor1(),
-                    )
+                    ),
+                    child: const Text('Beitreten'),
                   ),
                 ),
               ),
-              SizedBox(height: 5),
-
+              const SizedBox(height: 5),
               Visibility(
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
                     onPressed: () {Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => LoginPage(),
+                        builder: (context) => const LoginPage(),
                       ),
                     );
                     },
-                    child: Text('Abbrechen'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor4(),
                     ),
+                    child: const Text('Abbrechen'),
                   ),
                 ),
               ),
