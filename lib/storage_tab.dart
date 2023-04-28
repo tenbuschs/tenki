@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tenki/main_page.dart';
-import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'barcode_scan.dart' as barcode_scan_page;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_interface.dart';
@@ -8,7 +7,6 @@ import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
 import 'tenki_material/category_items.dart';
 import 'tenki_material/units.dart';
-import 'tenki_material/category_items.dart';
 
 String currentLocation = '';
 
@@ -16,10 +14,10 @@ class TwoColumnLocationView extends StatefulWidget {
   const TwoColumnLocationView({Key? key}) : super(key: key);
 
   @override
-  _TwoColumnLocationViewState createState() => _TwoColumnLocationViewState();
+  State<TwoColumnLocationView> createState() => _TwoColumnLocationViewState();
 }
 
-class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
+ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
   int selectedIndex = 0;
   //final PageController _pageControllerStorage = PageController();
 
@@ -341,14 +339,14 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
 
 // Baut den Inhalt der Lagerorte
 class StorageTabContent extends StatefulWidget {
-  String location = '';
-  StorageTabContent({this.location = ''});
+  final String location;
+  const StorageTabContent({Key key = const Key(''), this.location = ''}) : super(key: key);
 
   @override
-  _StorageTabContentState createState() => _StorageTabContentState();
+  StorageTabContentState createState() => StorageTabContentState();
 }
 
-class _StorageTabContentState extends State<StorageTabContent> {
+class StorageTabContentState extends State<StorageTabContent> {
   List<Map<String, dynamic>> _items = [];
 
   @override
@@ -411,7 +409,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TenkiMainPage()),
+                                  builder: (context) => const TenkiMainPage()),
                             );
                           },
                         ),
@@ -436,7 +434,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Center(
                           child: Text(
                             widget.location,
@@ -568,7 +566,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                                     ),
                                     child: Row(
                                       children: [
-                                        Container(
+                                        SizedBox(
                                           height: 160,
                                           child: Column(
                                             mainAxisAlignment:
@@ -801,10 +799,10 @@ Future<void> updateStockQuantity(
 class PopupAddLocation extends StatefulWidget {
   const PopupAddLocation({Key? key}) : super(key: key);
   @override
-  _PopupAddLocationState createState() => _PopupAddLocationState();
+  PopupAddLocationState createState() => PopupAddLocationState();
 }
 
-class _PopupAddLocationState extends State<PopupAddLocation> {
+class PopupAddLocationState extends State<PopupAddLocation> {
   final List<bool> _selected = List.generate(16, (index) => false);
   TextEditingController newLocationController = TextEditingController();
 
@@ -925,7 +923,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TenkiMainPage()),
+                                builder: (context) => const TenkiMainPage()),
                           );
                         },
                         child: Container(
@@ -989,14 +987,14 @@ int selectedIconIndex=0;
 class PopupAddItem extends StatefulWidget {
   //const PopupAddItem({Key? key}) : super(key: key);
 
-  String location = '';
-  PopupAddItem({this.location = ''});
+  final  String location;
+  const PopupAddItem({Key key = const Key(''), this.location = ''}) : super(key: key);
 
   @override
-  _PopupAddItemState createState() => _PopupAddItemState();
+  PopupAddItemState createState() => PopupAddItemState();
 }
 
-class _PopupAddItemState extends State<PopupAddItem> {
+class PopupAddItemState extends State<PopupAddItem> {
   // define text editing controllers for the input fields
   TextEditingController nameController = TextEditingController();
   TextEditingController targetQuantityController = TextEditingController();
@@ -1013,7 +1011,7 @@ class _PopupAddItemState extends State<PopupAddItem> {
   Widget build(BuildContext context) {
 
     return AlertDialog(
-      title: Center(child: const Text('Artikel hinzufügen')),
+      title: const Center(child: Text('Artikel hinzufügen')),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -1075,8 +1073,8 @@ class _PopupAddItemState extends State<PopupAddItem> {
               value: selectedUnit,
               items: unitList.map((option) {
                 return DropdownMenuItem(
-                  child: Text(option),
                   value: option,
+                  child: Text(option),
                 );
               }).toList(),
               onChanged: (value) {
@@ -1088,7 +1086,7 @@ class _PopupAddItemState extends State<PopupAddItem> {
                 labelText: 'Einheit',
                 labelStyle: TextStyle(color: Colors.grey[700]),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                   borderSide: BorderSide(color: TenkiColor1()),
                 ),
                 focusedBorder: UnderlineInputBorder(
@@ -1186,7 +1184,7 @@ class HorizontalSelection extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _HorizontalSelectionState createState() => _HorizontalSelectionState();
+  State<HorizontalSelection> createState() => _HorizontalSelectionState();
 }
 
 
