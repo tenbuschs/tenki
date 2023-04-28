@@ -717,7 +717,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                     );
                   } else {
                     // define the dialog content
-                    return PopupAddItem(location: widget.location);
+                    return const Center(child: Text("Leerer Lagerort. Bitte Items über '+' hinzufügen."));
                   }
                 } else {
                   return const Center(child: Text("UnexpectedError"));
