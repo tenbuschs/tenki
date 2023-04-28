@@ -62,22 +62,22 @@ class AppBars{
               if(value == 0){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => profile_page.MyTenki()),
+                  MaterialPageRoute(builder: (context) => const profile_page.MyTenki()),
                 );
               } else if(value == 1){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => settings_page.Settings()),
+                  MaterialPageRoute(builder: (context) => const settings_page.Settings()),
                 );
               } else if(value == 2){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => about_tenki_page.AboutTenki()),
+                  MaterialPageRoute(builder: (context) => const about_tenki_page.AboutTenki()),
                 );
               } else if(value == 3){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => feedback_page.Feedback()),
+                  MaterialPageRoute(builder: (context) => const feedback_page.Feedback()),
                 );
               } else if(value == 4){
                 Navigator.push(
