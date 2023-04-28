@@ -6,6 +6,7 @@ import 'package:tenki/tenki_material/tenki_colors.dart';
 import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'tenki_material/category_items.dart';
 import 'dart:ui'; // for image filter; blur
+import 'tenki_material/units.dart';
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
@@ -243,72 +244,118 @@ class _ShoppingListState extends State<ShoppingList> {
           builder: (BuildContext context) {
             // define text editing controllers for the input fields
             TextEditingController nameController = TextEditingController();
-            TextEditingController unitController = TextEditingController();
             TextEditingController buyQuantityController =
                 TextEditingController();
+            String? selectedUnit="-Bitte wählen-";
 
 
 
-
-
-
-
-            // define the dialog content
             return AlertDialog(
-              title: const Text('Extra Item'),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextField(
-                    controller: nameController,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
+              title: const Center(child: Text('Extra-Artikel hinzufügen')),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      controller: nameController,
+                      cursorColor: TenkiColor1(),
+                      decoration: InputDecoration(
+                        labelText: 'Name',
+                        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: unitController,
-                    decoration: const InputDecoration(
-                      labelText: 'Unit',
+                    const SizedBox(height: 25),
+                    TextField(
+                      controller: buyQuantityController,
+                      keyboardType: TextInputType.number,
+                      cursorColor: TenkiColor1(),
+                      decoration: InputDecoration(
+                        labelText: 'Einzukaufende Menge',
+                        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                      ),
                     ),
-                  ),
-                  TextField(
-                    controller: buyQuantityController,
-                    keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                      labelText: 'Buy Quantity',
+                    const SizedBox(height: 25),
+                    DropdownButtonFormField<String>(
+                      value: selectedUnit,
+                      items: unitList.map((option) {
+                        return DropdownMenuItem(
+                          value: option,
+                          child: Text(option),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedUnit = value;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Einheit',
+                        labelStyle: TextStyle(color: Colors.grey[700]),
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                          borderSide: BorderSide(color: TenkiColor1()),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+
+                      ),
+                      dropdownColor: TenkiColor2(),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 15),
+                   /* HorizontalSelection(
+                      itemIcons: categoryItems,
+                      onSelect: (int index) {
+                        // NOP
+                      },
+                    ),*/
+
+                  ],
+                ),
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: const Icon(Icons.cancel_outlined),
+                  icon: const Icon(Icons.cancel_outlined, size:30, color: Colors.grey),
                   onPressed: () {
-                    // CLose Alert with No Operation
+                    // Close Alert with No Operation
                     Navigator.of(context).pop();
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.check_circle, color: Colors.teal),
+                  icon: Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
                   onPressed: () async {
                     // retrieve the values entered by the user
                     String name = nameController.text;
-                    String unit = unitController.text;
-                    double buyQuantity =
-                        double.tryParse(buyQuantityController.text) ?? 0;
+                    String? unit = selectedUnit;
+                    double buyQuantity = double.tryParse(buyQuantityController.text)??0;
 
                     // Create a new map object with the new entry details
                     Map<String, dynamic> newEntry = {
                       "name": name,
-                      "location": "xtra_item",
+                      "location":  "xtra_item",
                       "unit": unit,
                       "targetQuantity": 0,
                       "stockQuantity": 0,
                       "buyQuantity": buyQuantity,
-                      "shoppingCategory": "Extras",
+                      "shoppingCategory": "Eigene Artikel",
                     };
 
-                    // call function to add a new Extra-item
+                    // call function to add the new item
                     DatabaseInterface dbInterface = DatabaseInterface();
                     await dbInterface.addItemToStorageMap(newEntry);
 
@@ -320,13 +367,12 @@ class _ShoppingListState extends State<ShoppingList> {
                   },
                 ),
               ],
+              backgroundColor: TenkiColor3(),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: const BorderSide(color: Colors.black, width: 1),
+              ),
             );
-
-
-
-
-
-
 
           },
         );
