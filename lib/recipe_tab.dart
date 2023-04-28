@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
-import 'firestore_interface.dart';
-import 'tenki_material/location_items.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class Recipe extends StatelessWidget {
+  const Recipe({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
             colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
             begin: Alignment.bottomCenter,
