@@ -84,6 +84,22 @@ class DatabaseInterface {
   }
 
 
+  Future<void> deleteItemByName(String itemName) async {
+    final uid = FirebaseAuth.instance.currentUser!.uid;
+    final storageMapRef =
+    FirebaseFirestore.instance.collection('storageMaps').doc(uid);
+    final storageMapDoc = await storageMapRef.get();
+
+    final storageMap = storageMapDoc.data()?['storageMap'] ?? {};
+    final items = storageMap['items'] ?? [];
+
+    final updatedItems = items.where((item) => item['name'] != itemName).toList();
+
+    final updatedStorageMapData = {
+      'storageMap': {'items': updatedItems}
+    };
+    await storageMapRef.update(updatedStorageMapData);
+  }
 
 
 

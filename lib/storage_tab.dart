@@ -508,207 +508,245 @@ class _StorageTabContentState extends State<StorageTabContent> {
                         itemCount: _items.length,
                         itemBuilder: (BuildContext context, int index) {
                           final item = _items[index];
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 8),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.5),
-                                    color: TenkiColor3(),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 2,
-                                        blurRadius: 3,
-                                        offset: const Offset(1, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 160,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(15),
-                                              height: 80,
-                                              width: 200,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      const Color(0xfff5f5f5),
-                                                ),
-                                                child: Text(
-                                                  item["name"],
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.all(15),
-                                              height: 80,
-                                              width: 200,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      const Color(0xfff5f5f5),
-                                                ),
-                                                child: Text(
-                                                  item["unit"],
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 160,
-                                        color: Colors.transparent,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              height: 80,
-                                              padding: const EdgeInsets.all(10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      width: 50,
-                                                      color: Colors.transparent,
-                                                      child: const Text(
-                                                        "Aktuell: ",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                  Container(
-                                                    width: 80,
-                                                    color: Colors.white,
-                                                    child: TextFormField(
-                                                      initialValue:
-                                                          item['stockQuantity']
-                                                              .toString(),
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onFieldSubmitted: (value) =>
-                                                          updateStockQuantity(
-                                                              value, item),
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        hintText: 'Bestand',
-                                                        border:
-                                                            InputBorder.none,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 80,
-                                              padding: const EdgeInsets.all(10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      width: 50,
-                                                      color: Colors.transparent,
-                                                      child: const Text(
-                                                        "Soll: ",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                  Container(
-                                                    width: 80,
-                                                    color: Colors.white,
-                                                    child: TextFormField(
-                                                      initialValue:
-                                                          item['targetQuantity']
-                                                              .toString(),
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onFieldSubmitted: (value) =>
-                                                          updateTargetQuantity(
-                                                              value, item),
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        hintText: 'Soll',
-                                                        border:
-                                                            InputBorder.none,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-
-                                      //Container for Shopping Category
-                                      Container(
-                                        height: 160,
-                                        width: 160,
-                                        color: TenkiColor3(),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white,
-                                                  border: Border.all(
-                                                      color: Colors.grey,
-                                                      width: 1)),
-                                              child: HelperCategoryItems
-                                                  .getCategoryWidget(
-                                                      item['shoppingCategory']
-                                                          .toString()),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(item['shoppingCategory']
-                                                .toString()),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      //Container for MHD
-                                      Container(
-                                        height: 160,
-                                        color: TenkiColor4(),
-                                        child: const Center(
-                                          child: Text(
-                                            'Hier steht iwan das MHD... ',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
+                          return GestureDetector(
+                            onLongPress: (){
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 120,
+                                    color: Colors.redAccent,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceAround,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(
+                                              Icons.delete,
                                               color: Colors.white,
-                                              fontSize: 24,
+                                              size: 35),
+                                          onPressed: () async {
+                                            DatabaseInterface  dbInterface =   DatabaseInterface();
+                                            await dbInterface.deleteItemByName(item["name"]);
+
+                                            //close ModalBottomSheet
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        Text(item["name"]+" dauerhaft löschen?",
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey, width: 0.5),
+                                      color: TenkiColor3(),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 3,
+                                          offset: const Offset(1, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          height: 160,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                padding: const EdgeInsets.all(15),
+                                                height: 80,
+                                                width: 200,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(10),
+                                                    color:
+                                                        const Color(0xfff5f5f5),
+                                                  ),
+                                                  child: Text(
+                                                    item["name"],
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding: const EdgeInsets.all(15),
+                                                height: 80,
+                                                width: 200,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(10),
+                                                    color:
+                                                        const Color(0xfff5f5f5),
+                                                  ),
+                                                  child: Text(
+                                                    item["unit"],
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 160,
+                                          color: Colors.transparent,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                height: 80,
+                                                padding: const EdgeInsets.all(10),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        color: Colors.transparent,
+                                                        child: const Text(
+                                                          "Aktuell: ",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                    Container(
+                                                      width: 80,
+                                                      color: Colors.white,
+                                                      child: TextFormField(
+                                                        initialValue:
+                                                            item['stockQuantity']
+                                                                .toString(),
+                                                        keyboardType:
+                                                            TextInputType.number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateStockQuantity(
+                                                                value, item),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText: 'Bestand',
+                                                          border:
+                                                              InputBorder.none,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 80,
+                                                padding: const EdgeInsets.all(10),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        color: Colors.transparent,
+                                                        child: const Text(
+                                                          "Soll: ",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                    Container(
+                                                      width: 80,
+                                                      color: Colors.white,
+                                                      child: TextFormField(
+                                                        initialValue:
+                                                            item['targetQuantity']
+                                                                .toString(),
+                                                        keyboardType:
+                                                            TextInputType.number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateTargetQuantity(
+                                                                value, item),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText: 'Soll',
+                                                          border:
+                                                              InputBorder.none,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+
+                                        //Container for Shopping Category
+                                        Container(
+                                          height: 160,
+                                          width: 160,
+                                          color: TenkiColor3(),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white,
+                                                    border: Border.all(
+                                                        color: Colors.grey,
+                                                        width: 1)),
+                                                child: HelperCategoryItems
+                                                    .getCategoryWidget(
+                                                        item['shoppingCategory']
+                                                            .toString()),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(item['shoppingCategory']
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        //Container for MHD
+                                        Container(
+                                          height: 160,
+                                          color: TenkiColor4(),
+                                          child: const Center(
+                                            child: Text(
+                                              'Hier steht iwan das MHD... ',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
