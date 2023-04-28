@@ -149,60 +149,76 @@ class _ShoppingListState extends State<ShoppingList> {
                                   itemBuilder:
                                       (BuildContext context, int index) {
                                     final item = items[index];
+                                    final checkValue = isChecked.firstWhere(
+                                      (itemList) =>
+                                          itemList["name"] == item['name'],
+                                      orElse: () => {},
+                                    )["isChecked"];
 
-                                    return Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: TenkiColor1(),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          border: Border.all(
-                                              color: Colors.grey.shade300),
-                                        ),
-                                        child: CheckboxListTile(
-                                          title: Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 4,
-                                                child: Text(item['name']),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(item['buyQuantity']
-                                                    .toString()),
-                                              ),
-                                              Expanded(
-                                                flex: 2,
-                                                child: Text(item['unit']),
-                                              ),
-                                            ],
+                                    if (checkValue != null) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: TenkiColor1(),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color: Colors.grey.shade300),
                                           ),
-                                          value: isChecked.firstWhere(
-                                            (itemList) =>
-                                                itemList["name"] ==
-                                                item['name'],
-                                          )["isChecked"],
-                                          onChanged: (bool? value) async {
-                                            if (value == true) {
-                                              DatabaseInterface dbInterface =
-                                                  DatabaseInterface();
-                                              await dbInterface
-                                                  .updateItemByName(
-                                                      item["name"], {
-                                                'stockQuantity':
-                                                    item['stockQuantity'] +
-                                                        item['buyQuantity'],
-                                                'buyQuantity': 0
-                                              });
-                                            }
+                                          child: CheckboxListTile(
+                                            title: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 4,
+                                                  child: Text(item['name']),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(
+                                                      item['buyQuantity']
+                                                          .toString()),
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: Text(item['unit']),
+                                                ),
+                                              ],
+                                            ),
+                                            value: checkValue,
+                                            onChanged: (bool? value) async {
+                                              if (value == true) {
+                                                DatabaseInterface dbInterface =
+                                                    DatabaseInterface();
 
-                                            //refresh view
-                                            setState(() {});
-                                          },
+                                                //update quantities
+                                                if (item["location"] !=
+                                                    "xtra_item") {
+                                                  await dbInterface
+                                                      .updateItemByName(
+                                                          item["name"], {
+                                                    'stockQuantity':
+                                                        item['stockQuantity'] +
+                                                            item['buyQuantity'],
+                                                    'buyQuantity': 0
+                                                  });
+                                                }
+                                                // xtra item? --> delet from DB
+                                                else {
+                                                  await dbInterface
+                                                      .deleteItemByName(
+                                                          item["name"]);
+                                                }
+                                              }
+                                              //refresh view
+                                              setState(() {});
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                    );
+                                      );
+                                    } else {
+                                      return const Text("Item not found");
+                                    }
                                   },
                                 ),
                               ),
@@ -246,9 +262,7 @@ class _ShoppingListState extends State<ShoppingList> {
             TextEditingController nameController = TextEditingController();
             TextEditingController buyQuantityController =
                 TextEditingController();
-            String? selectedUnit="-Bitte wählen-";
-
-
+            String? selectedUnit = "-Bitte wählen-";
 
             return AlertDialog(
               title: const Center(child: Text('Extra-Artikel hinzufügen')),
@@ -261,13 +275,16 @@ class _ShoppingListState extends State<ShoppingList> {
                       cursorColor: TenkiColor1(),
                       decoration: InputDecoration(
                         labelText: 'Name',
-                        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                        labelStyle:
+                            TextStyle(color: Colors.grey[700], fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                          borderSide:
+                              BorderSide(color: TenkiColor1(), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
                       ),
                     ),
                     const SizedBox(height: 25),
@@ -277,13 +294,16 @@ class _ShoppingListState extends State<ShoppingList> {
                       cursorColor: TenkiColor1(),
                       decoration: InputDecoration(
                         labelText: 'Einzukaufende Menge',
-                        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                        labelStyle:
+                            TextStyle(color: Colors.grey[700], fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                          borderSide:
+                              BorderSide(color: TenkiColor1(), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
                       ),
                     ),
                     const SizedBox(height: 25),
@@ -304,50 +324,54 @@ class _ShoppingListState extends State<ShoppingList> {
                         labelText: 'Einheit',
                         labelStyle: TextStyle(color: Colors.grey[700]),
                         border: OutlineInputBorder(
-                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(8.0)),
                           borderSide: BorderSide(color: TenkiColor1()),
                         ),
                         focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                          borderSide:
+                              BorderSide(color: TenkiColor1(), width: 2),
                         ),
                         filled: true,
                         fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-
+                        contentPadding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 5),
                       ),
                       dropdownColor: TenkiColor2(),
                     ),
                     const SizedBox(height: 15),
-                   /* HorizontalSelection(
+                    /* HorizontalSelection(
                       itemIcons: categoryItems,
                       onSelect: (int index) {
                         // NOP
                       },
                     ),*/
-
                   ],
                 ),
               ),
               actions: <Widget>[
                 IconButton(
-                  icon: const Icon(Icons.cancel_outlined, size:30, color: Colors.grey),
+                  icon: const Icon(Icons.cancel_outlined,
+                      size: 30, color: Colors.grey),
                   onPressed: () {
                     // Close Alert with No Operation
                     Navigator.of(context).pop();
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
+                  icon:
+                      Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
                   onPressed: () async {
                     // retrieve the values entered by the user
                     String name = nameController.text;
                     String? unit = selectedUnit;
-                    double buyQuantity = double.tryParse(buyQuantityController.text)??0;
+                    double buyQuantity =
+                        double.tryParse(buyQuantityController.text) ?? 0;
 
                     // Create a new map object with the new entry details
                     Map<String, dynamic> newEntry = {
                       "name": name,
-                      "location":  "xtra_item",
+                      "location": "xtra_item",
                       "unit": unit,
                       "targetQuantity": 0,
                       "stockQuantity": 0,
@@ -373,7 +397,6 @@ class _ShoppingListState extends State<ShoppingList> {
                 side: const BorderSide(color: Colors.black, width: 1),
               ),
             );
-
           },
         );
       },
