@@ -17,22 +17,49 @@ class _FeedbackState extends State<Feedback> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBars.dropdownAppBar("Feedback", context),
-      body: Padding(
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
+              begin: Alignment.bottomCenter,
+              end: Alignment.topCenter,
+              tileMode: TileMode.clamp),
+        ),
         padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextField(
-              controller: _textController,
-              maxLines: 5,
-              maxLength: 500,
-              decoration: const InputDecoration(
-                hintText: 'Gebe hier deine Tipps, Hinweise, Verbesserungen, ... ein!',
+            Container(
+              decoration: BoxDecoration(
+                color: TenkiColor3(),
+                border: Border.all(color: Colors.grey)
               ),
+              padding: const EdgeInsets.all(15),
+              child: TextField(
+                controller: _textController,
+                maxLines: 5,
+                maxLength: 500,
+                cursorColor: TenkiColor1(),
+                decoration: InputDecoration(
+                  hintText: 'Gebe hier deine Tipps, Hinweise, Verbesserungen, ... ein!',
+                  focusedBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                ),
+              ),
+            ),
             ),
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () => onSubmit(),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: TenkiColor1(),
+                padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  fontFamily: 'Pontana Sans',
+                  color: TenkiColor1(),
+                ),
+              ),
               child: const Text('Feedback übermitteln'),
             ),
           ],
