@@ -143,12 +143,24 @@ class _LoginPageState extends State<LoginPage> {
       );
       if (userCredential.user != null) {
         if (userCredential.user!.emailVerified) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => TenkiHomePage()),
-          );
+
+          DatabaseInterface dbInterface = DatabaseInterface();
+          if(await dbInterface.doesUserMapExist(uid)) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => TenkiHomePage()),
+            );
+          }
+          else{
+            //create or join household
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => RandomNumberGenerator()),
+            );
+          }
+
+
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text(
                 'Bitte bestätige deine E-Mail-Adresse, wir haben dir eine Mail dazu geschickt.',
               ),
@@ -196,15 +208,15 @@ class _LoginPageState extends State<LoginPage> {
           .width * 0.6,
       child: ElevatedButton(
         onPressed: signInWithEmailAndPassword,
-        child: Text(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor1(),
+          minimumSize: Size(double.infinity, 35),
+        ),
+        child: const Text(
           'Login',
           style: TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
@@ -265,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(
-        'Bitte log dich mit deinen TENKI Daten ein. \n\nWenn du neu bei TENKI bist klick einfach auf Registrieren.\n',
+        'Bitte log dich mit deinen TENKI Daten ein. \n\nWenn du neu bei TENKI bist klick einfach auf "Registrieren".\n',
         style: TextStyle(
           color: TenkiColor5(),
           fontSize: 16,
@@ -309,18 +321,18 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Household()),
+            MaterialPageRoute(builder: (context) => RegisterPage()),
           );
         },
-        child: Text(
+        style: ElevatedButton.styleFrom(
+          primary: TenkiColor2(),
+          minimumSize: Size(double.infinity, 35),
+        ),
+        child: const Text(
           'Registrieren',
           style: TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor2(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
@@ -343,19 +355,19 @@ class _LoginPageState extends State<LoginPage> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return ForgotPasswordDialog();
+              return const ForgotPasswordDialog();
             },
           );
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          minimumSize: const Size(double.infinity, 35),
+        ),
         child: Text(
-          'Passwort vergessen',
+          'Passwort vergessen?',
           style: TextStyle(
             color: TenkiColor1(),
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent,
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
@@ -374,7 +386,7 @@ class _LoginPageState extends State<LoginPage> {
                 .of(context)
                 .size
                 .height,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
                 begin: Alignment.bottomCenter,

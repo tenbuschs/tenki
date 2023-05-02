@@ -3,27 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math';
 
 String uid = FirebaseAuth.instance.currentUser!.uid;
-int hid = 0;
-String hname ="";
-
-class HouseholdFunctions{
-
-  static void prepareNewHousehold(String name){
-
-    Random random = new Random();
-    int min = 10000;
-    int max = 99999;
-    hid = min + random.nextInt(max - min);
-    hname = name;
-
-
-    print(hid);
-    print(hname);
-  }
-
-}
-
-
 
 class DatabaseInterface {
 
@@ -188,10 +167,23 @@ class DatabaseInterface {
 
 
 
+  Future<void> addHouseholdMap(String hName) async {
+    // store household map
+    CollectionReference householdMaps =
+    FirebaseFirestore.instance.collection('householdMaps');
+    DocumentReference docRef = await householdMaps.add({
+      'householdMap': {
+        "household_name": hName,
+        "key_user": uid,
+      },
+    });
+   // print('Document added with ID: ${docRef.id}');
 
-//TOdo: Document mit user information
+    //add household id to userMap
+    await addUserMap(docRef.id);
+  }
 
-  Future<void> addUserMap() async {
+  static Future<void> addUserMap(String hid) async {
     uid = FirebaseAuth.instance.currentUser!.uid;
     CollectionReference userMaps =
     FirebaseFirestore.instance.collection('userMaps');
@@ -202,21 +194,21 @@ class DatabaseInterface {
         //"last_name": ,
       },
     });
+  }
 
-    print(hid);
+  Future<bool> doesUserMapExist(String userId) async {
+    CollectionReference userMaps = FirebaseFirestore.instance.collection('userMaps');
+    QuerySnapshot<Object?> snapshot = await userMaps.where('userId', isEqualTo: userId).get();
+    return snapshot.docs.isNotEmpty;
   }
 
 
-  Future<void> addHouseholdMap() async {
-    CollectionReference householdMaps =
-    FirebaseFirestore.instance.collection('householdMaps');
-    await householdMaps.doc(hid.toString()).set({
-      'householdMap': {
-        "household_name": hname,
-        //"key_user"
-      },
-    });
+  //Todo: joinHousehold
+  Future<void> joinHousehold(String hid) async {
+
   }
+
+
 
 
 

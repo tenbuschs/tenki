@@ -1,3 +1,5 @@
+import 'package:tenki/main_page.dart';
+
 import 'tenki_material/tenki_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:tenki/register_page.dart';
@@ -159,7 +161,7 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
+                            builder: (context) => TenkiMainPage(),
                           ),
                         );
                       }

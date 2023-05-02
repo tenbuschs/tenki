@@ -73,8 +73,6 @@ class _VerifyPageState extends State<VerifyPage> {
       // Add example data map for current user
       dbInterface.addExampleDataMap();
       dbInterface.addExampleLocationMap();
-      dbInterface.addUserMap();
-      dbInterface.addHouseholdMap();
 
 
       Navigator.of(context).pushReplacement(

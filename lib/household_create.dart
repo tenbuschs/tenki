@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tenki/homepage.dart';
 import 'package:tenki/household.dart';
 import 'package:tenki/login_register_page.dart';
 import 'package:tenki/register_page.dart';
@@ -60,14 +61,15 @@ class HouseholdCreate extends StatelessWidget {
 
               SizedBox(height: 15),
               ElevatedButton(
-                onPressed: () {
-                  //Todo Create household firebase
-                  HouseholdFunctions.prepareNewHousehold(_controllerHouseholdName.text);
+                onPressed: () async {
+
+                  DatabaseInterface dbInterface = DatabaseInterface();
+                  await dbInterface.addHouseholdMap(_controllerHouseholdName.text);
 
 
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => RegisterPage()),
+                    MaterialPageRoute(builder: (context) => TenkiHomePage()),
                   );
                 },
                 child: Text('Erstellen'),
