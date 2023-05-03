@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tenki/auth.dart';
-import 'package:tenki/verify.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
@@ -83,12 +82,6 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
           },
         ),
         ElevatedButton(
-          child: Text(
-            'Link senden',
-            style: TextStyle(
-              color: TenkiColor5(),
-            ),
-          ),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               try {
@@ -101,12 +94,12 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
                     content: Text(
                       'Eine E-Mail zum Zurücksetzen des Passworts wurde an ${_emailController.text} gesendet.',
                     ),
-                    duration: Duration(seconds: 5),
+                    duration: const Duration(seconds: 5),
                   ),
                 );
               } on FirebaseAuthException catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text(
                       'Bitte gib eine gültige E-Mail Adresse an!',
                     ),
@@ -117,7 +110,13 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
             }
           },
           style: ElevatedButton.styleFrom(
-            primary: TenkiColor1(),
+            backgroundColor: TenkiColor1(),
+          ),
+          child: Text(
+            'Link senden',
+            style: TextStyle(
+              color: TenkiColor5(),
+            ),
           ),
         ),
       ],
@@ -132,7 +131,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void signInWithEmailAndPassword() async {
@@ -153,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
           else{
             //create or join household
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => RandomNumberGenerator()),
+              MaterialPageRoute(builder: (context) => const RandomNumberGenerator()),
             );
           }
 
@@ -201,7 +199,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery
           .of(context)
           .size
@@ -210,7 +208,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: signInWithEmailAndPassword,
         style: ElevatedButton.styleFrom(
           backgroundColor: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
+          minimumSize: const Size(double.infinity, 35),
         ),
         child: const Text(
           'Login',
@@ -222,16 +220,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
-  Widget _title() {
-    return Text(
-      'TENKI Login',
-      style: TextStyle(
-        color: TenkiColor5(),
-      ),
-      textAlign: TextAlign.center,
-    );
-  }
 
   Widget _entryField(String title, TextEditingController controller,
       {bool isPassword = false}) {
@@ -288,7 +276,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _submitButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery
           .of(context)
           .size
@@ -297,22 +285,22 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: isLogin
             ? signInWithEmailAndPassword
             : createUserWithEmailAndPassword,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor1(),
+          minimumSize: const Size(double.infinity, 35),
+        ),
         child: Text(
           isLogin ? 'Login' : 'Registrieren',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
   }
 
   Widget _registerButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery
           .of(context)
           .size
@@ -325,8 +313,8 @@ class _LoginPageState extends State<LoginPage> {
           );
         },
         style: ElevatedButton.styleFrom(
-          primary: TenkiColor2(),
-          minimumSize: Size(double.infinity, 35),
+          backgroundColor: TenkiColor2(),
+          minimumSize: const Size(double.infinity, 35),
         ),
         child: const Text(
           'Registrieren',
@@ -343,9 +331,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
 
-  @override
   Widget _forgotPasswordButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery
           .of(context)
           .size
