@@ -1,12 +1,9 @@
 import 'package:tenki/main_page.dart';
-
 import 'tenki_material/tenki_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:tenki/register_page.dart';
 import 'tenki_material/appbars.dart';
 import 'package:tenki/login_register_page.dart';
 import 'household_create.dart';
-import 'package:flutter/services.dart';
 import 'firestore_interface.dart';
 
 class Household extends StatelessWidget {
@@ -121,9 +118,6 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         if (value!.isEmpty) {
                           return 'Bitte gib einen Haushaltscode ein';
                         }
-                        /*if (value.length != 5) {
-                          return 'Ein Haushaltscode muss 5 Stellen haben!';
-                        }*/
                         if (int.tryParse(value) == null) {
                           return 'Bitte gib einen gültigen Code ein';
                         }
