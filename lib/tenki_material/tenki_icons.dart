@@ -49,7 +49,7 @@ class TenkiIcons {
   }
 
   static Widget firstAid({double size = 24, Color color = Colors.black}) {
-    return _buildIcon('first_aid', size, color);
+    return _buildIcon('firstAid', size, color);
   }
 
   static Widget fish({double size = 24, Color color = Colors.black}) {

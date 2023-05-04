@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tenki/auth.dart';
-import 'package:tenki/verify.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
 import 'homepage.dart';
 import 'household.dart';
 import 'tenki_material/appbars.dart';
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -28,8 +26,6 @@ class ForgotPasswordDialog extends StatefulWidget {
 class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-
 
   @override
   void dispose() {
@@ -83,12 +79,6 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
           },
         ),
         ElevatedButton(
-          child: Text(
-            'Link senden',
-            style: TextStyle(
-              color: TenkiColor5(),
-            ),
-          ),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               try {
@@ -101,12 +91,12 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
                     content: Text(
                       'Eine E-Mail zum Zurücksetzen des Passworts wurde an ${_emailController.text} gesendet.',
                     ),
-                    duration: Duration(seconds: 5),
+                    duration: const Duration(seconds: 5),
                   ),
                 );
               } on FirebaseAuthException catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text(
                       'Bitte gib eine gültige E-Mail Adresse an!',
                     ),
@@ -117,7 +107,13 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
             }
           },
           style: ElevatedButton.styleFrom(
-            primary: TenkiColor1(),
+            backgroundColor: TenkiColor1(),
+          ),
+          child: Text(
+            'Link senden',
+            style: TextStyle(
+              color: TenkiColor5(),
+            ),
           ),
         ),
       ],
@@ -132,7 +128,6 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   void signInWithEmailAndPassword() async {
@@ -143,12 +138,23 @@ class _LoginPageState extends State<LoginPage> {
       );
       if (userCredential.user != null) {
         if (userCredential.user!.emailVerified) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => TenkiHomePage()),
-          );
+          DatabaseInterface dbInterface = DatabaseInterface();
+
+          print(await dbInterface.doesUserMapExist());
+          if (await dbInterface.doesUserMapExist()) {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => TenkiHomePage()),
+            );
+          } else {
+            //create or join household
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const RandomNumberGenerator()),
+            );
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text(
                 'Bitte bestätige deine E-Mail-Adresse, wir haben dir eine Mail dazu geschickt.',
               ),
@@ -166,18 +172,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      // Create database interface instance
-      DatabaseInterface dbInterface = DatabaseInterface();
-      // Add example data map for current user
-      await dbInterface.addExampleDataMap();
-      await dbInterface.addExampleLocationMap();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => TenkiHomePage()),
       );
@@ -189,35 +189,21 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _loginButton() {
-    return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: signInWithEmailAndPassword,
-        child: Text(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor1(),
+          minimumSize: const Size(double.infinity, 35),
+        ),
+        child: const Text(
           'Login',
           style: TextStyle(
             color: Colors.white,
           ),
         ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
-        ),
       ),
-    );
-  }
-
-
-  Widget _title() {
-    return Text(
-      'TENKI Login',
-      style: TextStyle(
-        color: TenkiColor5(),
-      ),
-      textAlign: TextAlign.center,
     );
   }
 
@@ -237,16 +223,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
           suffixIcon: isPassword
               ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey,
-            ),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                )
               : null,
         ),
         cursorColor: TenkiColor4(),
@@ -255,17 +241,15 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   Widget _errormessage() {
-    return Text(
-        errorMessage == '' ? '' : 'Bitte überprüfe deine Eingaben!');
+    return Text(errorMessage == '' ? '' : 'Bitte überprüfe deine Eingaben!');
   }
 
   Widget _loginText() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(
-        'Bitte log dich mit deinen TENKI Daten ein. \n\nWenn du neu bei TENKI bist klick einfach auf Registrieren.\n',
+        'Bitte log dich mit deinen TENKI Daten ein. \n\nWenn du neu bei TENKI bist klick einfach auf "Registrieren".\n',
         style: TextStyle(
           color: TenkiColor5(),
           fontSize: 16,
@@ -276,51 +260,45 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: isLogin
             ? signInWithEmailAndPassword
             : createUserWithEmailAndPassword,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor1(),
+          minimumSize: const Size(double.infinity, 35),
+        ),
         child: Text(
           isLogin ? 'Login' : 'Registrieren',
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
   }
 
   Widget _registerButton() {
-    return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Household()),
+            MaterialPageRoute(builder: (context) => RegisterPage()),
           );
         },
-        child: Text(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor2(),
+          minimumSize: const Size(double.infinity, 35),
+        ),
+        child: const Text(
           'Registrieren',
           style: TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          primary: TenkiColor2(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
@@ -330,37 +308,31 @@ class _LoginPageState extends State<LoginPage> {
     return isLogin ? _registerButton() : _loginButton();
   }
 
-
-  @override
   Widget _forgotPasswordButton() {
-    return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.6,
       child: TextButton(
         onPressed: () {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return ForgotPasswordDialog();
+              return const ForgotPasswordDialog();
             },
           );
         },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.transparent,
+          minimumSize: const Size(double.infinity, 35),
+        ),
         child: Text(
-          'Passwort vergessen',
+          'Passwort vergessen?',
           style: TextStyle(
             color: TenkiColor1(),
           ),
         ),
-        style: ElevatedButton.styleFrom(
-          primary: Colors.transparent,
-          minimumSize: Size(double.infinity, 35),
-        ),
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -370,11 +342,8 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBars.loginAppBar('TENKI Login', context),
         body: SingleChildScrollView(
           child: Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
-            decoration: BoxDecoration(
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
                 begin: Alignment.bottomCenter,
@@ -390,8 +359,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   _loginText(),
                   _entryField('E-Mail', _controllerEmail),
-                  _entryField(
-                      'Passwort', _controllerPassword, isPassword: true),
+                  _entryField('Passwort', _controllerPassword,
+                      isPassword: true),
                   _errormessage(),
                   _submitButton(),
                   _loginOrRegisterButton(),

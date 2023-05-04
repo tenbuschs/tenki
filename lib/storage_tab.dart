@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tenki/main_page.dart';
-import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'barcode_scan.dart' as barcode_scan_page;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/location_items.dart';
 import 'tenki_material/category_items.dart';
+import 'tenki_material/units.dart';
 
 String currentLocation = '';
 
@@ -14,7 +14,7 @@ class TwoColumnLocationView extends StatefulWidget {
   const TwoColumnLocationView({Key? key}) : super(key: key);
 
   @override
-  _TwoColumnLocationViewState createState() => _TwoColumnLocationViewState();
+  State<TwoColumnLocationView> createState() => _TwoColumnLocationViewState();
 }
 
 class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
@@ -43,7 +43,7 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
       child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("locationMaps")
-              .doc(uid)
+              .doc(householdId)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -337,14 +337,15 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
 
 // Baut den Inhalt der Lagerorte
 class StorageTabContent extends StatefulWidget {
-  String location = '';
-  StorageTabContent({this.location = ''});
+  final String location;
+  const StorageTabContent({Key key = const Key(''), this.location = ''})
+      : super(key: key);
 
   @override
-  _StorageTabContentState createState() => _StorageTabContentState();
+  StorageTabContentState createState() => StorageTabContentState();
 }
 
-class _StorageTabContentState extends State<StorageTabContent> {
+class StorageTabContentState extends State<StorageTabContent> {
   List<Map<String, dynamic>> _items = [];
 
   @override
@@ -407,7 +408,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TenkiMainPage()),
+                                  builder: (context) => const TenkiMainPage()),
                             );
                           },
                         ),
@@ -432,13 +433,12 @@ class _StorageTabContentState extends State<StorageTabContent> {
                             ),
                           ],
                         ),
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Center(
                           child: Text(
                             widget.location,
                             style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20.0,
+                              fontSize: 18.0,
                             ),
                           ),
                         ),
@@ -481,7 +481,7 @@ class _StorageTabContentState extends State<StorageTabContent> {
           StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("storageMaps")
-                  .doc(uid)
+                  .doc(householdId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -507,207 +507,255 @@ class _StorageTabContentState extends State<StorageTabContent> {
                         itemCount: _items.length,
                         itemBuilder: (BuildContext context, int index) {
                           final item = _items[index];
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: [
-                                const SizedBox(height: 8),
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.grey, width: 0.5),
-                                    color: TenkiColor3(),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey.withOpacity(0.5),
-                                        spreadRadius: 2,
-                                        blurRadius: 3,
-                                        offset: const Offset(1, 3),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 160,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              padding: const EdgeInsets.all(15),
-                                              height: 80,
-                                              width: 200,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      const Color(0xfff5f5f5),
-                                                ),
-                                                child: Text(
-                                                  item["name"],
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.all(15),
-                                              height: 80,
-                                              width: 200,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color:
-                                                      const Color(0xfff5f5f5),
-                                                ),
-                                                child: Text(
-                                                  item["unit"],
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 160,
-                                        color: Colors.transparent,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Container(
-                                              height: 80,
-                                              padding: const EdgeInsets.all(10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      width: 50,
-                                                      color: Colors.transparent,
-                                                      child: const Text(
-                                                        "Aktuell: ",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                  Container(
-                                                    width: 80,
-                                                    color: Colors.white,
-                                                    child: TextFormField(
-                                                      initialValue:
-                                                          item['stockQuantity']
-                                                              .toString(),
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onFieldSubmitted: (value) =>
-                                                          updateStockQuantity(
-                                                              value, item),
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        hintText: 'Bestand',
-                                                        border:
-                                                            InputBorder.none,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              height: 80,
-                                              padding: const EdgeInsets.all(10),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                      width: 50,
-                                                      color: Colors.transparent,
-                                                      child: const Text(
-                                                        "Soll: ",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      )),
-                                                  Container(
-                                                    width: 80,
-                                                    color: Colors.white,
-                                                    child: TextFormField(
-                                                      initialValue:
-                                                          item['targetQuantity']
-                                                              .toString(),
-                                                      keyboardType:
-                                                          TextInputType.number,
-                                                      onFieldSubmitted: (value) =>
-                                                          updateTargetQuantity(
-                                                              value, item),
-                                                      decoration:
-                                                          const InputDecoration(
-                                                        hintText: 'Soll',
-                                                        border:
-                                                            InputBorder.none,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
+                          return GestureDetector(
+                            onLongPress: () {
+                              showModalBottomSheet(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    height: 120,
+                                    color: Colors.redAccent,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.white, size: 35),
+                                          onPressed: () async {
+                                            DatabaseInterface dbInterface =
+                                                DatabaseInterface();
+                                            await dbInterface
+                                                .deleteItemByName(item["name"]);
 
-                                      //Container for Shopping Category
-                                      Container(
-                                        height: 160,
-                                        width: 160,
-                                        color: TenkiColor3(),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            Container(
-                                              width: 60,
-                                              height: 60,
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.white,
-                                                  border: Border.all(
-                                                      color: Colors.grey,
-                                                      width: 1)),
-                                              child: HelperCategoryItems
-                                                  .getCategoryWidget(
-                                                      item['shoppingCategory']
-                                                          .toString()),
-                                            ),
-                                            const SizedBox(height: 5),
-                                            Text(item['shoppingCategory']
-                                                .toString()),
-                                          ],
+                                            //close ModalBottomSheet
+                                            Navigator.pop(context);
+                                          },
                                         ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      //Container for MHD
-                                      Container(
-                                        height: 160,
-                                        color: TenkiColor4(),
-                                        child: const Center(
-                                          child: Text(
-                                            'Hier steht iwan das MHD... ',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
+                                        Text(
+                                          item["name"] + " dauerhaft löschen?",
+                                          style: const TextStyle(
                                               color: Colors.white,
-                                              fontSize: 24,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                children: [
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey, width: 0.5),
+                                      color: TenkiColor3(),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 2,
+                                          blurRadius: 3,
+                                          offset: const Offset(1, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 160,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(15),
+                                                height: 80,
+                                                width: 200,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color:
+                                                        const Color(0xfff5f5f5),
+                                                  ),
+                                                  child: Text(
+                                                    item["name"],
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                padding:
+                                                    const EdgeInsets.all(15),
+                                                height: 80,
+                                                width: 200,
+                                                child: Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color:
+                                                        const Color(0xfff5f5f5),
+                                                  ),
+                                                  child: Text(
+                                                    item["unit"],
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          height: 160,
+                                          color: Colors.transparent,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Container(
+                                                height: 80,
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        color:
+                                                            Colors.transparent,
+                                                        child: const Text(
+                                                          "Aktuell: ",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                    Container(
+                                                      width: 80,
+                                                      color: Colors.white,
+                                                      child: TextFormField(
+                                                        initialValue: item[
+                                                                'stockQuantity']
+                                                            .toString(),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateStockQuantity(
+                                                                value, item),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText: 'Bestand',
+                                                          border:
+                                                              InputBorder.none,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 80,
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                        width: 50,
+                                                        color:
+                                                            Colors.transparent,
+                                                        child: const Text(
+                                                          "Soll: ",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        )),
+                                                    Container(
+                                                      width: 80,
+                                                      color: Colors.white,
+                                                      child: TextFormField(
+                                                        initialValue: item[
+                                                                'targetQuantity']
+                                                            .toString(),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateTargetQuantity(
+                                                                value, item),
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText: 'Soll',
+                                                          border:
+                                                              InputBorder.none,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+
+                                        //Container for Shopping Category
+                                        Container(
+                                          height: 160,
+                                          width: 160,
+                                          color: TenkiColor3(),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 60,
+                                                height: 60,
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.white,
+                                                    border: Border.all(
+                                                        color: Colors.grey,
+                                                        width: 1)),
+                                                child: HelperCategoryItems
+                                                    .getCategoryWidget(
+                                                        item['shoppingCategory']
+                                                            .toString()),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Text(item['shoppingCategory']
+                                                  .toString()),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(width: 8),
+                                        //Container for MHD
+                                        Container(
+                                          height: 160,
+                                          color: TenkiColor4(),
+                                          child: const Center(
+                                            child: Text(
+                                              'Hier steht iwan das MHD... ',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 24,
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -715,7 +763,9 @@ class _StorageTabContentState extends State<StorageTabContent> {
                     );
                   } else {
                     // define the dialog content
-                    return PopupAddItem(location: widget.location);
+                    return const Center(
+                        child: Text(
+                            "Leerer Lagerort. Bitte Items über '+' hinzufügen."));
                   }
                 } else {
                   return const Center(child: Text("UnexpectedError"));
@@ -760,10 +810,10 @@ Future<void> updateStockQuantity(
 class PopupAddLocation extends StatefulWidget {
   const PopupAddLocation({Key? key}) : super(key: key);
   @override
-  _PopupAddLocationState createState() => _PopupAddLocationState();
+  PopupAddLocationState createState() => PopupAddLocationState();
 }
 
-class _PopupAddLocationState extends State<PopupAddLocation> {
+class PopupAddLocationState extends State<PopupAddLocation> {
   final List<bool> _selected = List.generate(16, (index) => false);
   TextEditingController newLocationController = TextEditingController();
 
@@ -884,7 +934,7 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => TenkiMainPage()),
+                                builder: (context) => const TenkiMainPage()),
                           );
                         },
                         child: Container(
@@ -942,22 +992,26 @@ class _PopupAddLocationState extends State<PopupAddLocation> {
   }
 }
 
+int selectedIconIndex = 0;
+
 // Baut
 class PopupAddItem extends StatefulWidget {
   //const PopupAddItem({Key? key}) : super(key: key);
 
-  String location = '';
-  PopupAddItem({this.location = ''});
+  final String location;
+  const PopupAddItem({Key key = const Key(''), this.location = ''})
+      : super(key: key);
 
   @override
-  _PopupAddItemState createState() => _PopupAddItemState();
+  PopupAddItemState createState() => PopupAddItemState();
 }
 
-class _PopupAddItemState extends State<PopupAddItem> {
+class PopupAddItemState extends State<PopupAddItem> {
   // define text editing controllers for the input fields
   TextEditingController nameController = TextEditingController();
-  TextEditingController unitController = TextEditingController();
   TextEditingController targetQuantityController = TextEditingController();
+  TextEditingController stockQuantityController = TextEditingController();
+  String? selectedUnit = '-Bitte wählen-';
 
   @override
   void initState() {
@@ -967,34 +1021,111 @@ class _PopupAddItemState extends State<PopupAddItem> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Neues Lebensmittel'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            controller: nameController,
-            decoration: const InputDecoration(
-              labelText: 'Name',
+      title: const Center(child: Text('Artikel hinzufügen')),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextField(
+              controller: nameController,
+              cursorColor: TenkiColor1(),
+              decoration: InputDecoration(
+                labelText: 'Name',
+                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
             ),
-          ),
-          TextField(
-            controller: unitController,
-            decoration: const InputDecoration(
-              labelText: 'Unit',
+            const SizedBox(height: 25),
+            Row(
+              children: const [
+                Text('Mengen: '),
+              ],
             ),
-          ),
-          TextField(
-            controller: targetQuantityController,
-            keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
-              labelText: 'Target Quantity',
+            const SizedBox(height: 5),
+            TextField(
+              controller: stockQuantityController,
+              keyboardType: TextInputType.number,
+              cursorColor: TenkiColor1(),
+              decoration: InputDecoration(
+                labelText: 'Aktuelle Menge',
+                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 5),
+            TextField(
+              controller: targetQuantityController,
+              keyboardType: TextInputType.number,
+              cursorColor: TenkiColor1(),
+              decoration: InputDecoration(
+                labelText: 'Soll-Menge',
+                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
+            ),
+            const SizedBox(height: 25),
+            DropdownButtonFormField<String>(
+              value: selectedUnit,
+              items: unitList.map((option) {
+                return DropdownMenuItem(
+                  value: option,
+                  child: Text(option),
+                );
+              }).toList(),
+              onChanged: (value) {
+                setState(() {
+                  selectedUnit = value;
+                });
+              },
+              decoration: InputDecoration(
+                labelText: 'Einheit',
+                labelStyle: TextStyle(color: Colors.grey[700]),
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  borderSide: BorderSide(color: TenkiColor1()),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+              ),
+              dropdownColor: TenkiColor2(),
+            ),
+            const SizedBox(height: 15),
+            HorizontalSelection(
+              itemIcons: categoryItems,
+              onSelect: (int index) {
+                // NOP
+              },
+            ),
+          ],
+        ),
       ),
       actions: <Widget>[
         IconButton(
-          icon: const Icon(Icons.barcode_reader),
+          // Barcode Scanner as hiidden feature
+          icon: Icon(Icons.barcode_reader, size: 30, color: TenkiColor3()),
           onPressed: () {
             showDialog(
                 context: context,
@@ -1004,18 +1135,18 @@ class _PopupAddItemState extends State<PopupAddItem> {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.cancel_outlined),
+          icon: const Icon(Icons.cancel_outlined, size: 30, color: Colors.grey),
           onPressed: () {
-            // CLose Alert with No Operation
+            // Close Alert with No Operation
             Navigator.of(context).pop();
           },
         ),
         IconButton(
-          icon: const Icon(Icons.check_circle, color: Colors.teal),
+          icon: Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
           onPressed: () async {
             // retrieve the values entered by the user
             String name = nameController.text;
-            String unit = unitController.text;
+            String? unit = selectedUnit;
             double targetQuantity =
                 double.tryParse(targetQuantityController.text) ?? 0;
             double stockQuantity = 0;
@@ -1029,7 +1160,7 @@ class _PopupAddItemState extends State<PopupAddItem> {
               "targetQuantity": targetQuantity,
               "stockQuantity": stockQuantity,
               "buyQuantity": buyQuantity,
-              "shoppingCategory": "Sonstige",
+              "shoppingCategory": categories[selectedIconIndex],
             };
 
             // call function to add the new item
@@ -1040,6 +1171,112 @@ class _PopupAddItemState extends State<PopupAddItem> {
             Navigator.of(context).pop();
           },
         ),
+      ],
+      backgroundColor: TenkiColor3(),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+        side: const BorderSide(color: Colors.black, width: 1),
+      ),
+    );
+  }
+}
+
+// View Selection Category-Item
+class HorizontalSelection extends StatefulWidget {
+  final List<Widget> itemIcons;
+  final Function(int) onSelect;
+  final Key? key;
+
+  const HorizontalSelection({
+    required this.itemIcons,
+    required this.onSelect,
+    this.key,
+  }) : super(key: key);
+
+  @override
+  State<HorizontalSelection> createState() => _HorizontalSelectionState();
+}
+
+class _HorizontalSelectionState extends State<HorizontalSelection> {
+  final ScrollController _scrollController = ScrollController();
+  int _selectedIconIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final index = (_scrollController.offset / 60).round();
+    if (index != _selectedIconIndex &&
+        index >= 0 &&
+        index < widget.itemIcons.length) {
+      setState(() {
+        _selectedIconIndex = index;
+        widget.onSelect(_selectedIconIndex);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          width: 200,
+          height: 55,
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(25)),
+            border: Border.all(color: Colors.grey, width: 1),
+            color: Colors.grey[200],
+          ),
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: _scrollController,
+            itemCount: widget.itemIcons.length + 2,
+            itemBuilder: (BuildContext context, int index) {
+              if (index == 0 || index == widget.itemIcons.length + 1) {
+                return const SizedBox(width: 70);
+              }
+              final itemIndex = index - 1;
+
+              if (categories[itemIndex] != "uncategorised") {
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _selectedIconIndex == itemIndex
+                          ? Colors.white
+                          : Colors.grey[350],
+                      border: Border.all(
+                        color: _selectedIconIndex == itemIndex
+                            ? TenkiColor1()
+                            : Colors.grey,
+                        width: _selectedIconIndex == itemIndex ? 3 : 0.5,
+                      ),
+                    ),
+                    child: widget.itemIcons[itemIndex],
+                  ),
+                );
+              } else {
+                return const SizedBox(width: 0.1);
+              }
+            },
+          ),
+        ),
+        const SizedBox(height: 2),
+        Text(categories[_selectedIconIndex]),
       ],
     );
   }

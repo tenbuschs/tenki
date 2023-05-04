@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/main_page.dart';
+import 'package:tenki/login_register_page.dart';
 import 'package:tenki/register_page.dart';
-import 'package:tenki/household.dart';
+import 'firestore_interface.dart';
 
 class VerifyPage extends StatefulWidget {
   @override
@@ -23,7 +23,7 @@ class _VerifyPageState extends State<VerifyPage> {
     user?.sendEmailVerification();
 
     // Start timer to check email verification status
-    timer = Timer.periodic(Duration(seconds: 5), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       checkEmailVerified();
     });
   }
@@ -38,14 +38,14 @@ class _VerifyPageState extends State<VerifyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Verifizieren Sie Ihre E-Mail"),
+        title: const Text("Verifizieren Sie Ihre E-Mail"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text("Es wurde eine E-Mail an ${user?.email} gesendet."),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 Navigator.pushReplacement(
@@ -53,7 +53,7 @@ class _VerifyPageState extends State<VerifyPage> {
                   MaterialPageRoute(builder: (context) => RegisterPage()),
                 );
               },
-              child: Text("Zurück zur Registrierung"),
+              child: const Text("Zurück zur Registrierung"),
             ),
           ],
         ),
@@ -70,7 +70,7 @@ class _VerifyPageState extends State<VerifyPage> {
       timer.cancel();
 
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => RandomNumberGenerator()),
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     }
   }

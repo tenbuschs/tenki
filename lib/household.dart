@@ -1,18 +1,17 @@
-import 'dart:math';
+import 'package:tenki/main_page.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:tenki/register_page.dart';
 import 'tenki_material/appbars.dart';
 import 'package:tenki/login_register_page.dart';
 import 'household_create.dart';
-import 'package:flutter/services.dart';
-
-
+import 'firestore_interface.dart';
 
 class Household extends StatelessWidget {
+  const Household({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Haushalt',
       home: RandomNumberGenerator(),
     );
@@ -20,17 +19,17 @@ class Household extends StatelessWidget {
 }
 
 class RandomNumberGenerator extends StatefulWidget {
+  const RandomNumberGenerator({Key? key}) : super(key: key);
+
   @override
-  _RandomNumberGeneratorState createState() => _RandomNumberGeneratorState();
+  State<RandomNumberGenerator> createState() => _RandomNumberGeneratorState();
 }
 
 class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
-  int _household = 0;
   final _formKey = GlobalKey<FormState>();
   final _controller = TextEditingController();
   bool _showErstellenButton = true;
   bool _showBeitretenTextField = false;
-
 
   @override
   void dispose() {
@@ -45,12 +44,12 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
     });
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBars.loginAppBar('Haushalt', context),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
             begin: Alignment.bottomCenter,
@@ -70,10 +69,10 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                   fontSize: 18.0,
                 ),
               ),
-              SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
               Visibility(
                 visible: _showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
@@ -84,16 +83,14 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         ),
                       );
                     },
-                    child: Text('Haushalt erstellen'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor1(),
-
                     ),
+                    child: const Text('Haushalt erstellen'),
                   ),
                 ),
               ),
-
-              SizedBox(height: 7),
+              const SizedBox(height: 7),
               Visibility(
                 visible: _showBeitretenTextField,
                 child: Form(
@@ -114,17 +111,14 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                       cursorColor: TenkiColor4(),
                       style: TextStyle(color: TenkiColor5()), // Set text color
                       inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(5),
+                        //FilteringTextInputFormatter.digitsOnly,
+                        // LengthLimitingTextInputFormatter(5),
                       ], // Allow only numbers
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Bitte gib einen Haushaltscode ein';
                         }
-                        if (value?.length != 5) {
-                          return 'Ein Haushaltscode muss 5 Stellen haben!';
-                        }
-                        if (int.tryParse(value!) == null) {
+                        if (int.tryParse(value) == null) {
                           return 'Bitte gib einen gültigen Code ein';
                         }
                         return null;
@@ -135,58 +129,71 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
               ),
               Visibility(
                 visible: _showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.6,
                   child: ElevatedButton(
                     onPressed: () {
                       _toggleTextField();
                     },
-                    child: Text('Haushalt beitreten'),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: TenkiColor1(),)
+                      backgroundColor: TenkiColor1(),
+                    ),
+                    child: const Text('Haushalt beitreten'),
                   ),
                 ),
               ),
-
               Visibility(
                 visible: !_showErstellenButton,
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                    onPressed: () async {
+                      DatabaseInterface dbInterface = DatabaseInterface();
+                      if (await dbInterface
+                              .doesHouseholdExist(_controller.text) ==
+                          true) {
+                        await dbInterface.joinHousehold(_controller.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => RegisterPage(),
+                            builder: (context) => TenkiMainPage(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Ungültiger Haushaltscode.',
+                            ),
+                            duration: Duration(seconds: 5),
                           ),
                         );
                       }
                     },
-                    child: Text('Beitreten'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor1(),
-                    )
+                    ),
+                    child: const Text('Beitreten'),
                   ),
                 ),
               ),
-              SizedBox(height: 5),
-
+              const SizedBox(height: 5),
               Visibility(
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
-                    onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ),
-                    );
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
                     },
-                    child: Text('Abbrechen'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor4(),
                     ),
+                    child: const Text('Abbrechen'),
                   ),
                 ),
               ),

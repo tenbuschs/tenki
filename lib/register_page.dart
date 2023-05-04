@@ -33,11 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      // Create database interface instance
-      DatabaseInterface dbInterface = DatabaseInterface();
-      // Add example data map for current user
-      await dbInterface.addExampleDataMap();
-      await dbInterface.addExampleLocationMap();
+
       // show success message
       showDialog(
         context: context,
@@ -48,9 +44,7 @@ class _RegisterPageState extends State<RegisterPage> {
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
+                    Navigator.pop(context);
                   },
                   child: Text("Weiter zum Login"),
                 ),
@@ -99,11 +93,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   email: _controllerEmail.text,
                   password: _controllerPassword.text,
                 );
-                // Create database interface instance
-                DatabaseInterface dbInterface = DatabaseInterface();
-                // Add example data map for current user
-                await dbInterface.addExampleDataMap();
-                await dbInterface.addExampleLocationMap();
                 // show success message
                 ///TO DO das sieht noch shit aus
                 showDialog(
