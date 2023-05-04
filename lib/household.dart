@@ -7,8 +7,7 @@ import 'tenki_material/appbars.dart';
 import 'package:tenki/login_register_page.dart';
 import 'household_create.dart';
 import 'package:flutter/services.dart';
-
-
+import 'firestore_interface.dart';
 
 class Household extends StatelessWidget {
   const Household({Key? key}) : super(key: key);
@@ -35,7 +34,6 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
   bool _showErstellenButton = true;
   bool _showBeitretenTextField = false;
 
-
   @override
   void dispose() {
     _controller.dispose();
@@ -49,7 +47,7 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
     });
   }
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBars.loginAppBar('Haushalt', context),
@@ -116,16 +114,16 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                       cursorColor: TenkiColor4(),
                       style: TextStyle(color: TenkiColor5()), // Set text color
                       inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(5),
+                        //FilteringTextInputFormatter.digitsOnly,
+                        // LengthLimitingTextInputFormatter(5),
                       ], // Allow only numbers
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Bitte gib einen Haushaltscode ein';
                         }
-                        if (value.length != 5) {
+                        /*if (value.length != 5) {
                           return 'Ein Haushaltscode muss 5 Stellen haben!';
-                        }
+                        }*/
                         if (int.tryParse(value) == null) {
                           return 'Bitte gib einen gültigen Code ein';
                         }
@@ -150,18 +148,30 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                   ),
                 ),
               ),
-
               Visibility(
                 visible: !_showErstellenButton,
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
+                    onPressed: () async {
+                      DatabaseInterface dbInterface = DatabaseInterface();
+                      if (await dbInterface
+                              .doesHouseholdExist(_controller.text) ==
+                          true) {
+                        await dbInterface.joinHousehold(_controller.text);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => TenkiMainPage(),
+                          ),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text(
+                              'Ungültiger Haushaltscode.',
+                            ),
+                            duration: Duration(seconds: 5),
                           ),
                         );
                       }
@@ -178,12 +188,13 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: ElevatedButton(
-                    onPressed: () {Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
-                      ),
-                    );
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const LoginPage(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: TenkiColor4(),

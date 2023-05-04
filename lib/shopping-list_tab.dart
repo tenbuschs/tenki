@@ -17,16 +17,19 @@ class ShoppingList extends StatefulWidget {
 
 class _ShoppingListState extends State<ShoppingList> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // preselection: group by shoppingCategory and remove buyQuantity=0
     Map<String, List<dynamic>> groupedItems = {};
 
-    String uid = FirebaseAuth.instance.currentUser!.uid;
-
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("storageMaps")
-            .doc(uid)
+            .doc(householdId)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

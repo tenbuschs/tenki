@@ -9,7 +9,6 @@ import 'homepage.dart';
 import 'household.dart';
 import 'tenki_material/appbars.dart';
 
-
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -27,8 +26,6 @@ class ForgotPasswordDialog extends StatefulWidget {
 class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
   final TextEditingController _emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
-
 
   @override
   void dispose() {
@@ -141,21 +138,20 @@ class _LoginPageState extends State<LoginPage> {
       );
       if (userCredential.user != null) {
         if (userCredential.user!.emailVerified) {
-
           DatabaseInterface dbInterface = DatabaseInterface();
-          if(await dbInterface.doesUserMapExist(uid)) {
+
+          print(await dbInterface.doesUserMapExist());
+          if (await dbInterface.doesUserMapExist()) {
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => TenkiHomePage()),
             );
-          }
-          else{
+          } else {
             //create or join household
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => const RandomNumberGenerator()),
+              MaterialPageRoute(
+                  builder: (context) => const RandomNumberGenerator()),
             );
           }
-
-
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -176,18 +172,12 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-
   Future<void> createUserWithEmailAndPassword() async {
     try {
       await Auth().createUserWithEmailAndPassword(
         email: _controllerEmail.text,
         password: _controllerPassword.text,
       );
-      // Create database interface instance
-      DatabaseInterface dbInterface = DatabaseInterface();
-      // Add example data map for current user
-      await dbInterface.addExampleDataMap();
-      await dbInterface.addExampleLocationMap();
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => TenkiHomePage()),
       );
@@ -200,10 +190,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _loginButton() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: signInWithEmailAndPassword,
         style: ElevatedButton.styleFrom(
@@ -219,7 +206,6 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 
   Widget _entryField(String title, TextEditingController controller,
       {bool isPassword = false}) {
@@ -237,16 +223,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
           suffixIcon: isPassword
               ? IconButton(
-            icon: Icon(
-              _obscureText ? Icons.visibility_off : Icons.visibility,
-              color: Colors.grey,
-            ),
-            onPressed: () {
-              setState(() {
-                _obscureText = !_obscureText;
-              });
-            },
-          )
+                  icon: Icon(
+                    _obscureText ? Icons.visibility_off : Icons.visibility,
+                    color: Colors.grey,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureText = !_obscureText;
+                    });
+                  },
+                )
               : null,
         ),
         cursorColor: TenkiColor4(),
@@ -255,10 +241,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   Widget _errormessage() {
-    return Text(
-        errorMessage == '' ? '' : 'Bitte überprüfe deine Eingaben!');
+    return Text(errorMessage == '' ? '' : 'Bitte überprüfe deine Eingaben!');
   }
 
   Widget _loginText() {
@@ -277,10 +261,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _submitButton() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: isLogin
             ? signInWithEmailAndPassword
@@ -301,10 +282,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _registerButton() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
@@ -330,13 +308,9 @@ class _LoginPageState extends State<LoginPage> {
     return isLogin ? _registerButton() : _loginButton();
   }
 
-
   Widget _forgotPasswordButton() {
     return SizedBox(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width * 0.6,
+      width: MediaQuery.of(context).size.width * 0.6,
       child: TextButton(
         onPressed: () {
           showDialog(
@@ -360,7 +334,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -369,10 +342,7 @@ class _LoginPageState extends State<LoginPage> {
         appBar: AppBars.loginAppBar('TENKI Login', context),
         body: SingleChildScrollView(
           child: Container(
-            height: MediaQuery
-                .of(context)
-                .size
-                .height,
+            height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
@@ -389,8 +359,8 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   _loginText(),
                   _entryField('E-Mail', _controllerEmail),
-                  _entryField(
-                      'Passwort', _controllerPassword, isPassword: true),
+                  _entryField('Passwort', _controllerPassword,
+                      isPassword: true),
                   _errormessage(),
                   _submitButton(),
                   _loginOrRegisterButton(),

@@ -17,7 +17,7 @@ class TwoColumnLocationView extends StatefulWidget {
   State<TwoColumnLocationView> createState() => _TwoColumnLocationViewState();
 }
 
- class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
+class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
   int selectedIndex = 0;
   //final PageController _pageControllerStorage = PageController();
 
@@ -43,7 +43,7 @@ class TwoColumnLocationView extends StatefulWidget {
       child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection("locationMaps")
-              .doc(uid)
+              .doc(householdId)
               .snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -317,8 +317,6 @@ class TwoColumnLocationView extends StatefulWidget {
                         ],
                       );
                     },
-
-
                   ),
                   _showOverlay
                       ? Center(
@@ -340,7 +338,8 @@ class TwoColumnLocationView extends StatefulWidget {
 // Baut den Inhalt der Lagerorte
 class StorageTabContent extends StatefulWidget {
   final String location;
-  const StorageTabContent({Key key = const Key(''), this.location = ''}) : super(key: key);
+  const StorageTabContent({Key key = const Key(''), this.location = ''})
+      : super(key: key);
 
   @override
   StorageTabContentState createState() => StorageTabContentState();
@@ -482,7 +481,7 @@ class StorageTabContentState extends State<StorageTabContent> {
           StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("storageMaps")
-                  .doc(uid)
+                  .doc(householdId)
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -509,7 +508,7 @@ class StorageTabContentState extends State<StorageTabContent> {
                         itemBuilder: (BuildContext context, int index) {
                           final item = _items[index];
                           return GestureDetector(
-                            onLongPress: (){
+                            onLongPress: () {
                               showModalBottomSheet(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -518,23 +517,23 @@ class StorageTabContentState extends State<StorageTabContent> {
                                     color: Colors.redAccent,
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceAround,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         IconButton(
-                                          icon: const Icon(
-                                              Icons.delete,
-                                              color: Colors.white,
-                                              size: 35),
+                                          icon: const Icon(Icons.delete,
+                                              color: Colors.white, size: 35),
                                           onPressed: () async {
-                                            DatabaseInterface  dbInterface =   DatabaseInterface();
-                                            await dbInterface.deleteItemByName(item["name"]);
+                                            DatabaseInterface dbInterface =
+                                                DatabaseInterface();
+                                            await dbInterface
+                                                .deleteItemByName(item["name"]);
 
                                             //close ModalBottomSheet
                                             Navigator.pop(context);
                                           },
                                         ),
-                                        Text(item["name"]+" dauerhaft löschen?",
+                                        Text(
+                                          item["name"] + " dauerhaft löschen?",
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 16),
@@ -573,13 +572,15 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                 MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Container(
-                                                padding: const EdgeInsets.all(15),
+                                                padding:
+                                                    const EdgeInsets.all(15),
                                                 height: 80,
                                                 width: 200,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                     color:
                                                         const Color(0xfff5f5f5),
                                                   ),
@@ -590,13 +591,15 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                 ),
                                               ),
                                               Container(
-                                                padding: const EdgeInsets.all(15),
+                                                padding:
+                                                    const EdgeInsets.all(15),
                                                 height: 80,
                                                 width: 200,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(10),
+                                                        BorderRadius.circular(
+                                                            10),
                                                     color:
                                                         const Color(0xfff5f5f5),
                                                   ),
@@ -618,12 +621,14 @@ class StorageTabContentState extends State<StorageTabContent> {
                                             children: [
                                               Container(
                                                 height: 80,
-                                                padding: const EdgeInsets.all(10),
+                                                padding:
+                                                    const EdgeInsets.all(10),
                                                 child: Row(
                                                   children: [
                                                     Container(
                                                         width: 50,
-                                                        color: Colors.transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                         child: const Text(
                                                           "Aktuell: ",
                                                           textAlign:
@@ -633,11 +638,12 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                       width: 80,
                                                       color: Colors.white,
                                                       child: TextFormField(
-                                                        initialValue:
-                                                            item['stockQuantity']
-                                                                .toString(),
+                                                        initialValue: item[
+                                                                'stockQuantity']
+                                                            .toString(),
                                                         keyboardType:
-                                                            TextInputType.number,
+                                                            TextInputType
+                                                                .number,
                                                         onFieldSubmitted: (value) =>
                                                             updateStockQuantity(
                                                                 value, item),
@@ -654,12 +660,14 @@ class StorageTabContentState extends State<StorageTabContent> {
                                               ),
                                               Container(
                                                 height: 80,
-                                                padding: const EdgeInsets.all(10),
+                                                padding:
+                                                    const EdgeInsets.all(10),
                                                 child: Row(
                                                   children: [
                                                     Container(
                                                         width: 50,
-                                                        color: Colors.transparent,
+                                                        color:
+                                                            Colors.transparent,
                                                         child: const Text(
                                                           "Soll: ",
                                                           textAlign:
@@ -669,11 +677,12 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                       width: 80,
                                                       color: Colors.white,
                                                       child: TextFormField(
-                                                        initialValue:
-                                                            item['targetQuantity']
-                                                                .toString(),
+                                                        initialValue: item[
+                                                                'targetQuantity']
+                                                            .toString(),
                                                         keyboardType:
-                                                            TextInputType.number,
+                                                            TextInputType
+                                                                .number,
                                                         onFieldSubmitted: (value) =>
                                                             updateTargetQuantity(
                                                                 value, item),
@@ -754,7 +763,9 @@ class StorageTabContentState extends State<StorageTabContent> {
                     );
                   } else {
                     // define the dialog content
-                    return const Center(child: Text("Leerer Lagerort. Bitte Items über '+' hinzufügen."));
+                    return const Center(
+                        child: Text(
+                            "Leerer Lagerort. Bitte Items über '+' hinzufügen."));
                   }
                 } else {
                   return const Center(child: Text("UnexpectedError"));
@@ -981,14 +992,15 @@ class PopupAddLocationState extends State<PopupAddLocation> {
   }
 }
 
+int selectedIconIndex = 0;
 
-int selectedIconIndex=0;
 // Baut
 class PopupAddItem extends StatefulWidget {
   //const PopupAddItem({Key? key}) : super(key: key);
 
-  final  String location;
-  const PopupAddItem({Key key = const Key(''), this.location = ''}) : super(key: key);
+  final String location;
+  const PopupAddItem({Key key = const Key(''), this.location = ''})
+      : super(key: key);
 
   @override
   PopupAddItemState createState() => PopupAddItemState();
@@ -999,8 +1011,7 @@ class PopupAddItemState extends State<PopupAddItem> {
   TextEditingController nameController = TextEditingController();
   TextEditingController targetQuantityController = TextEditingController();
   TextEditingController stockQuantityController = TextEditingController();
-  String? selectedUnit='-Bitte wählen-';
-
+  String? selectedUnit = '-Bitte wählen-';
 
   @override
   void initState() {
@@ -1009,7 +1020,6 @@ class PopupAddItemState extends State<PopupAddItem> {
 
   @override
   Widget build(BuildContext context) {
-
     return AlertDialog(
       title: const Center(child: Text('Artikel hinzufügen')),
       content: SingleChildScrollView(
@@ -1027,7 +1037,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 25),
@@ -1049,7 +1060,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 5),
@@ -1065,7 +1077,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 25),
@@ -1094,8 +1107,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                contentPadding: const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-
+                contentPadding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
               dropdownColor: TenkiColor2(),
             ),
@@ -1103,10 +1116,9 @@ class PopupAddItemState extends State<PopupAddItem> {
             HorizontalSelection(
               itemIcons: categoryItems,
               onSelect: (int index) {
-                  // NOP
+                // NOP
               },
             ),
-
           ],
         ),
       ),
@@ -1116,14 +1128,14 @@ class PopupAddItemState extends State<PopupAddItem> {
           icon: Icon(Icons.barcode_reader, size: 30, color: TenkiColor3()),
           onPressed: () {
             showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                      return barcode_scan_page.BarcodeScanner();
-            });
+                context: context,
+                builder: (BuildContext context) {
+                  return barcode_scan_page.BarcodeScanner();
+                });
           },
         ),
         IconButton(
-          icon: const Icon(Icons.cancel_outlined, size:30, color: Colors.grey),
+          icon: const Icon(Icons.cancel_outlined, size: 30, color: Colors.grey),
           onPressed: () {
             // Close Alert with No Operation
             Navigator.of(context).pop();
@@ -1169,8 +1181,6 @@ class PopupAddItemState extends State<PopupAddItem> {
   }
 }
 
-
-
 // View Selection Category-Item
 class HorizontalSelection extends StatefulWidget {
   final List<Widget> itemIcons;
@@ -1186,7 +1196,6 @@ class HorizontalSelection extends StatefulWidget {
   @override
   State<HorizontalSelection> createState() => _HorizontalSelectionState();
 }
-
 
 class _HorizontalSelectionState extends State<HorizontalSelection> {
   final ScrollController _scrollController = ScrollController();
@@ -1206,7 +1215,9 @@ class _HorizontalSelectionState extends State<HorizontalSelection> {
 
   void _onScroll() {
     final index = (_scrollController.offset / 60).round();
-    if (index != _selectedIconIndex && index >= 0 && index < widget.itemIcons.length) {
+    if (index != _selectedIconIndex &&
+        index >= 0 &&
+        index < widget.itemIcons.length) {
       setState(() {
         _selectedIconIndex = index;
         widget.onSelect(_selectedIconIndex);
@@ -1236,7 +1247,7 @@ class _HorizontalSelectionState extends State<HorizontalSelection> {
               }
               final itemIndex = index - 1;
 
-              if(categories[itemIndex]!="uncategorised") {
+              if (categories[itemIndex] != "uncategorised") {
                 return Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5),
                   alignment: Alignment.center,
@@ -1258,9 +1269,8 @@ class _HorizontalSelectionState extends State<HorizontalSelection> {
                     child: widget.itemIcons[itemIndex],
                   ),
                 );
-              }
-              else{
-                return const SizedBox(width:0.1);
+              } else {
+                return const SizedBox(width: 0.1);
               }
             },
           ),
@@ -1271,5 +1281,3 @@ class _HorizontalSelectionState extends State<HorizontalSelection> {
     );
   }
 }
-
-

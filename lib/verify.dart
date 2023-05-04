@@ -68,12 +68,6 @@ class _VerifyPageState extends State<VerifyPage> {
 
     if (user!.emailVerified) {
       timer.cancel();
-      // Create database interface instance
-      DatabaseInterface dbInterface = DatabaseInterface();
-      // Add example data map for current user
-      dbInterface.addExampleDataMap();
-      dbInterface.addExampleLocationMap();
-
 
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const LoginPage()),

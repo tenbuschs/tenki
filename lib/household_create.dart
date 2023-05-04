@@ -5,10 +5,9 @@ import 'tenki_material/appbars.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'firestore_interface.dart';
 
-
 class HouseholdCreate extends StatelessWidget {
-
-  final TextEditingController _controllerHouseholdName=TextEditingController();
+  final TextEditingController _controllerHouseholdName =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,14 +54,12 @@ class HouseholdCreate extends StatelessWidget {
                 ),
               ),
 
-
               const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () async {
-
                   DatabaseInterface dbInterface = DatabaseInterface();
-                  await dbInterface.addHouseholdMap(_controllerHouseholdName.text);
-
+                  await dbInterface
+                      .createHousehold(_controllerHouseholdName.text);
 
                   Navigator.pushReplacement(
                     context,
@@ -71,11 +68,9 @@ class HouseholdCreate extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: TenkiColor1(),
-
                   minimumSize: const Size(250, 35),
                 ),
                 child: const Text('Erstellen'),
-
               ),
               ElevatedButton(
                 onPressed: () {
@@ -90,7 +85,8 @@ class HouseholdCreate extends StatelessWidget {
                 ),
                 child: const Text('Abbrechen'),
               ),
-/// TO DO: abbrechen button
+
+              /// TO DO: abbrechen button
             ],
           ),
         ),
