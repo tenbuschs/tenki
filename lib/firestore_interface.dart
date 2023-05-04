@@ -19,6 +19,7 @@ class DatabaseInterface {
     });
   }
 
+
   Future<void> addItemToStorageMap(Map<String, dynamic> itemMap) async {
     try {
       final hid = await getHouseholdId();

@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 
 import 'main_page.dart' as main_page;
 
-import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
-
+import 'firestore_interface.dart';
 
 
 class TenkiHomePage extends StatefulWidget {
@@ -82,7 +81,9 @@ class _TenkiHomePageState extends State<TenkiHomePage>
                         ),
                       ),
                       child: TextButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          DatabaseInterface dbInterface = DatabaseInterface();
+                          householdId= await dbInterface.getHouseholdId();
                           Navigator.push(
                             context,
                             MaterialPageRoute(

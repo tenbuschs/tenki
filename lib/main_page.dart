@@ -8,6 +8,7 @@ import 'calender_tab.dart' as calender_tab;
 import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'tenki_material/appbars.dart';
+import 'firestore_interface.dart';
 
 
 
@@ -28,6 +29,7 @@ class _TenkiMainPageState extends State<TenkiMainPage>
 
   @override
   void initState() {
+    _loadData();
     super.initState();
     _tabController = TabController(
       length: _tabTitles.length,
@@ -39,6 +41,10 @@ class _TenkiMainPageState extends State<TenkiMainPage>
     });
   }
 
+  static void _loadData() async{
+    DatabaseInterface dbInterface = DatabaseInterface();
+    householdId= await dbInterface.getHouseholdId();
+  }
 
   @override
   void dispose() {
