@@ -153,6 +153,9 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                               .doesHouseholdExist(_controller.text) ==
                           true) {
                         await dbInterface.joinHousehold(_controller.text);
+
+                        householdId= await dbInterface.getHouseholdId();
+
                         Navigator.push(
                           context,
                           MaterialPageRoute(

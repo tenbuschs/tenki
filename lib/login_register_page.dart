@@ -142,6 +142,8 @@ class _LoginPageState extends State<LoginPage> {
 
           print(await dbInterface.doesUserMapExist());
           if (await dbInterface.doesUserMapExist()) {
+
+            householdId= await dbInterface.getHouseholdId();
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => TenkiHomePage()),
             );
