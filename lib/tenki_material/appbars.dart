@@ -26,6 +26,8 @@ class AppBars{
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),),
       ),
       backgroundColor: TenkiColor2(),
@@ -107,6 +109,8 @@ class AppBars{
         child: Text(title,
           style: const TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 5,
           ),),
       ),
       actions: [
@@ -130,10 +134,10 @@ class AppBars{
         title,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),
       ),
     );
   }
-
-
 }

@@ -255,6 +255,8 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(
           color: TenkiColor5(),
           fontSize: 16,
+          fontFamily: 'Pontana Sans',
+
         ),
         textAlign: TextAlign.left,
       ),
