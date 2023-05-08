@@ -225,16 +225,16 @@ class _LoginPageState extends State<LoginPage> {
           ),
           suffixIcon: isPassword
               ? IconButton(
-                  icon: Icon(
-                    _obscureText ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.grey,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscureText = !_obscureText;
-                    });
-                  },
-                )
+            icon: Icon(
+              _obscureText ? Icons.visibility_off : Icons.visibility,
+              color: Colors.grey,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscureText = !_obscureText;
+              });
+            },
+          )
               : null,
         ),
         cursorColor: TenkiColor4(),
@@ -255,6 +255,8 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(
           color: TenkiColor5(),
           fontSize: 16,
+          fontFamily: 'Pontana Sans',
+
         ),
         textAlign: TextAlign.left,
       ),

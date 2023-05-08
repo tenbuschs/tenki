@@ -15,17 +15,19 @@ class AppBars{
 
     return AppBar(
       leading: GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
-        );
-      },
-      child: TenkiIcons.tenki(size: 38),
-    ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),),
       ),
       backgroundColor: TenkiColor2(),
@@ -107,6 +109,8 @@ class AppBars{
         child: Text(title,
           style: const TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 5,
           ),),
       ),
       actions: [
@@ -130,10 +134,10 @@ class AppBars{
         title,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),
       ),
     );
   }
-
-
 }
