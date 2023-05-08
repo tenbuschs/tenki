@@ -24,20 +24,20 @@ List<String> categories = [
 
 List<Widget> categoryItems = [
   TenkiIcons.carot(size: 35, color: TenkiColor1()),           // Obst & Gemüse
-  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo: Backwaren
-  TenkiIcons.cow(size: 35, color: TenkiColor1()),             // Milchprodukte
+  TenkiIcons.brot(size: 35, color: TenkiColor1()),            // Backwaren
+  TenkiIcons.milchtuete(size: 35, color: TenkiColor1()),      // Milchprodukte
   TenkiIcons.fish(size: 35, color: TenkiColor1()),            // Fleisch und Fisch
   TenkiIcons.chili(size: 35, color: TenkiColor1()),           // Zutaten & Gewürze
   TenkiIcons.frosty(size: 35, color: TenkiColor1()),          // Tiefkühlwaren
   TenkiIcons.grain(size: 35, color: TenkiColor1()),           // Getreideprodukte
   TenkiIcons.cookie(size: 35, color: TenkiColor1()),          // Snacks und Süßwaren
   TenkiIcons.wine(size: 35, color: TenkiColor1()),            // Getränke
-  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo: Haushalt
+  TenkiIcons.toiletpaper(size: 35, color: TenkiColor1()),     // Haushalt
   TenkiIcons.firstAid(size: 35, color: TenkiColor1()),        // Pflege & Gesundheit
-  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo: Tierbedarf
-  TenkiIcons.shopping_bag(size: 35, color: TenkiColor1()),    // Todo: Baumarkt & Garten
-  TenkiIcons.tenki(size: 35, color: TenkiColor1()),           // Todo: Eigene Artikel
-  TenkiIcons.storage(size: 35, color: TenkiColor1()),         // Todo: Sonstige
+  TenkiIcons.hund(size: 35, color: TenkiColor1()),            // Tierbedarf
+  TenkiIcons.werkzeug(size: 35, color: TenkiColor1()),        // Baumarkt & Garten
+  TenkiIcons.geschenk(size: 35, color: TenkiColor1()),        //  Eigene Artikel
+  TenkiIcons.tenki(size: 35, color: TenkiColor1()),         // Todo: Sonstige
   TenkiIcons.tenki(size: 35, color: TenkiColor1()),           // Todo: uncategorised
 ];
 

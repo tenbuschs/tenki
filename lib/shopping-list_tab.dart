@@ -7,6 +7,8 @@ import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'tenki_material/category_items.dart';
 import 'dart:ui'; // for image filter; blur
 import 'tenki_material/units.dart';
+import 'package:tenki/main_page.dart';
+
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
@@ -113,7 +115,7 @@ class _ShoppingListState extends State<ShoppingList> {
                                           child: Text(
                                             category,
                                             style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 2,
                                               fontSize: 20,
                                             ),
                                           ),
@@ -177,7 +179,7 @@ class _ShoppingListState extends State<ShoppingList> {
                                                   child: Text(item['name']),
                                                 ),
                                                 Expanded(
-                                                  flex: 2,
+                                                  flex: 1,
                                                   child: Text(
                                                       item['buyQuantity']
                                                           .toString()),
@@ -276,6 +278,7 @@ class _ShoppingListState extends State<ShoppingList> {
                     TextField(
                       controller: nameController,
                       cursorColor: TenkiColor1(),
+                      maxLength: 20,
                       decoration: InputDecoration(
                         labelText: 'Name',
                         labelStyle:
@@ -353,46 +356,76 @@ class _ShoppingListState extends State<ShoppingList> {
                 ),
               ),
               actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.cancel_outlined,
-                      size: 30, color: Colors.grey),
-                  onPressed: () {
-                    // Close Alert with No Operation
+                InkWell(
+                  onTap: () {
+                    // Close button action
                     Navigator.of(context).pop();
                   },
+                  child: Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 1),
+                      color: TenkiColor4(),
+                    ),
+                    child: const Icon(Icons.close),
+                  ),
                 ),
-                IconButton(
-                  icon:
-                      Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
-                  onPressed: () async {
-                    // retrieve the values entered by the user
-                    String name = nameController.text;
-                    String? unit = selectedUnit;
-                    double buyQuantity =
-                        double.tryParse(buyQuantityController.text) ?? 0;
 
-                    // Create a new map object with the new entry details
-                    Map<String, dynamic> newEntry = {
-                      "name": name,
-                      "location": "xtra_item",
-                      "unit": unit,
-                      "targetQuantity": 0,
-                      "stockQuantity": 0,
-                      "buyQuantity": buyQuantity,
-                      "shoppingCategory": "Eigene Artikel",
-                    };
+                InkWell(
+                  onTap: () async {
+                    // Confirm button action
 
-                    // call function to add the new item
-                    DatabaseInterface dbInterface = DatabaseInterface();
-                    await dbInterface.addItemToStorageMap(newEntry);
+                    // Check if name and unit have been selected
+                    if (nameController.text.isNotEmpty && selectedUnit != "-Bitte wählen-") {
+                      // retrieve the values entered by the user
+                      String name = nameController.text;
+                      String? unit = selectedUnit;
+                      double buyQuantity = double.tryParse(buyQuantityController.text) ?? 0;
 
-                    // Refresh the View
-                    setState(() {});
+                      // Create a new map object with the new entry details
+                      Map<String, dynamic> newEntry = {
+                        "name": name,
+                        "location": "xtra_item",
+                        "unit": unit,
+                        "targetQuantity": 0,
+                        "stockQuantity": 0,
+                        "buyQuantity": buyQuantity,
+                        "shoppingCategory": "Eigene Artikel",
+                      };
 
-                    // Close AlertDialog
-                    Navigator.of(context).pop();
+                      // call function to add the new item
+                      DatabaseInterface dbInterface = DatabaseInterface();
+                      await dbInterface.addItemToStorageMap(newEntry);
+
+                      // Refresh the View
+                      setState(() {});
+
+                      // Close AlertDialog
+                      Navigator.of(context).pop();
+                    } else {
+                      // Show error message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                              'Bitte gib einen Namen ein und wähle eine Einheit aus!'),
+                        ),
+                      );
+                    }
                   },
+                  child: Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 1),
+                      color: TenkiColor1(),
+                    ),
+                    child: const Icon(Icons.check),
+                  ),
                 ),
+
               ],
               backgroundColor: TenkiColor3(),
               shape: RoundedRectangleBorder(
@@ -403,8 +436,11 @@ class _ShoppingListState extends State<ShoppingList> {
           },
         );
       },
-      backgroundColor: TenkiColor1(),
-      child: TenkiIcons.add(size: 45, color: Colors.black),
+      backgroundColor: TenkiColor2(),
+      shape: const CircleBorder(
+        side: BorderSide(color: Colors.black87, width: 1),
+      ),
+      child: TenkiIcons.add(size: 35, color: Colors.black87),
     );
   }
 }

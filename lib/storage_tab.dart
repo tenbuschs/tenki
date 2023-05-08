@@ -1131,9 +1131,12 @@ class PopupAddItemState extends State<PopupAddItem> {
             HorizontalSelection(
               itemIcons: categoryItems,
               onSelect: (int index) {
-                // NOP
+                setState(() {
+                  selectedIconIndex = index;
+                });
               },
             ),
+
           ],
         ),
       ),
