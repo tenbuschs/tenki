@@ -55,13 +55,13 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
               final DocumentSnapshot<Map<String, dynamic>>? newData =
                   snapshot.data;
               late Map<String, dynamic>? currentLocations =
-              newData?.data()?['locationMap'];
+                  newData?.data()?['locationMap'];
 
               return Stack(
                 children: [
                   ListView.builder(
                     itemCount:
-                    (currentLocations?["locations"].length / 2).ceil(),
+                        (currentLocations?["locations"].length / 2).ceil(),
                     itemBuilder: (BuildContext context, int index) {
                       int itemIndex = index * 2;
                       return Row(
@@ -70,15 +70,15 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                             child: GestureDetector(
                               onTap: () {
                                 if (currentLocations?['locations'][itemIndex]
-                                ['title'] !=
+                                        ['title'] !=
                                     "Neuer Lagerort") {
                                   setState(() {
                                     _showOverlay = true;
                                   });
 
                                   currentLocation =
-                                  currentLocations?['locations'][itemIndex]
-                                  ['title'];
+                                      currentLocations?['locations'][itemIndex]
+                                          ['title'];
                                 } else {
                                   setState(() {
                                     _showPopup = true;
@@ -87,7 +87,7 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                               },
                               onLongPress: () {
                                 if (currentLocations?['locations'][itemIndex]
-                                ['title'] !=
+                                        ['title'] !=
                                     "Neuer Lagerort") {
                                   // Show delete button
                                   showModalBottomSheet(
@@ -98,7 +98,7 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                         color: Colors.redAccent,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
+                                              MainAxisAlignment.spaceAround,
                                           children: [
                                             IconButton(
                                               icon: const Icon(Icons.delete,
@@ -106,20 +106,20 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                                   size: 35),
                                               onPressed: () async {
                                                 DatabaseInterface dbInterface =
-                                                DatabaseInterface();
+                                                    DatabaseInterface();
                                                 await dbInterface
                                                     .deleteLocationAndItems(
-                                                    currentLocations?[
-                                                    'locations']
-                                                    [itemIndex]
-                                                    ['title']);
+                                                        currentLocations?[
+                                                                    'locations']
+                                                                [itemIndex]
+                                                            ['title']);
                                                 //close ModalBottomSheet
                                                 Navigator.pop(context);
                                               },
                                             ),
                                             Text(
                                               currentLocations?['locations']
-                                              [itemIndex]['title'] +
+                                                      [itemIndex]['title'] +
                                                   " samt Inhalt dauerhaft löschen?",
                                               style: const TextStyle(
                                                   color: Colors.white,
@@ -138,7 +138,7 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                 padding: const EdgeInsets.all(18),
                                 child: Container(
                                   height:
-                                  MediaQuery.of(context).size.width * 0.4,
+                                      MediaQuery.of(context).size.width * 0.4,
                                   decoration: BoxDecoration(
                                     color: TenkiColor1(),
                                     border: Border.all(color: Colors.grey),
@@ -157,23 +157,23 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                                               color: Colors.grey, width: 2),
                                         ),
                                         child:
-                                        LocationIcons.getLocationItemById(
-                                            id: currentLocations?[
-                                            'locations'][itemIndex]
-                                            ['iconId'],
-                                            size: MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.14),
+                                            LocationIcons.getLocationItemById(
+                                                id: currentLocations?[
+                                                        'locations'][itemIndex]
+                                                    ['iconId'],
+                                                size: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.14),
                                       ),
                                       SizedBox(
                                           height: MediaQuery.of(context)
-                                              .size
-                                              .width *
+                                                  .size
+                                                  .width *
                                               0.03),
                                       Text(
                                         currentLocations?['locations']
-                                        [itemIndex]['title'],
+                                            [itemIndex]['title'],
                                         style: const TextStyle(fontSize: 16),
                                       ),
                                     ],
@@ -184,134 +184,134 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                           ),
                           Expanded(
                             child: itemIndex + 1 <
-                                currentLocations?["locations"].length
+                                    currentLocations?["locations"].length
                                 ? GestureDetector(
-                              onTap: () {
-                                if (currentLocations?['locations']
-                                [itemIndex + 1]['title'] !=
-                                    "Neuer Lagerort") {
-                                  setState(() {
-                                    _showOverlay = true;
-                                  });
+                                    onTap: () {
+                                      if (currentLocations?['locations']
+                                              [itemIndex + 1]['title'] !=
+                                          "Neuer Lagerort") {
+                                        setState(() {
+                                          _showOverlay = true;
+                                        });
 
-                                  currentLocation =
-                                  currentLocations?['locations']
-                                  [itemIndex + 1]['title'];
-                                } else {
-                                  setState(() {
-                                    _showPopup = true;
-                                  });
-                                }
-                              },
-                              onLongPress: () {
-                                if (currentLocations?['locations']
-                                [itemIndex + 1]['title'] !=
-                                    "Neuer Lagerort") {
-                                  // Show delete button
-                                  showModalBottomSheet(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return Container(
-                                        height: 120,
-                                        color: Colors.redAccent,
+                                        currentLocation =
+                                            currentLocations?['locations']
+                                                [itemIndex + 1]['title'];
+                                      } else {
+                                        setState(() {
+                                          _showPopup = true;
+                                        });
+                                      }
+                                    },
+                                    onLongPress: () {
+                                      if (currentLocations?['locations']
+                                              [itemIndex + 1]['title'] !=
+                                          "Neuer Lagerort") {
+                                        // Show delete button
+                                        showModalBottomSheet(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              height: 120,
+                                              color: Colors.redAccent,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                        Icons.delete,
+                                                        color: Colors.white,
+                                                        size: 35),
+                                                    onPressed: () async {
+                                                      DatabaseInterface
+                                                          dbInterface =
+                                                          DatabaseInterface();
+                                                      await dbInterface
+                                                          .deleteLocationAndItems(
+                                                              currentLocations?[
+                                                                      'locations']
+                                                                  [itemIndex +
+                                                                      1]['title']);
+                                                      //close ModalBottomSheet
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  Text(
+                                                    currentLocations?[
+                                                                    'locations']
+                                                                [itemIndex + 1]
+                                                            ['title'] +
+                                                        " samt Inhalt dauerhaft löschen?",
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 16),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        //"Neuer Lagerort" is not allowed to be deletable
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(18),
+                                      child: Container(
+                                        height:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        decoration: BoxDecoration(
+                                          color: TenkiColor1(),
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(3),
+                                        ),
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .spaceAround,
+                                              MainAxisAlignment.center,
                                           children: [
-                                            IconButton(
-                                              icon: const Icon(
-                                                  Icons.delete,
-                                                  color: Colors.white,
-                                                  size: 35),
-                                              onPressed: () async {
-                                                DatabaseInterface
-                                                dbInterface =
-                                                DatabaseInterface();
-                                                await dbInterface
-                                                    .deleteLocationAndItems(
-                                                    currentLocations?[
-                                                    'locations']
-                                                    [itemIndex +
-                                                        1]['title']);
-                                                //close ModalBottomSheet
-                                                Navigator.pop(context);
-                                              },
+                                            Container(
+                                              width: 75,
+                                              height: 75,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: Colors.white,
+                                                border: Border.all(
+                                                    color: Colors.grey,
+                                                    width: 2),
+                                              ),
+                                              child: LocationIcons
+                                                  .getLocationItemById(
+                                                      id: currentLocations?[
+                                                                  'locations']
+                                                              [itemIndex + 1]
+                                                          ['iconId'],
+                                                      size:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.14),
                                             ),
+                                            SizedBox(
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .width *
+                                                    0.03),
                                             Text(
-                                              currentLocations?[
-                                              'locations']
-                                              [itemIndex + 1]
-                                              ['title'] +
-                                                  " samt Inhalt dauerhaft löschen?",
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16),
+                                              currentLocations?['locations']
+                                                  [itemIndex + 1]['title'],
+                                              style:
+                                                  const TextStyle(fontSize: 16),
                                             ),
                                           ],
                                         ),
-                                      );
-                                    },
-                                  );
-                                } else {
-                                  //"Neuer Lagerort" is not allowed to be deletable
-                                }
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(18),
-                                child: Container(
-                                  height:
-                                  MediaQuery.of(context).size.width *
-                                      0.4,
-                                  decoration: BoxDecoration(
-                                    color: TenkiColor1(),
-                                    border:
-                                    Border.all(color: Colors.grey),
-                                    borderRadius:
-                                    BorderRadius.circular(3),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      Container(
-                                        width: 75,
-                                        height: 75,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: Colors.white,
-                                          border: Border.all(
-                                              color: Colors.grey,
-                                              width: 2),
-                                        ),
-                                        child: LocationIcons
-                                            .getLocationItemById(
-                                            id: currentLocations?[
-                                            'locations']
-                                            [itemIndex + 1]
-                                            ['iconId'],
-                                            size:
-                                            MediaQuery.of(context)
-                                                .size
-                                                .width *
-                                                0.14),
                                       ),
-                                      SizedBox(
-                                          height: MediaQuery.of(context)
-                                              .size
-                                              .width *
-                                              0.03),
-                                      Text(
-                                        currentLocations?['locations']
-                                        [itemIndex + 1]['title'],
-                                        style:
-                                        const TextStyle(fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
+                                    ),
+                                  )
                                 : Container(),
                           ),
                         ],
@@ -320,7 +320,7 @@ class _TwoColumnLocationViewState extends State<TwoColumnLocationView> {
                   ),
                   _showOverlay
                       ? Center(
-                      child: StorageTabContent(location: currentLocation))
+                          child: StorageTabContent(location: currentLocation))
                       : const SizedBox(),
                   _showPopup
                       ? const Center(child: PopupAddLocation())
@@ -432,7 +432,6 @@ class StorageTabContentState extends State<StorageTabContent> {
                           ],
                         ),
                         padding: const EdgeInsets.all(10),
-
                         child: Text(
                           widget.location,
                           style: const TextStyle(
@@ -473,8 +472,6 @@ class StorageTabContentState extends State<StorageTabContent> {
                           ),
                         ),
                       )
-
-
                     ],
                   ),
                 ),
@@ -497,7 +494,7 @@ class StorageTabContentState extends State<StorageTabContent> {
                   final DocumentSnapshot<Map<String, dynamic>>? newData =
                       snapshot.data;
                   final Map<String, dynamic>? currentStorageMap =
-                  newData?.data()?['storageMap'];
+                      newData?.data()?['storageMap'];
 
                   // just the items for the current location
                   _items = currentStorageMap?['items']
@@ -521,14 +518,14 @@ class StorageTabContentState extends State<StorageTabContent> {
                                     color: Colors.redAccent,
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.spaceAround,
                                       children: [
                                         IconButton(
                                           icon: const Icon(Icons.delete,
                                               color: Colors.white, size: 35),
                                           onPressed: () async {
                                             DatabaseInterface dbInterface =
-                                            DatabaseInterface();
+                                                DatabaseInterface();
                                             await dbInterface
                                                 .deleteItemByName(item["name"]);
 
@@ -571,16 +568,23 @@ class StorageTabContentState extends State<StorageTabContent> {
                                       children: [
                                         SizedBox(
                                           height: 140,
-                                          width: MediaQuery.of(context).size.width * 0.52,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              0.52,
                                           child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Container(
                                                 height: 45,
                                                 width: 150,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(5.0),
-                                                  color: const Color(0xfff5f5f5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                  color:
+                                                      const Color(0xfff5f5f5),
                                                 ),
                                                 child: FittedBox(
                                                   fit: BoxFit.scaleDown,
@@ -590,13 +594,15 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                   ),
                                                 ),
                                               ),
-
                                               Container(
                                                 height: 45,
                                                 width: 100,
                                                 decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(5.0),
-                                                  color: const Color(0xfff5f5f5),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          5.0),
+                                                  color:
+                                                      const Color(0xfff5f5f5),
                                                 ),
                                                 child: FittedBox(
                                                   fit: BoxFit.scaleDown,
@@ -614,85 +620,118 @@ class StorageTabContentState extends State<StorageTabContent> {
                                           color: Colors.transparent,
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
+                                                MainAxisAlignment.spaceEvenly,
                                             children: [
                                               Container(
                                                 height: 70,
                                                 padding:
-                                                const EdgeInsets.all(10),
+                                                    const EdgeInsets.all(10),
                                                 child: Row(
                                                   children: [
                                                     Container(
                                                         width: 65,
                                                         color:
-                                                        Colors.transparent,
+                                                            Colors.transparent,
                                                         child: const Text(
                                                           "Aktuell:",
                                                           textAlign:
-                                                          TextAlign.center,
+                                                              TextAlign.center,
                                                         )),
                                                     Container(
-                                                      width: MediaQuery.of(context).size.width * 0.2,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.2,
                                                       height: 45,
                                                       decoration: BoxDecoration(
-                                                        borderRadius: BorderRadius.circular(5.0),
-                                                        color: const Color(0xfff5f5f5),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.0),
+                                                        color: const Color(
+                                                            0xfff5f5f5),
                                                       ),
                                                       child: TextFormField(
-                                                        initialValue: item['stockQuantity'].toString(),
-                                                        keyboardType: TextInputType.number,
-                                                        onFieldSubmitted: (value) => updateStockQuantity(value, item),
-                                                        decoration: InputDecoration(
-                                                          contentPadding: const EdgeInsets.symmetric(horizontal: 15.0),
+                                                        initialValue: item[
+                                                                'stockQuantity']
+                                                            .toString(),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateStockQuantity(
+                                                                value, item),
+                                                        decoration:
+                                                            InputDecoration(
+                                                          contentPadding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      15.0),
                                                           hintText: 'Bestand',
-                                                          border: InputBorder.none,
+                                                          border:
+                                                              InputBorder.none,
                                                         ),
-                                                        textAlign: TextAlign.center,
-                                                        style: TextStyle(
-                                                        ),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(),
                                                       ),
                                                     ),
-
                                                   ],
                                                 ),
                                               ),
                                               Container(
                                                 height: 70,
                                                 padding:
-                                                const EdgeInsets.all(10),
+                                                    const EdgeInsets.all(10),
                                                 child: Row(
                                                   children: [
                                                     Container(
                                                         width: 65,
                                                         color:
-                                                        Colors.transparent,
+                                                            Colors.transparent,
                                                         child: const Text(
                                                           "Soll: ",
                                                           textAlign:
-                                                          TextAlign.center,
+                                                              TextAlign.center,
                                                         )),
                                                     Container(
-                                                      width: MediaQuery.of(context).size.width * 0.2,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.2,
                                                       decoration: BoxDecoration(
                                                         color: Colors.white,
-                                                        borderRadius: BorderRadius.circular(5.0),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(5.0),
                                                       ),
                                                       child: TextFormField(
-                                                        initialValue: item['targetQuantity'].toString(),
-                                                        keyboardType: TextInputType.number,
-                                                        onFieldSubmitted: (value) => updateTargetQuantity(value, item),
-                                                        textAlign: TextAlign.center,
+                                                        initialValue: item[
+                                                                'targetQuantity']
+                                                            .toString(),
+                                                        keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                        onFieldSubmitted: (value) =>
+                                                            updateTargetQuantity(
+                                                                value, item),
+                                                        textAlign:
+                                                            TextAlign.center,
                                                         style: const TextStyle(
-                                                          fontWeight: FontWeight.normal,
+                                                          fontWeight:
+                                                              FontWeight.normal,
                                                           fontSize: 14,
                                                         ),
-                                                        decoration: const InputDecoration(
+                                                        decoration:
+                                                            const InputDecoration(
                                                           hintText: 'Soll',
-                                                          border: InputBorder.none,
+                                                          border:
+                                                              InputBorder.none,
                                                         ),
                                                       ),
                                                     ),
-
                                                   ],
                                                 ),
                                               ),
@@ -708,15 +747,15 @@ class StorageTabContentState extends State<StorageTabContent> {
                                           color: TenkiColor3(),
                                           child: Column(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.center,
+                                                MainAxisAlignment.center,
                                             crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                                CrossAxisAlignment.center,
                                             children: [
                                               Container(
                                                 width: 60,
                                                 height: 60,
                                                 padding:
-                                                const EdgeInsets.all(8.0),
+                                                    const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(
                                                     shape: BoxShape.circle,
                                                     color: Colors.white,
@@ -725,8 +764,8 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                         width: 1)),
                                                 child: HelperCategoryItems
                                                     .getCategoryWidget(
-                                                    item['shoppingCategory']
-                                                        .toString()),
+                                                        item['shoppingCategory']
+                                                            .toString()),
                                               ),
                                               const SizedBox(height: 5),
                                               Text(item['shoppingCategory']
@@ -847,11 +886,11 @@ class PopupAddLocationState extends State<PopupAddLocation> {
             children: <Widget>[
               const Center(
                   child: Text(
-                    "Neuer Lagerort...",
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
-                  )),
+                "Neuer Lagerort...",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              )),
               const SizedBox(height: 15.0),
               Container(
                 decoration: BoxDecoration(
@@ -884,22 +923,22 @@ class PopupAddLocationState extends State<PopupAddLocation> {
                   color: TenkiColor1(),
                   child: GridView.builder(
                     gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 4,
                     ),
                     itemCount: 16,
                     itemBuilder: (BuildContext context, int index) {
                       Widget iconData =
-                      locationIcons[index]; // get the icon data
+                          locationIcons[index]; // get the icon data
                       Color borderColor =
-                      _selected[index] ? Colors.red : Colors.transparent;
+                          _selected[index] ? Colors.red : Colors.transparent;
                       return GestureDetector(
                         onTap: () {
                           setState(() {
                             _selected.fillRange(0, 16,
                                 false); // clear previously selected circle
                             _selected[index] =
-                            true; // mark current circle as selected
+                                true; // mark current circle as selected
                           });
                         },
                         child: Container(
@@ -959,13 +998,15 @@ class PopupAddLocationState extends State<PopupAddLocation> {
                             DatabaseInterface dbInterface = DatabaseInterface();
                             await dbInterface.addLocation(
                               newLocationController.text,
-                              _selected.indexWhere((element) => element == true),
+                              _selected
+                                  .indexWhere((element) => element == true),
                             );
 
                             // Close popup
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => TenkiMainPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => TenkiMainPage()),
                             );
                           } else {
                             // Show error message
@@ -1030,7 +1071,8 @@ class PopupAddItemState extends State<PopupAddItem> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Center(
-        child: Text('Artikel hinzufügen',
+        child: Text(
+          'Artikel hinzufügen',
           style: TextStyle(
             fontWeight: FontWeight.w400,
           ),
@@ -1053,7 +1095,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 25),
@@ -1076,7 +1118,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 5),
@@ -1093,7 +1135,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
             ),
             const SizedBox(height: 25),
@@ -1123,7 +1165,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding:
-                const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
               ),
               dropdownColor: TenkiColor2(),
             ),
@@ -1136,7 +1178,6 @@ class PopupAddItemState extends State<PopupAddItem> {
                 });
               },
             ),
-
           ],
         ),
       ),
@@ -1182,7 +1223,8 @@ class PopupAddItemState extends State<PopupAddItem> {
               // retrieve the values entered by the user
               String name = nameController.text;
               String? unit = selectedUnit;
-              double targetQuantity = double.tryParse(targetQuantityController.text) ?? 0;
+              double targetQuantity =
+                  double.tryParse(targetQuantityController.text) ?? 0;
               double stockQuantity = 0;
               double buyQuantity = targetQuantity - stockQuantity;
 
@@ -1212,7 +1254,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                   builder: (context) => AlertDialog(
                     title: Text('Fehler'),
                     backgroundColor: TenkiColor3(),
-                    content: Text('Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
+                    content: Text(
+                        'Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
@@ -1229,8 +1272,6 @@ class PopupAddItemState extends State<PopupAddItem> {
             child: Icon(Icons.check, color: Colors.black87, size: 35),
           ),
         ),
-
-
       ],
       backgroundColor: TenkiColor3(),
       shape: RoundedRectangleBorder(

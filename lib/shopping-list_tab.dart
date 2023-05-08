@@ -9,7 +9,6 @@ import 'dart:ui'; // for image filter; blur
 import 'tenki_material/units.dart';
 import 'package:tenki/main_page.dart';
 
-
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
 
@@ -372,17 +371,18 @@ class _ShoppingListState extends State<ShoppingList> {
                     child: const Icon(Icons.close),
                   ),
                 ),
-
                 InkWell(
                   onTap: () async {
                     // Confirm button action
 
                     // Check if name and unit have been selected
-                    if (nameController.text.isNotEmpty && selectedUnit != "-Bitte wählen-") {
+                    if (nameController.text.isNotEmpty &&
+                        selectedUnit != "-Bitte wählen-") {
                       // retrieve the values entered by the user
                       String name = nameController.text;
                       String? unit = selectedUnit;
-                      double buyQuantity = double.tryParse(buyQuantityController.text) ?? 0;
+                      double buyQuantity =
+                          double.tryParse(buyQuantityController.text) ?? 0;
 
                       // Create a new map object with the new entry details
                       Map<String, dynamic> newEntry = {
@@ -425,7 +425,6 @@ class _ShoppingListState extends State<ShoppingList> {
                     child: const Icon(Icons.check),
                   ),
                 ),
-
               ],
               backgroundColor: TenkiColor3(),
               shape: RoundedRectangleBorder(
