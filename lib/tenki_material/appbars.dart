@@ -102,10 +102,17 @@ class AppBars{
   static AppBar dropdownAppBar(String title, BuildContext context){
 
     return AppBar(
-      leading: TenkiIcons.tenki(size: 38),
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       backgroundColor: TenkiColor2(),
-      //TODO: Leading as button to welcome page
-      title: Center(
+     title: Center(
         child: Text(title,
           style: const TextStyle(
             color: Colors.black,

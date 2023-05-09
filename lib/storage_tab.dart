@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tenki/main_page.dart';
 import 'barcode_scan.dart' as barcode_scan_page;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -653,27 +654,28 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                       ),
                                                       child: TextFormField(
                                                         initialValue: item[
-                                                                'stockQuantity']
+                                                        'stockQuantity']
                                                             .toString(),
                                                         keyboardType:
-                                                            TextInputType
-                                                                .number,
+                                                        TextInputType
+                                                            .number,
+                                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
                                                         onFieldSubmitted: (value) =>
                                                             updateStockQuantity(
                                                                 value, item),
                                                         decoration:
-                                                            InputDecoration(
+                                                        InputDecoration(
                                                           contentPadding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      15.0),
+                                                          const EdgeInsets
+                                                              .symmetric(
+                                                              horizontal:
+                                                              15.0),
                                                           hintText: 'Bestand',
                                                           border:
-                                                              InputBorder.none,
+                                                          InputBorder.none,
                                                         ),
                                                         textAlign:
-                                                            TextAlign.center,
+                                                        TextAlign.center,
                                                         style: TextStyle(),
                                                       ),
                                                     ),
@@ -714,6 +716,7 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                         keyboardType:
                                                             TextInputType
                                                                 .number,
+                                                        inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
                                                         onFieldSubmitted: (value) =>
                                                             updateTargetQuantity(
                                                                 value, item),
@@ -1108,6 +1111,7 @@ class PopupAddItemState extends State<PopupAddItem> {
             TextField(
               controller: stockQuantityController,
               keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
               cursorColor: TenkiColor1(),
               decoration: InputDecoration(
                 labelText: 'Aktuelle Menge',
@@ -1125,6 +1129,7 @@ class PopupAddItemState extends State<PopupAddItem> {
             TextField(
               controller: targetQuantityController,
               keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
               cursorColor: TenkiColor1(),
               decoration: InputDecoration(
                 labelText: 'Soll - Menge',

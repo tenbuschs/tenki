@@ -4,4 +4,5 @@ List<String> unitList = ['-Bitte wählen-',
   'l', 'ml',
   'Stück',
   'Packungen',
+  'Dosen',
 ];

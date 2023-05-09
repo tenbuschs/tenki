@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:tenki/firestore_interface.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tenki/tenki_material/tenki_colors.dart';
 import 'package:tenki/tenki_material/tenki_icons.dart';
 import 'tenki_material/category_items.dart';
 import 'dart:ui'; // for image filter; blur
 import 'tenki_material/units.dart';
-import 'package:tenki/main_page.dart';
 
 class ShoppingList extends StatefulWidget {
   const ShoppingList({Key? key}) : super(key: key);
@@ -230,6 +229,66 @@ class _ShoppingListState extends State<ShoppingList> {
                           );
                         },
                       ),
+                      Positioned(
+                        top: 5.0,
+                        right: 5.0,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: TenkiColor3(),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  title: const Text('Wie funktioniert die TENKI Einkaufsliste?'),
+                                  content: const Text(
+                                      "Die Gegenstände deiner Einkaufsliste bestehen aus drei verschiedenen Gruppen:\nDie Differenz zwischen Soll und Ist Bestand deines Lagers. Diese werden live geupdatet, du musst also nur deine Bestände regelmäßig eintragen, dann ist deine Einkaufsliste auch immer aktuell.\nItems, die du für Rezepte brauchst: Diese kannst du bequem direkt im Rezept zur Einkaufsliste hinzufügen.\nArtikel, die du zwar nicht regelmäßig brauchst, aber für den nächsten Einkauf aufschreiben möchtest kannst du ganz einfach über das “plus” auf die Liste setzen.\nWenn du einkaufen warst, kannst du in der Liste die Artikel entweder abhaken - wir sie automatisch in deinen Vorrat."),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'Verstanden',
+                                          style:
+                                          TextStyle(color: Colors.black87, letterSpacing: 1.5),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: TenkiColor1(),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(7.0),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 8.0),
+                                          elevation: 3.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.black87,
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            side: const BorderSide(width: 1.0, color: Colors.black87),
+                            elevation: 3.0,
+                            backgroundColor: TenkiColor3(),
+                          ),
+                        ),
+                      ),
+
                       // blurred bottom part
                       Positioned(
                         bottom: 0.0,
@@ -248,7 +307,8 @@ class _ShoppingListState extends State<ShoppingList> {
                       ),
                     ],
                   ),
-                  floatingActionButton: _buttonAddExtraItem(context)),
+                  floatingActionButton: _buttonAddExtraItem(context)
+              ),
             );
           } else {
             return const Center(child: Text("Unexpected Error"));
@@ -297,6 +357,8 @@ class _ShoppingListState extends State<ShoppingList> {
                       controller: buyQuantityController,
                       keyboardType: TextInputType.number,
                       cursorColor: TenkiColor1(),
+                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+
                       decoration: InputDecoration(
                         labelText: 'Einzukaufende Menge',
                         labelStyle:
