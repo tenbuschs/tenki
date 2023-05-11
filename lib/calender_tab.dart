@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'tenki_material/tenki_icons.dart';
 import 'tenki_material/tenki_colors.dart';
 
 class Calender extends StatelessWidget {
@@ -17,8 +16,20 @@ class Calender extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(10.0),
       //color: Colors.white,
-      child: Center(
-        child: TenkiIcons.calendar(size:150, color: TenkiColor1()),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Icons.calendar_month_outlined,  size:150, color: TenkiColor1()),
+          const SizedBox(height: 20.0),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.5,
+            child: const Text(
+              'Hier kannst du bald deine Woche mit TENKI planen!',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.black87, letterSpacing: 1.2),
+            ),
+          ),
+        ],
       ),
     );
   }

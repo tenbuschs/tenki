@@ -15,17 +15,19 @@ class AppBars{
 
     return AppBar(
       leading: GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
-        );
-      },
-      child: TenkiIcons.tenki(size: 38),
-    ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),),
       ),
       backgroundColor: TenkiColor2(),
@@ -100,13 +102,22 @@ class AppBars{
   static AppBar dropdownAppBar(String title, BuildContext context){
 
     return AppBar(
-      leading: TenkiIcons.tenki(size: 38),
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       backgroundColor: TenkiColor2(),
-      //TODO: Leading as button to welcome page
-      title: Center(
+     title: Center(
         child: Text(title,
           style: const TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 5,
           ),),
       ),
       actions: [
@@ -130,10 +141,10 @@ class AppBars{
         title,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),
       ),
     );
   }
-
-
 }
