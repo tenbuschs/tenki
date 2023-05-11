@@ -1230,7 +1230,7 @@ class PopupAddItemState extends State<PopupAddItem> {
               String? unit = selectedUnit;
               double targetQuantity =
                   double.tryParse(targetQuantityController.text) ?? 0;
-              double stockQuantity = 0;
+              double stockQuantity = double.tryParse(stockQuantityController.text) ?? 0;
               double buyQuantity = targetQuantity - stockQuantity;
 
               // check if required fields are not empty
