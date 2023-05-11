@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tenki/main_page.dart';
+import 'package:TENKI/main_page.dart';
 import 'barcode_scan.dart' as barcode_scan_page;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'firestore_interface.dart';

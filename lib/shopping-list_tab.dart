@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tenki/firestore_interface.dart';
-import 'package:tenki/tenki_material/tenki_colors.dart';
-import 'package:tenki/tenki_material/tenki_icons.dart';
+import 'package:TENKI/firestore_interface.dart';
+import 'package:TENKI/tenki_material/tenki_colors.dart';
+import 'package:TENKI/tenki_material/tenki_icons.dart';
 import 'tenki_material/category_items.dart';
 import 'dart:ui'; // for image filter; blur
 import 'tenki_material/units.dart';

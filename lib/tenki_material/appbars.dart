@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tenki/tenki_material/tenki_colors.dart';
+import 'package:TENKI/tenki_material/tenki_colors.dart';
 import 'tenki_icons.dart';
-import 'package:tenki/logout_page.dart' as logout_page;
-import 'package:tenki/profile_page.dart' as profile_page;
-import 'package:tenki/settings_page.dart' as settings_page;
-import 'package:tenki/about_tenki_page.dart' as about_tenki_page;
-import 'package:tenki/feedback_page.dart' as feedback_page;
-import 'package:tenki/homepage.dart' as homepage;
+import 'package:TENKI/logout_page.dart' as logout_page;
+import 'package:TENKI/profile_page.dart' as profile_page;
+import 'package:TENKI/settings_page.dart' as settings_page;
+import 'package:TENKI/about_tenki_page.dart' as about_tenki_page;
+import 'package:TENKI/feedback_page.dart' as feedback_page;
+import 'package:TENKI/homepage.dart' as homepage;
 
 
 class AppBars{

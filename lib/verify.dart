@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/login_register_page.dart';
-import 'package:tenki/register_page.dart';
+import 'package:TENKI/login_register_page.dart';
+import 'package:TENKI/register_page.dart';
 import 'firestore_interface.dart';
 
 class VerifyPage extends StatefulWidget {

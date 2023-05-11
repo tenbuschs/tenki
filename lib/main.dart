@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tenki/widget_tree.dart';
+import 'package:TENKI/widget_tree.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 

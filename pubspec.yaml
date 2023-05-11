@@ -74,11 +74,11 @@ flutter:
 
 
   fonts:
-    - family: Pontano Sans
-    - fonts:
-         - asset: tenki_material/fonts/PontanoSans-Bold.ttf
-         - asset: tenki_material/fonts/PontanoSans-Light.ttf
-         - asset: tenki_material/fonts/PontanoSans-Medium.ttf
-         - asset: tenki_material/fonts/PontanoSans-Regular.ttf
-         - asset: tenki_material/fonts/PontanoSans-SemiBold.ttf
+    - family: PontanoSans
+      fonts:
+         - asset: lib/tenki_material/fonts/PontanoSans-Bold.ttf
+         - asset: lib/tenki_material/fonts/PontanoSans-Light.ttf
+         - asset: lib/tenki_material/fonts/PontanoSans-Medium.ttf
+         - asset: lib/tenki_material/fonts/PontanoSans-Regular.ttf
+         - asset: lib/tenki_material/fonts/PontanoSans-SemiBold.ttf
            weight: 300

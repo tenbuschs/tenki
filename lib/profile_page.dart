@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tenki/tenki_material/tenki_colors.dart';
+import 'package:TENKI/tenki_material/tenki_colors.dart';
 import 'tenki_material/appbars.dart';
 import 'firestore_interface.dart';
 import 'package:flutter/services.dart'; //copy to clipboard
