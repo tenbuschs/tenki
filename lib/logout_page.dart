@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/auth.dart';
+import 'package:TENKI/auth.dart';
 import 'tenki_material/appbars.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'login_register_page.dart';

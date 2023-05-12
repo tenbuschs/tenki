@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tenki/homepage.dart';
-import 'package:tenki/login_register_page.dart';
+import 'package:TENKI/homepage.dart';
+import 'package:TENKI/login_register_page.dart';
 import 'tenki_material/appbars.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'firestore_interface.dart';

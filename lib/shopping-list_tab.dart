@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tenki/firestore_interface.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tenki/tenki_material/tenki_colors.dart';
-import 'package:tenki/tenki_material/tenki_icons.dart';
+import 'package:flutter/services.dart';
+import 'package:TENKI/firestore_interface.dart';
+import 'package:TENKI/tenki_material/tenki_colors.dart';
+import 'package:TENKI/tenki_material/tenki_icons.dart';
 import 'tenki_material/category_items.dart';
 import 'dart:ui'; // for image filter; blur
 import 'tenki_material/units.dart';
@@ -113,7 +113,7 @@ class _ShoppingListState extends State<ShoppingList> {
                                           child: Text(
                                             category,
                                             style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 2,
                                               fontSize: 20,
                                             ),
                                           ),
@@ -177,7 +177,7 @@ class _ShoppingListState extends State<ShoppingList> {
                                                   child: Text(item['name']),
                                                 ),
                                                 Expanded(
-                                                  flex: 2,
+                                                  flex: 1,
                                                   child: Text(
                                                       item['buyQuantity']
                                                           .toString()),
@@ -229,6 +229,66 @@ class _ShoppingListState extends State<ShoppingList> {
                           );
                         },
                       ),
+                      Positioned(
+                        top: 5.0,
+                        right: 5.0,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  backgroundColor: TenkiColor3(),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  title: const Text('Wie funktioniert die TENKI Einkaufsliste?'),
+                                  content: const Text(
+                                      "Die Gegenstände deiner Einkaufsliste bestehen aus drei verschiedenen Gruppen:\nDie Differenz zwischen Soll und Ist Bestand deines Lagers. Diese werden live geupdatet, du musst also nur deine Bestände regelmäßig eintragen, dann ist deine Einkaufsliste auch immer aktuell.\nItems, die du für Rezepte brauchst: Diese kannst du bequem direkt im Rezept zur Einkaufsliste hinzufügen.\nArtikel, die du zwar nicht regelmäßig brauchst, aber für den nächsten Einkauf aufschreiben möchtest kannst du ganz einfach über das “plus” auf die Liste setzen.\nWenn du einkaufen warst, kannst du in der Liste die Artikel entweder abhaken - wir sie automatisch in deinen Vorrat."),
+                                  actions: [
+                                    Center(
+                                      child: TextButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        child: Text(
+                                          'Verstanden',
+                                          style:
+                                          TextStyle(color: Colors.black87, letterSpacing: 1.5),
+                                        ),
+                                        style: TextButton.styleFrom(
+                                          backgroundColor: TenkiColor1(),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(7.0),
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 8.0),
+                                          elevation: 3.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.info_outline,
+                                color: Colors.black87,
+                              ),
+                            ],
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            side: const BorderSide(width: 1.0, color: Colors.black87),
+                            elevation: 3.0,
+                            backgroundColor: TenkiColor3(),
+                          ),
+                        ),
+                      ),
+
                       // blurred bottom part
                       Positioned(
                         bottom: 0.0,
@@ -247,7 +307,8 @@ class _ShoppingListState extends State<ShoppingList> {
                       ),
                     ],
                   ),
-                  floatingActionButton: _buttonAddExtraItem(context)),
+                  floatingActionButton: _buttonAddExtraItem(context)
+              ),
             );
           } else {
             return const Center(child: Text("Unexpected Error"));
@@ -276,6 +337,7 @@ class _ShoppingListState extends State<ShoppingList> {
                     TextField(
                       controller: nameController,
                       cursorColor: TenkiColor1(),
+                      maxLength: 20,
                       decoration: InputDecoration(
                         labelText: 'Name',
                         labelStyle:
@@ -295,6 +357,8 @@ class _ShoppingListState extends State<ShoppingList> {
                       controller: buyQuantityController,
                       keyboardType: TextInputType.number,
                       cursorColor: TenkiColor1(),
+                      inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+
                       decoration: InputDecoration(
                         labelText: 'Einzukaufende Menge',
                         labelStyle:
@@ -353,45 +417,75 @@ class _ShoppingListState extends State<ShoppingList> {
                 ),
               ),
               actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.cancel_outlined,
-                      size: 30, color: Colors.grey),
-                  onPressed: () {
-                    // Close Alert with No Operation
+                InkWell(
+                  onTap: () {
+                    // Close button action
                     Navigator.of(context).pop();
                   },
+                  child: Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 1),
+                      color: TenkiColor4(),
+                    ),
+                    child: const Icon(Icons.close),
+                  ),
                 ),
-                IconButton(
-                  icon:
-                      Icon(Icons.check_circle, color: TenkiColor1(), size: 30),
-                  onPressed: () async {
-                    // retrieve the values entered by the user
-                    String name = nameController.text;
-                    String? unit = selectedUnit;
-                    double buyQuantity =
-                        double.tryParse(buyQuantityController.text) ?? 0;
+                InkWell(
+                  onTap: () async {
+                    // Confirm button action
 
-                    // Create a new map object with the new entry details
-                    Map<String, dynamic> newEntry = {
-                      "name": name,
-                      "location": "xtra_item",
-                      "unit": unit,
-                      "targetQuantity": 0,
-                      "stockQuantity": 0,
-                      "buyQuantity": buyQuantity,
-                      "shoppingCategory": "Eigene Artikel",
-                    };
+                    // Check if name and unit have been selected
+                    if (nameController.text.isNotEmpty &&
+                        selectedUnit != "-Bitte wählen-") {
+                      // retrieve the values entered by the user
+                      String name = nameController.text;
+                      String? unit = selectedUnit;
+                      double buyQuantity =
+                          double.tryParse(buyQuantityController.text) ?? 0;
 
-                    // call function to add the new item
-                    DatabaseInterface dbInterface = DatabaseInterface();
-                    await dbInterface.addItemToStorageMap(newEntry);
+                      // Create a new map object with the new entry details
+                      Map<String, dynamic> newEntry = {
+                        "name": name,
+                        "location": "xtra_item",
+                        "unit": unit,
+                        "targetQuantity": 0,
+                        "stockQuantity": 0,
+                        "buyQuantity": buyQuantity,
+                        "shoppingCategory": "Eigene Artikel",
+                      };
 
-                    // Refresh the View
-                    setState(() {});
+                      // call function to add the new item
+                      DatabaseInterface dbInterface = DatabaseInterface();
+                      await dbInterface.addItemToStorageMap(newEntry);
 
-                    // Close AlertDialog
-                    Navigator.of(context).pop();
+                      // Refresh the View
+                      setState(() {});
+
+                      // Close AlertDialog
+                      Navigator.of(context).pop();
+                    } else {
+                      // Show error message
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text(
+                              'Bitte gib einen Namen ein und wähle eine Einheit aus!'),
+                        ),
+                      );
+                    }
                   },
+                  child: Container(
+                    width: 40.0,
+                    height: 40.0,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 1),
+                      color: TenkiColor1(),
+                    ),
+                    child: const Icon(Icons.check),
+                  ),
                 ),
               ],
               backgroundColor: TenkiColor3(),
@@ -403,8 +497,11 @@ class _ShoppingListState extends State<ShoppingList> {
           },
         );
       },
-      backgroundColor: TenkiColor1(),
-      child: TenkiIcons.add(size: 45, color: Colors.black),
+      backgroundColor: TenkiColor2(),
+      shape: const CircleBorder(
+        side: BorderSide(color: Colors.black87, width: 1),
+      ),
+      child: TenkiIcons.add(size: 35, color: Colors.black87),
     );
   }
 }

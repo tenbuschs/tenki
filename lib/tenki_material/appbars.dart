@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:tenki/tenki_material/tenki_colors.dart';
+import 'package:TENKI/tenki_material/tenki_colors.dart';
 import 'tenki_icons.dart';
-import 'package:tenki/logout_page.dart' as logout_page;
-import 'package:tenki/profile_page.dart' as profile_page;
-import 'package:tenki/settings_page.dart' as settings_page;
-import 'package:tenki/about_tenki_page.dart' as about_tenki_page;
-import 'package:tenki/feedback_page.dart' as feedback_page;
-import 'package:tenki/homepage.dart' as homepage;
+import 'package:TENKI/logout_page.dart' as logout_page;
+import 'package:TENKI/profile_page.dart' as profile_page;
+import 'package:TENKI/settings_page.dart' as settings_page;
+import 'package:TENKI/about_tenki_page.dart' as about_tenki_page;
+import 'package:TENKI/feedback_page.dart' as feedback_page;
+import 'package:TENKI/homepage.dart' as homepage;
 
 
 class AppBars{
@@ -15,17 +15,19 @@ class AppBars{
 
     return AppBar(
       leading: GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
-        );
-      },
-      child: TenkiIcons.tenki(size: 38),
-    ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       title: Center(
         child: Text(title, style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),),
       ),
       backgroundColor: TenkiColor2(),
@@ -100,13 +102,22 @@ class AppBars{
   static AppBar dropdownAppBar(String title, BuildContext context){
 
     return AppBar(
-      leading: TenkiIcons.tenki(size: 38),
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+          );
+        },
+        child: TenkiIcons.tenki(size: 38),
+      ),
       backgroundColor: TenkiColor2(),
-      //TODO: Leading as button to welcome page
-      title: Center(
+     title: Center(
         child: Text(title,
           style: const TextStyle(
             color: Colors.black,
+            fontWeight: FontWeight.w400,
+            letterSpacing: 5,
           ),),
       ),
       actions: [
@@ -130,10 +141,10 @@ class AppBars{
         title,
         style: const TextStyle(
           color: Colors.black,
+          fontWeight: FontWeight.w400,
+          letterSpacing: 5,
         ),
       ),
     );
   }
-
-
 }

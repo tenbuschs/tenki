@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tenki/auth.dart';
+import 'package:TENKI/auth.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'register_page.dart';
@@ -142,8 +142,7 @@ class _LoginPageState extends State<LoginPage> {
 
           print(await dbInterface.doesUserMapExist());
           if (await dbInterface.doesUserMapExist()) {
-
-            householdId= await dbInterface.getHouseholdId();
+            householdId = await dbInterface.getHouseholdId();
             Navigator.of(context).pushReplacement(
               MaterialPageRoute(builder: (context) => TenkiHomePage()),
             );
@@ -255,6 +254,7 @@ class _LoginPageState extends State<LoginPage> {
         style: TextStyle(
           color: TenkiColor5(),
           fontSize: 16,
+          fontFamily: 'Pontana Sans',
         ),
         textAlign: TextAlign.left,
       ),

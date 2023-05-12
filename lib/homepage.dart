@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-
-
 import 'main_page.dart' as main_page;
-
 import 'tenki_material/tenki_colors.dart';
 import 'firestore_interface.dart';
-
 
 class TenkiHomePage extends StatefulWidget {
   @override
@@ -14,44 +10,66 @@ class TenkiHomePage extends StatefulWidget {
 
 class _TenkiHomePageState extends State<TenkiHomePage>
     with SingleTickerProviderStateMixin {
-  late TabController _tabController;
+  final ScrollController _scrollController = ScrollController();
 
-
+  void _scrollToBottom() {
+    _scrollController.animateTo(
+      _scrollController.position.maxScrollExtent,
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.easeInOut,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    final double remainingHeight = MediaQuery.of(context).size.height - 200.0;
+    final double remainingHeight = MediaQuery.of(context).size.height - 300.0;
 
     return Scaffold(
-
+      backgroundColor: TenkiColor1(),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: 200,
-              color: TenkiColor1(),
-              alignment: Alignment.center,
+            GestureDetector(
+              onTap: _scrollToBottom,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'TENKI',
-                    style: TextStyle(
-                      fontSize: 72,
-                      color: TenkiColor5(),
-                      fontWeight: FontWeight.w300,                 ),
-                  ),
-                  SizedBox(height: 16),
-                  Text(
-                    'für deinen smarten Alltag',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: TenkiColor5(),
-                      fontWeight: FontWeight.w300,
+                  Container(
+                    height: MediaQuery.of(context).size.height-250,
+                    color:TenkiColor1(),
+                    alignment: Alignment.center,
+                    ),
+                  Container(
+                    height: 200,
+                    color: TenkiColor1(),
+                    alignment: Alignment.center,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'TENKI',
+                          style: TextStyle(
+                            fontSize: 72,
+                            color: TenkiColor5(),
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                        SizedBox(height: 16),
+                        Text(
+                          'für deinen smarten Alltag',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: TenkiColor5(),
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  Container(height:50, color: TenkiColor1(), alignment: Alignment.center),
                 ],
               ),
             ),

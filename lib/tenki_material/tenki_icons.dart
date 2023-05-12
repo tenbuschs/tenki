@@ -12,10 +12,7 @@
 
 import 'package:flutter/material.dart';
 
-
-
 class TenkiIcons {
-
   static Widget add({double size = 24, Color color = Colors.black}) {
     return _buildIcon('add', size, color);
   }
@@ -188,6 +185,29 @@ class TenkiIcons {
     return _buildIcon('chesss_rook', size, color);
   }
 
+  static Widget milchtuete({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('milchtuete', size, color);
+  }
+
+  static Widget geschenk({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('geschenk', size, color);
+  }
+
+  static Widget hund({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('hund', size, color);
+  }
+
+  static Widget brot({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('brot', size, color);
+  }
+
+  static Widget toiletpaper({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('toiletpaper', size, color);
+  }
+
+  static Widget werkzeug({double size = 24, Color color = Colors.black}) {
+    return _buildIcon('werkzeug', size, color);
+  }
 
 
 
@@ -201,7 +221,4 @@ class TenkiIcons {
       ),
     );
   }
-
 }
-
-

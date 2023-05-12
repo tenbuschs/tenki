@@ -1,11 +1,11 @@
 {
-    "name": "tenki",
-    "short_name": "tenki",
+    "name": "TENKI - Vorratsmanagement",
+    "short_name": "TENKI",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "Tenki",
+    "description": "TENKI",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

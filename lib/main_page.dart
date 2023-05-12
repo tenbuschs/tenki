@@ -93,16 +93,17 @@ class _TenkiMainPageState extends State<TenkiMainPage>
           controller: _tabController,
           tabs: <Widget>[
             Container(
-              child: TenkiIcons.storage(size: 50),
+              //child: Icon(Icons.shelves, size: 50, color: Colors.black),
+                child: TenkiIcons.box_open (size: 50),
             ),
             Container(
               child: Icon(Icons.menu_book, size: 50, color: Colors.black),
             ),
             Container(
-              child: TenkiIcons.shopping_bag(size: 50),
+              child: Icon(Icons.shopping_bag_outlined, size: 50, color: Colors.black),
             ),
             Container(
-              child: TenkiIcons.calendar(size: 50),
+              child: Icon(Icons.calendar_month_outlined, size: 50, color: Colors.black),
             ),
           ],
           indicator: BoxDecoration(

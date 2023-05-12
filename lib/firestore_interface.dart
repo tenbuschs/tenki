@@ -224,7 +224,10 @@ class DatabaseInterface {
     await addUserMap(householdId);
   }
 
-  /*Future<String?> getHouseholdName(String householdId) async {
+  Future<String?> getHouseholdName() async {
+
+    String householdId = await getHouseholdId();
+
     // Get a reference to the household document
     DocumentReference docRef = FirebaseFirestore.instance
         .collection('householdMaps')
@@ -242,7 +245,7 @@ class DatabaseInterface {
       return null;
     }
   }
-*/
+
 
   Future<String> getHouseholdId() async {
     uid = FirebaseAuth.instance.currentUser!.uid;
