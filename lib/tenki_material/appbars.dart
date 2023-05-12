@@ -42,15 +42,6 @@ class AppBars{
                 ),
 
                 const PopupMenuItem<int>(
-                  value: 1,
-                  child: Text("Einstellungen", style: TextStyle(fontWeight: FontWeight.w400)),
-                ),
-
-                const PopupMenuItem<int>(
-                  value: 2,
-                  child: Text("Über uns", style: TextStyle(fontWeight: FontWeight.w400)),
-                ),
-                const PopupMenuItem<int>(
                   value: 3,
                   child: Text("Feedback", style: TextStyle(fontWeight: FontWeight.w400)),
                 ),
@@ -69,19 +60,9 @@ class AppBars{
               } else if(value == 1){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const settings_page.Settings()),
-                );
-              } else if(value == 2){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const about_tenki_page.AboutTenki()),
-                );
-              } else if(value == 3){
-                Navigator.push(
-                  context,
                   MaterialPageRoute(builder: (context) => const feedback_page.Feedback()),
                 );
-              } else if(value == 4){
+              } else if(value == 2){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => logout_page.LogoutPage()),
