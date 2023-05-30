@@ -369,6 +369,7 @@ class StorageTabContentState extends State<StorageTabContent> {
       // padding: const EdgeInsets.all(10.0),
       child: Column(
         children: [
+
           Container(
             decoration: BoxDecoration(
               //color: Colors.grey,
@@ -439,6 +440,61 @@ class StorageTabContentState extends State<StorageTabContent> {
                             letterSpacing: 2,
                             fontSize: 18.0,
                           ),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: TenkiColor3(),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                title: const Text('Wie funktioniert das TENKI Vorratslager?'),
+                                content: const Text(
+                                    "Zunächst legst du dir deine Lagerorte, wie du sie zu Hause trennst, an. Hierfür kannst du auf der Vorratsseite einen Ort mit einem Icon deiner Wahl hinzufügen.\nAnschließend fügst du die im jeweiligen Lagerort liegenden Items hinzu. Dazu drücke auf das 'Plus' und gib einen Namen, eine Ist- und Sollmenge, sowie deine präferierte Einheit an.\nDie Differenz zwischen Soll und Ist Bestand deines Lagers wird jederzeit automatisch der Einkaufsliste hinzugefügt.\nWenn du Items oder Lagerorte aus deinem Vorrat entfernen möchtest halte einfach das entsprechende Element in der Liste gedrückt!"),
+                                actions: [
+                                  Center(
+                                    child: TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Verstanden',
+                                        style:
+                                        TextStyle(color: Colors.black87, letterSpacing: 1.5),
+                                      ),
+                                      style: TextButton.styleFrom(
+                                        backgroundColor: TenkiColor1(),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(7.0),
+                                        ),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 1.0, vertical: 1.0),
+                                        elevation: 3.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Icons.info_outline,
+                              color: Colors.black87,
+                            ),
+                          ],
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          side: const BorderSide(width: 1.0, color: Colors.black87),
+                          elevation: 3.0,
+                          backgroundColor: TenkiColor3(),
                         ),
                       ),
                       Container(
@@ -883,6 +939,7 @@ class PopupAddLocationState extends State<PopupAddLocation> {
               ),
             ],
           ),
+
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -963,6 +1020,7 @@ class PopupAddLocationState extends State<PopupAddLocation> {
                   ),
                 ),
               ),
+
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomRight,
@@ -1036,10 +1094,13 @@ class PopupAddLocationState extends State<PopupAddLocation> {
                   ),
                 ),
               ),
+
             ],
           ),
+
         ),
       ),
+
     );
   }
 }

@@ -86,7 +86,6 @@ class HouseholdCreate extends StatelessWidget {
                 child: const Text('Abbrechen'),
               ),
 
-              /// TO DO: abbrechen button
             ],
           ),
         ),

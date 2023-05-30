@@ -25,6 +25,8 @@ class _ShoppingListState extends State<ShoppingList> {
   Widget build(BuildContext context) {
     // preselection: group by shoppingCategory and remove buyQuantity=0
     Map<String, List<dynamic>> groupedItems = {};
+    Map<String, List<dynamic>> checkedItems = {};
+
 
     return StreamBuilder(
         stream: FirebaseFirestore.instance
@@ -45,7 +47,7 @@ class _ShoppingListState extends State<ShoppingList> {
 
             //grouping by shoppingCategory
             for (var item in currentStorageMap?['items']) {
-              if (item['buyQuantity'] != 0) {
+              if (item['buyQuantity'] == null || item['buyQuantity'] != 0) {
                 if (!groupedItems.containsKey(item['shoppingCategory'])) {
                   groupedItems[item['shoppingCategory']] = [];
                 }
@@ -148,79 +150,129 @@ class _ShoppingListState extends State<ShoppingList> {
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: items.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final item = items[index];
-                                    final checkValue = isChecked.firstWhere(
-                                      (itemList) =>
-                                          itemList["name"] == item['name'],
-                                      orElse: () => {},
-                                    )["isChecked"];
+                                  itemCount: items.length + checkedItems.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    if (index < items.length) {
+                                      final item = items[index];
+                                      final checkValue = isChecked.firstWhere(
+                                            (itemList) => itemList["name"] == item['name'],
+                                        orElse: () => {},
+                                      )["isChecked"];
+                                      if (checkValue != null) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              color: TenkiColor1(),
+                                              borderRadius: BorderRadius.circular(10),
+                                              border: Border.all(color: Colors.grey.shade300),
+                                            ),
+                                            child: ListTile(
+                                              title: Row(
+                                                children: [
+                                                  Expanded(
+                                                    flex: 4,
+                                                    child: Text(item['name']),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: item['buyQuantity'] != null
+                                                        ? Text(item['buyQuantity'].toString())
+                                                        : SizedBox(), // Display an empty SizedBox if buyQuantity is null
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: item['unit'] != "-Bitte wählen-"
+                                                        ? Text(item['unit'])
+                                                        : SizedBox(),
+                                                  ),
+                                                ],
+                                              ),
+                                              trailing: Checkbox(
+                                                value: checkedItems.containsKey(item['name']),
+                                                onChanged: (bool? value) async {
+                                                  if (value == true) {
+                                                    // Item is checked
+                                                    DatabaseInterface dbInterface = DatabaseInterface();
 
-                                    if (checkValue != null) {
+                                                    if (!checkedItems.containsKey(item['name'])) {
+                                                      // Item is not in the checkedItems map, add it
+                                                      checkedItems[item['name']] = [item];
+
+                                                      // Update quantities or delete from DB based on item location
+                                                      if (item["location"] != "xtra_item") {
+                                                        await dbInterface.updateItemByName(item["name"], {
+                                                          'stockQuantity': item['stockQuantity'] + item['buyQuantity'],
+                                                          'buyQuantity': 0
+                                                        });
+                                                      } else {
+                                                        await dbInterface.deleteItemByName(item["name"]);
+                                                      }
+                                                    } else {
+                                                      // Item is already in the checkedItems map, undo the check
+                                                      checkedItems.remove(item['name']);
+
+                                                      // Update quantities to remove the previously added buyQuantity
+                                                      if (item["location"] != "xtra_item") {
+                                                        await dbInterface.updateItemByName(item["name"], {
+                                                          'stockQuantity': item['stockQuantity'] - item['buyQuantity'],
+                                                          'buyQuantity': item['buyQuantity']
+                                                        });
+                                                      }
+                                                    }
+                                                  }
+
+                                                  // Refresh view
+                                                  setState(() {});
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        return const Text("Item not found");
+                                      }
+                                    } else {
+                                      final checkedItemIndex = index - items.length;
+                                      final checkedItemName = checkedItems.keys.toList()[checkedItemIndex];
+                                      final checkedItem = checkedItems[checkedItemName]!;
+
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             color: TenkiColor1(),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            border: Border.all(
-                                                color: Colors.grey.shade300),
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(color: Colors.grey.shade300),
                                           ),
-                                          child: CheckboxListTile(
+                                          child: ListTile(
                                             title: Row(
                                               children: [
                                                 Expanded(
                                                   flex: 4,
-                                                  child: Text(item['name']),
+                                                  child: Text(checkedItemName),
                                                 ),
                                                 Expanded(
                                                   flex: 1,
-                                                  child: Text(
-                                                      item['buyQuantity']
-                                                          .toString()),
+                                                  child: Text(checkedItem[0]['buyQuantity'].toString()), // Display the buyQuantity from the first item in the list
                                                 ),
                                                 Expanded(
                                                   flex: 2,
-                                                  child: Text(item['unit']),
+                                                  child: Text(checkedItem[0]['unit'] != "-Bitte wählen-" ? checkedItem[0]['unit'] : ""), // Display the unit from the first item in the list
                                                 ),
                                               ],
                                             ),
-                                            value: checkValue,
-                                            onChanged: (bool? value) async {
-                                              if (value == true) {
-                                                DatabaseInterface dbInterface =
-                                                    DatabaseInterface();
-
-                                                //update quantities
-                                                if (item["location"] !=
-                                                    "xtra_item") {
-                                                  await dbInterface
-                                                      .updateItemByName(
-                                                          item["name"], {
-                                                    'stockQuantity':
-                                                        item['stockQuantity'] +
-                                                            item['buyQuantity'],
-                                                    'buyQuantity': 0
-                                                  });
-                                                }
-                                                // xtra item? --> delet from DB
-                                                else {
-                                                  await dbInterface
-                                                      .deleteItemByName(
-                                                          item["name"]);
-                                                }
-                                              }
-                                              //refresh view
-                                              setState(() {});
-                                            },
+                                            trailing: Checkbox(
+                                              value: true,
+                                              onChanged: (bool? value) {
+                                                setState(() {
+                                                  checkedItems.remove(checkedItemName);
+                                                });
+                                              },
+                                            ),
                                           ),
                                         ),
                                       );
-                                    } else {
-                                      return const Text("Item not found");
                                     }
                                   },
                                 ),
@@ -358,9 +410,8 @@ class _ShoppingListState extends State<ShoppingList> {
                       keyboardType: TextInputType.number,
                       cursorColor: TenkiColor1(),
                       inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-
                       decoration: InputDecoration(
-                        labelText: 'Einzukaufende Menge',
+                        labelText: 'Menge',
                         labelStyle:
                             TextStyle(color: Colors.grey[700], fontSize: 16),
                         focusedBorder: UnderlineInputBorder(
@@ -372,6 +423,7 @@ class _ShoppingListState extends State<ShoppingList> {
                         contentPadding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 5),
                       ),
+
                     ),
                     const SizedBox(height: 25),
                     DropdownButtonFormField<String>(
@@ -438,13 +490,13 @@ class _ShoppingListState extends State<ShoppingList> {
                     // Confirm button action
 
                     // Check if name and unit have been selected
-                    if (nameController.text.isNotEmpty &&
-                        selectedUnit != "-Bitte wählen-") {
+                    if (nameController.text.isNotEmpty) {
                       // retrieve the values entered by the user
                       String name = nameController.text;
                       String? unit = selectedUnit;
-                      double buyQuantity =
-                          double.tryParse(buyQuantityController.text) ?? 0;
+                      double? buyQuantity = buyQuantityController.text.isNotEmpty
+                          ? double.tryParse(buyQuantityController.text)
+                          : null;
 
                       // Create a new map object with the new entry details
                       Map<String, dynamic> newEntry = {
@@ -471,7 +523,7 @@ class _ShoppingListState extends State<ShoppingList> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: const Text(
-                              'Bitte gib einen Namen ein und wähle eine Einheit aus!'),
+                              'Bitte gib einen Artikel ein!'),
                         ),
                       );
                     }
