@@ -2,22 +2,48 @@ import 'package:flutter/material.dart';
 import 'main_page.dart' as main_page;
 import 'tenki_material/tenki_colors.dart';
 import 'firestore_interface.dart';
+import 'dart:async';
 
 class TenkiHomePage extends StatefulWidget {
   @override
   _TenkiHomePageState createState() => _TenkiHomePageState();
 }
 
-class _TenkiHomePageState extends State<TenkiHomePage>
-    with SingleTickerProviderStateMixin {
+class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  Timer? _scrollTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    startScrollTimer();
+  }
+
+  @override
+  void dispose() {
+    _scrollTimer?.cancel();
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void startScrollTimer() {
+    _scrollTimer = Timer(const Duration(seconds: 5), () {
+      _scrollToBottom();
+    });
+  }
+
+  void resetScrollTimer() {
+    _scrollTimer?.cancel();
+    startScrollTimer();
+  }
 
   void _scrollToBottom() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 350),
       curve: Curves.easeInOut,
     );
+    resetScrollTimer();
   }
 
   @override
