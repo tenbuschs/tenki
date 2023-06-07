@@ -946,8 +946,9 @@ class PopupAddLocationState extends State<PopupAddLocation> {
             children: <Widget>[
               const Center(
                   child: Text(
-                "Neuer Lagerort...",
+                "Lagerort hinzufügen",
                 style: TextStyle(
+                  letterSpacing: 3.5,
                   fontSize: 20,
                 ),
               )),
