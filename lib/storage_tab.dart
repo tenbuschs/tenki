@@ -1134,219 +1134,227 @@ class PopupAddItemState extends State<PopupAddItem> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Center(
-        child: Text(
-          'Artikel hinzufügen',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ),
-      content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            TextField(
-              controller: nameController,
-              maxLength: 20,
-              cursorColor: TenkiColor1(),
-              decoration: InputDecoration(
-                labelText: 'Name',
-                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        return AlertDialog(
+          title: const Center(
+            child: Text(
+              'Artikel hinzufügen',
+              style: TextStyle(
+                letterSpacing: 4.5,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 25),
-            Row(
-              children: const [
-                Text('Mengen: '),
-              ],
-            ),
-            const SizedBox(height: 5),
-            TextField(
-              controller: stockQuantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-              cursorColor: TenkiColor1(),
-              decoration: InputDecoration(
-                labelText: 'Aktuelle Menge',
-                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              ),
-            ),
-            const SizedBox(height: 5),
-            TextField(
-              controller: targetQuantityController,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
-              cursorColor: TenkiColor1(),
-              decoration: InputDecoration(
-                labelText: 'Soll - Menge',
-                labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              ),
-            ),
-            const SizedBox(height: 25),
-            DropdownButtonFormField<String>(
-              value: selectedUnit,
-              items: unitList.map((option) {
-                return DropdownMenuItem(
-                  value: option,
-                  child: Text(option),
-                );
-              }).toList(),
-              onChanged: (value) {
-                setState(() {
-                  selectedUnit = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Einheit',
-                labelStyle: TextStyle(color: Colors.grey[700]),
-                border: OutlineInputBorder(
-                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                  borderSide: BorderSide(color: TenkiColor1()),
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: TenkiColor1(), width: 2),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                contentPadding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-              ),
-              dropdownColor: TenkiColor2(),
-            ),
-            const SizedBox(height: 15),
-            HorizontalSelection(
-              itemIcons: categoryItems,
-              onSelect: (int index) {
-                setState(() {
-                  selectedIconIndex = index;
-                });
-              },
-            ),
-          ],
-        ),
-      ),
-      actions: <Widget>[
-        IconButton(
-          // Barcode Scanner as hiidden feature
-          icon: Icon(Icons.barcode_reader, size: 40, color: TenkiColor3()),
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return barcode_scan_page.BarcodeScanner();
-                });
-          },
-        ),
-        Container(
-          width: 40.0,
-          height: 40.0,
-          decoration: BoxDecoration(
-            color: TenkiColor4(),
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.black87, width: 1),
           ),
-          child: InkWell(
-            onTap: () {
-              // Close Alert with No Operation
-              Navigator.of(context).pop();
-            },
-            child: const Icon(Icons.close, size: 38, color: Colors.black87),
-          ),
-        ),
-        const SizedBox(width: 20.0),
-        Container(
-          width: 40.0,
-          height: 40.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.all(color: Colors.black87, width: 1),
-            color: TenkiColor1(),
-          ),
-          child: InkWell(
-            onTap: () async {
-              // retrieve the values entered by the user
-              String name = nameController.text;
-              String? unit = selectedUnit;
-              double targetQuantity =
-                  double.tryParse(targetQuantityController.text) ?? 0;
-              double stockQuantity = double.tryParse(stockQuantityController.text) ?? 0;
-              double buyQuantity = targetQuantity - stockQuantity;
 
-              // check if required fields are not empty
-              if (name.isNotEmpty && unit != null && targetQuantity > 0) {
-                // Create a new map object with the new entry details
-                Map<String, dynamic> newEntry = {
-                  "name": name,
-                  "location": widget.location,
-                  "unit": unit,
-                  "targetQuantity": targetQuantity,
-                  "stockQuantity": stockQuantity,
-                  "buyQuantity": buyQuantity,
-                  "shoppingCategory": categories[selectedIconIndex],
-                };
-
-                // call function to add the new item
-                DatabaseInterface dbInterface = DatabaseInterface();
-                await dbInterface.addItemToStorageMap(newEntry);
-
-                // Close AlertDialog
-                Navigator.of(context).pop();
-              } else {
-                // show an error message if required fields are empty
-                showDialog(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: Text('Fehler'),
-                    backgroundColor: TenkiColor3(),
-                    content: Text(
-                        'Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(
-                          'OK',
-                          style: TextStyle(color: TenkiColor1()),
-                        ),
+          contentPadding: EdgeInsets.zero,
+          backgroundColor: TenkiColor3(),
+          content: SingleChildScrollView(
+            child: Container(
+              width: constraints.maxWidth, // Set the width to the available maxWidth
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  const SizedBox(height : 25),
+                  TextField(
+                    controller: nameController,
+                    maxLength: 20,
+                    cursorColor: TenkiColor1(),
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: TenkiColor1(), width: 2),
                       ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
+                  ),
+                  const SizedBox(height: 15),
+                  Row(
+                    children: const [
+                      Text('Mengen'),
                     ],
                   ),
-                );
-              }
-            },
-            child: Icon(Icons.check, color: Colors.black87, size: 35),
+                  const SizedBox(height: 5),
+                  TextField(
+                    controller: stockQuantityController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                    cursorColor: TenkiColor1(),
+                    decoration: InputDecoration(
+                      labelText: 'Aktuelle Menge',
+                      labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  TextField(
+                    controller: targetQuantityController,
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))],
+                    cursorColor: TenkiColor1(),
+                    decoration: InputDecoration(
+                      labelText: 'Soll - Menge',
+                      labelStyle: TextStyle(color: Colors.grey[700], fontSize: 16),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  DropdownButtonFormField<String>(
+                    value: selectedUnit,
+                    items: unitList.map((option) {
+                      return DropdownMenuItem(
+                        value: option,
+                        child: Text(option),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        selectedUnit = value;
+                      });
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Einheit',
+                      labelStyle: TextStyle(color: Colors.black87),
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                        borderSide: BorderSide(color: TenkiColor1()),
+                      ),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: TenkiColor1(), width: 2),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    ),
+                    dropdownColor: TenkiColor2(),
+                  ),
+                  const SizedBox(height: 15),
+                  HorizontalSelection(
+                    itemIcons: categoryItems,
+                    onSelect: (int index) {
+                      setState(() {
+                        selectedIconIndex = index;
+                      });
+                    },
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
-      backgroundColor: TenkiColor3(),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-        side: const BorderSide(color: Colors.black87, width: 1),
-      ),
+          actions: <Widget>[
+            IconButton(
+              // Barcode Scanner as hidden feature
+              icon: Icon(Icons.barcode_reader, size: 40, color: TenkiColor3()),
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return barcode_scan_page.BarcodeScanner();
+                    });
+              },
+            ),
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                color: TenkiColor4(),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black87, width: 1),
+              ),
+              child: InkWell(
+                onTap: () {
+                  // Close Alert with No Operation
+                  Navigator.of(context).pop();
+                },
+                child: const Icon(Icons.close, size: 38, color: Colors.black87),
+              ),
+            ),
+            const SizedBox(width: 20.0),
+            Container(
+              width: 40.0,
+              height: 40.0,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.black87, width: 1),
+                color: TenkiColor1(),
+              ),
+              child: InkWell(
+                onTap: () async {
+                  // retrieve the values entered by the user
+                  String name = nameController.text;
+                  String? unit = selectedUnit;
+                  double targetQuantity =
+                      double.tryParse(targetQuantityController.text) ?? 0;
+                  double stockQuantity = double.tryParse(stockQuantityController.text) ?? 0;
+                  double buyQuantity = targetQuantity - stockQuantity;
+
+                  // check if required fields are not empty
+                  if (name.isNotEmpty && unit != null && targetQuantity > 0) {
+                    // Create a new map object with the new entry details
+                    Map<String, dynamic> newEntry = {
+                      "name": name,
+                      "location": widget.location,
+                      "unit": unit,
+                      "targetQuantity": targetQuantity,
+                      "stockQuantity": stockQuantity,
+                      "buyQuantity": buyQuantity,
+                      "shoppingCategory": categories[selectedIconIndex],
+                    };
+
+                    // call function to add the new item
+                    DatabaseInterface dbInterface = DatabaseInterface();
+                    await dbInterface.addItemToStorageMap(newEntry);
+
+                    // Close AlertDialog
+                    Navigator.of(context).pop();
+                  } else {
+                    // show an error message if required fields are empty
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text('Fehler'),
+                        backgroundColor: TenkiColor3(),
+                        content: Text('Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: Text(
+                              'OK',
+                              style: TextStyle(color: TenkiColor1()),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
+                child: Icon(Icons.check, color: Colors.black87, size: 35),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
+
 }
 
 // View Selection Category-Item
