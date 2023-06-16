@@ -82,7 +82,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                             fontWeight: FontWeight.w300,
                           ),
                         ),
-                        SizedBox(height: 16),
+                        const SizedBox(height: 16),
                         Text(
                           'für deinen smarten Alltag',
                           textAlign: TextAlign.center,
@@ -132,7 +132,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  main_page.TenkiMainPage(initialIndex: 0,), // Use TwoColumnLocationView widget
+                                  const main_page.TenkiMainPage(initialIndex: 0,), // Use TwoColumnLocationView widget
                             ),);
                         },
                         child: Container(
@@ -165,7 +165,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                              main_page.TenkiMainPage(initialIndex: 1)),
+                              const main_page.TenkiMainPage(initialIndex: 1)),
                           );
                         },
                         child: Container(
@@ -198,7 +198,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    main_page.TenkiMainPage(initialIndex: 2)),
+                                    const main_page.TenkiMainPage(initialIndex: 2)),
                           );
                         },
                         child: Container(
@@ -232,7 +232,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    main_page.TenkiMainPage(initialIndex: 3)),
+                                    const main_page.TenkiMainPage(initialIndex: 3)),
                           );
                         },
                         child: Text(
