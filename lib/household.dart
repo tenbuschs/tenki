@@ -110,7 +110,7 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                       ),
                       cursorColor: TenkiColor4(),
                       style: TextStyle(color: TenkiColor5()), // Set text color
-                      inputFormatters: [
+                      inputFormatters: const [
                         //FilteringTextInputFormatter.digitsOnly,
                         // LengthLimitingTextInputFormatter(5),
                       ], // Allow only numbers
@@ -159,7 +159,7 @@ class _RandomNumberGeneratorState extends State<RandomNumberGenerator> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => TenkiMainPage(),
+                            builder: (context) => const TenkiMainPage(),
                           ),
                         );
                       } else {

@@ -9,6 +9,8 @@ class HouseholdCreate extends StatelessWidget {
   final TextEditingController _controllerHouseholdName =
       TextEditingController();
 
+  HouseholdCreate({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +78,7 @@ class HouseholdCreate extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => LoginPage()),
+                    MaterialPageRoute(builder: (context) => const LoginPage()),
                   );
                 },
                 style: ElevatedButton.styleFrom(

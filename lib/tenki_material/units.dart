@@ -6,4 +6,6 @@ List<String> unitList = ['-Bitte wählen-',
   'Packungen',
   'Dosen',
   'Gläser',
+  'FLaschen',
+  'Kästen'
 ];

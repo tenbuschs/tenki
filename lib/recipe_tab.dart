@@ -23,7 +23,7 @@ class Recipe extends StatelessWidget {
               children: [
                 Icon(Icons.menu_book, size: 150, color: TenkiColor1()),
                 const SizedBox(height: 20),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: const Text(
                     'Hier entsteht die TENKI Rezeptwelt - du kannst gespannt bleiben!',
@@ -56,19 +56,19 @@ class Recipe extends StatelessWidget {
                             onPressed: () {
                               Navigator.of(context).pop();
                             },
-                            child: Text(
-                              'Verstanden',
-                              style:
-                              TextStyle(color: Colors.black87, letterSpacing: 1.5),
-                            ),
                             style: TextButton.styleFrom(
                               backgroundColor: TenkiColor1(),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(7.0),
                               ),
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 15.0, vertical: 8.0),
                               elevation: 3.0,
+                            ),
+                            child: const Text(
+                              'Verstanden',
+                              style:
+                              TextStyle(color: Colors.black87, letterSpacing: 1.5),
                             ),
                           ),
                         ),
@@ -77,19 +77,19 @@ class Recipe extends StatelessWidget {
                   },
                 );
               },
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.info_outline,
-                    color: Colors.black87,
-                  ),
-                ],
-              ),
               style: ElevatedButton.styleFrom(
                 shape: const CircleBorder(),
                 side: const BorderSide(width: 1.0, color: Colors.black87),
                 elevation: 3.0,
                 backgroundColor: TenkiColor3(),
+              ),
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.black87,
+                  ),
+                ],
               ),
             ),
           ),

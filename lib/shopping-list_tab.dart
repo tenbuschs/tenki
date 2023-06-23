@@ -24,10 +24,8 @@ class _ShoppingListState extends State<ShoppingList> {
   @override
   Widget build(BuildContext context) {
     // preselection: group by shoppingCategory and remove buyQuantity=0
-    Map<String, List<dynamic>> groupedItems = {};
-    Map<String, List<dynamic>> checkedItems = {};
-
-
+    var groupedItems = <String, List<dynamic>>{};
+    var checkedItems = <String, List<dynamic>>{};
     return StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection("storageMaps")
@@ -56,7 +54,7 @@ class _ShoppingListState extends State<ShoppingList> {
             }
 
             // List to save the state of the checkboxes in the shopping list
-            // gui feature, thats why ishecked isnt stored in database
+            // gui feature, that's why ishecked isnt stored in database
             List<Map<String, dynamic>> isChecked =
                 List<Map<String, dynamic>>.from(currentStorageMap?["items"])
                     .map((item) {
@@ -150,88 +148,84 @@ class _ShoppingListState extends State<ShoppingList> {
                                 child: ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: items.length + checkedItems.length,
+                                  itemCount: items.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    if (index < items.length) {
-                                      final item = items[index];
-                                      final checkValue = isChecked.firstWhere(
-                                            (itemList) => itemList["name"] == item['name'],
-                                        orElse: () => {},
-                                      )["isChecked"];
-                                      if (checkValue != null) {
-                                        return Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              color: TenkiColor1(),
-                                              borderRadius: BorderRadius.circular(10),
-                                              border: Border.all(color: Colors.grey.shade300),
+                                    final item = items[index];
+                                    final checkValue = isChecked.firstWhere(
+                                          (itemList) => itemList["name"] == item['name'],
+                                      orElse: () => {},
+                                    )["isChecked"];
+                                    if (checkValue != null) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: TenkiColor1(),
+                                            borderRadius: BorderRadius.circular(10),
+                                            border: Border.all(color: Colors.grey.shade300),
+                                          ),
+                                          child: ListTile(
+                                            title: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 4,
+                                                  child: Text(item['name']),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: item['buyQuantity'] != null
+                                                      ? Text(item['buyQuantity'].toString())
+                                                      : const SizedBox(), // Display an empty SizedBox if buyQuantity is null
+                                                ),
+                                                Expanded(
+                                                  flex: 2,
+                                                  child: item['unit'] != "-Bitte wählen-"
+                                                      ? Text(item['unit'])
+                                                      : const SizedBox(),
+                                                ),
+                                              ],
                                             ),
-                                            child: ListTile(
-                                              title: Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 4,
-                                                    child: Text(item['name']),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: item['buyQuantity'] != null
-                                                        ? Text(item['buyQuantity'].toString())
-                                                        : SizedBox(), // Display an empty SizedBox if buyQuantity is null
-                                                  ),
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: item['unit'] != "-Bitte wählen-"
-                                                        ? Text(item['unit'])
-                                                        : SizedBox(),
-                                                  ),
-                                                ],
-                                              ),
-                                              trailing: Checkbox(
-                                                value: checkedItems.containsKey(item['name']),
-                                                onChanged: (bool? value) async {
-                                                  if (value == true) {
-                                                    // Item is checked
-                                                    DatabaseInterface dbInterface = DatabaseInterface();
+                                            trailing: Checkbox(
+                                              value: checkedItems.containsKey(item['name']),
+                                              onChanged: (bool? value) async {
+                                                if (value == true) {
+                                                  // Item is checked
+                                                  DatabaseInterface dbInterface = DatabaseInterface();
 
-                                                    if (!checkedItems.containsKey(item['name'])) {
-                                                      // Item is not in the checkedItems map, add it
-                                                      checkedItems[item['name']] = [item];
+                                                  if (!checkedItems.containsKey(item['name'])) {
+                                                    // Item is not in the checkedItems map, add it
+                                                    checkedItems[item['name']] = [item];
 
-                                                      // Update quantities or delete from DB based on item location
-                                                      if (item["location"] != "xtra_item") {
-                                                        await dbInterface.updateItemByName(item["name"], {
-                                                          'stockQuantity': item['stockQuantity'] + item['buyQuantity'],
-                                                          'buyQuantity': 0
-                                                        });
-                                                      } else {
-                                                        await dbInterface.deleteItemByName(item["name"]);
-                                                      }
+                                                    // Update quantities or delete from DB based on item location
+                                                    if (item["location"] != "xtra_item") {
+                                                      await dbInterface.updateItemByName(item["name"], {
+                                                        'stockQuantity': item['stockQuantity'] + item['buyQuantity'],
+                                                        'buyQuantity': 0,
+                                                      });
                                                     } else {
-                                                      // Item is already in the checkedItems map, undo the check
-                                                      checkedItems.remove(item['name']);
+                                                      await dbInterface.deleteItemByName(item["name"]);
+                                                    }
+                                                  } else {
+                                                    // Item is already in the checkedItems map, undo the check
+                                                    checkedItems.remove(item['name']);
 
-                                                      // Update quantities to remove the previously added buyQuantity
-                                                      if (item["location"] != "xtra_item") {
-                                                        await dbInterface.updateItemByName(item["name"], {
-                                                          'stockQuantity': item['stockQuantity'] - item['buyQuantity'],
-                                                          'buyQuantity': item['buyQuantity']
-                                                        });
-                                                      }
+                                                    // Update quantities to remove the previously added buyQuantity
+                                                    if (item["location"] != "xtra_item") {
+                                                      await dbInterface.updateItemByName(item["name"], {
+                                                        'stockQuantity': item['stockQuantity'] - item['buyQuantity'],
+                                                        'buyQuantity': item['buyQuantity'],
+                                                      });
                                                     }
                                                   }
+                                                }
 
-                                                  // Refresh view
-                                                  setState(() {});
-                                                },
-                                              ),
+                                                // Refresh view
+                                                setState(() {});
+                                              },
                                             ),
                                           ),
-                                        );
-                                      } else {
-                                        return const Text("Item not found");
-                                      }
+                                        ),
+                                      );
                                     } else {
                                       final checkedItemIndex = index - items.length;
                                       final checkedItemName = checkedItems.keys.toList()[checkedItemIndex];
@@ -303,19 +297,19 @@ class _ShoppingListState extends State<ShoppingList> {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: Text(
-                                          'Verstanden',
-                                          style:
-                                          TextStyle(color: Colors.black87, letterSpacing: 1.5),
-                                        ),
                                         style: TextButton.styleFrom(
                                           backgroundColor: TenkiColor1(),
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(7.0),
                                           ),
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 15.0, vertical: 8.0),
                                           elevation: 3.0,
+                                        ),
+                                        child: const Text(
+                                          'Verstanden',
+                                          style:
+                                          TextStyle(color: Colors.black87, letterSpacing: 1.5),
                                         ),
                                       ),
                                     ),
@@ -324,19 +318,19 @@ class _ShoppingListState extends State<ShoppingList> {
                               },
                             );
                           },
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Icons.info_outline,
-                                color: Colors.black87,
-                              ),
-                            ],
-                          ),
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             side: const BorderSide(width: 1.0, color: Colors.black87),
                             elevation: 3.0,
                             backgroundColor: TenkiColor3(),
+                          ),
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.info_outline,
+                                color: Colors.black87,
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -517,12 +511,13 @@ class _ShoppingListState extends State<ShoppingList> {
                       setState(() {});
 
                       // Close AlertDialog
+                      // ignore: use_build_context_synchronously
                       Navigator.of(context).pop();
                     } else {
                       // Show error message
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: const Text(
+                        const SnackBar(
+                          content: Text(
                               'Bitte gib einen Artikel ein!'),
                         ),
                       );

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:TENKI/auth.dart';
-import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
 import 'login_register_page.dart';
-import 'package:TENKI/verify.dart';
 import 'tenki_material/appbars.dart';
 
 
 class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
+
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -23,8 +22,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _controllerPassword = TextEditingController();
   final TextEditingController _controllerPasswordConfirmation =
   TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
 
   Future<void> createUserWithEmailAndPassword() async {
@@ -39,14 +36,14 @@ class _RegisterPageState extends State<RegisterPage> {
         context: context,
         builder: (_) =>
             AlertDialog(
-              title: Text("Erfolgreich registriert!"),
-              content: Text("Bitte bestätige deine E-Mail Adresse kurz, wir haben dir eine Mail geschickt."),
+              title: const Text("Erfolgreich registriert!"),
+              content: const Text("Bitte bestätige deine E-Mail Adresse kurz, wir haben dir eine Mail geschickt."),
               actions: [
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Weiter zum Login"),
+                  child: const Text("Weiter zum Login"),
                 ),
               ],
             ),
@@ -58,18 +55,9 @@ class _RegisterPageState extends State<RegisterPage> {
     }
   }
 
-  Widget _title() {
-    return Text(
-      'TENKI Registration',
-      style: TextStyle(
-        color: TenkiColor5(),
-      ),
-      textAlign: TextAlign.center,
-    );
-  }
 
   Widget _submitButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width * 0.6,
       child: ElevatedButton(
         onPressed: () async {
@@ -89,10 +77,6 @@ class _RegisterPageState extends State<RegisterPage> {
               });
             } else {
               try {
-                UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: _controllerEmail.text,
-                  password: _controllerPassword.text,
-                );
                 // show success message
                 ///TO DO das sieht noch shit aus
                 showDialog(
@@ -102,9 +86,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       borderRadius: BorderRadius.circular(7.0),
                     ),
                     child: Container(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: Color(0xFFF9F7F1),
+                        color: const Color(0xFFF9F7F1),
                         borderRadius: BorderRadius.circular(7.0),
                       ),
                       child: Column(
@@ -117,7 +101,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               fontSize: 20.0,
                             ),
                           ),
-                          SizedBox(height: 26.0),
+                          const SizedBox(height: 26.0),
                           Text(
                             "Bitte bestätige deine E-Mail Adresse kurz, wir haben dir eine Mail dazu geschickt.",
                             style: TextStyle(
@@ -125,14 +109,14 @@ class _RegisterPageState extends State<RegisterPage> {
                               fontSize: 16.0,
                             ),
                           ),
-                          SizedBox(height: 16.0),
+                          const SizedBox(height: 16.0),
                           TextButton(
                             onPressed: () {
                               setState(() {
                                 Navigator.pop(context);
                               });
                               Navigator.of(context).pushReplacement( ///To Do: irgendwie muss sich dieses Fenster wieder schleißen!
-                                MaterialPageRoute(builder: (context) => LoginPage()),
+                                MaterialPageRoute(builder: (context) => const LoginPage()),
                               );
                             },
                             child: Text(
@@ -173,22 +157,22 @@ class _RegisterPageState extends State<RegisterPage> {
             }
           }
         },
-        child: Text(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: TenkiColor1(),
+          minimumSize: const Size(double.infinity, 35),
+        ),
+        child: const Text(
           'Registrieren',
           style: TextStyle(
             color: Colors.white,
           ),
-        ),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: TenkiColor1(),
-          minimumSize: Size(double.infinity, 35),
         ),
       ),
     );
   }
 
   Widget _emptyField() {
-    return SizedBox(height: 15);
+    return const SizedBox(height: 15);
   }
 
   Widget _entryField(String title, TextEditingController controller,
@@ -250,7 +234,7 @@ class _RegisterPageState extends State<RegisterPage> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
+            MaterialPageRoute(builder: (context) => const LoginPage()),
           );
         },
         child: Text(
@@ -276,7 +260,7 @@ class _RegisterPageState extends State<RegisterPage> {
               .of(context)
               .size
               .height,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
               begin: Alignment.bottomCenter,

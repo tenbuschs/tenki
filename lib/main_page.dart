@@ -60,28 +60,25 @@ class _TenkiMainPageState extends State<TenkiMainPage>
 
         children: [
           Expanded(
-            child: Container(
+            child: Column(
+              children: [
+                Expanded(
+                  child: TabBarView(
 
-              child: Column(
-                children: [
-                  Expanded(
-                    child: TabBarView(
-
-                      controller: _tabController,
-                      children: [
-                        // storage_tab
-                        const storage_tab.TwoColumnLocationView(),
-                        //recipe_tab
-                        recipe_tab.Recipe(),
-                        // shopping-list_tab
-                        const shopping_list_tab.ShoppingList(),
-                        // calender_tab
-                        calender_tab.Calender(),
-                      ],
-                    ),
+                    controller: _tabController,
+                    children: const [
+                      // storage_tab
+                      storage_tab.TwoColumnLocationView(),
+                      //recipe_tab
+                      recipe_tab.Recipe(),
+                      // shopping-list_tab
+                      shopping_list_tab.ShoppingList(),
+                      // calender_tab
+                      calender_tab.Calender(),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -96,15 +93,9 @@ class _TenkiMainPageState extends State<TenkiMainPage>
               //child: Icon(Icons.shelves, size: 50, color: Colors.black),
                 child: TenkiIcons.box_open (size: 50),
             ),
-            Container(
-              child: Icon(Icons.menu_book, size: 50, color: Colors.black),
-            ),
-            Container(
-              child: Icon(Icons.shopping_bag_outlined, size: 50, color: Colors.black),
-            ),
-            Container(
-              child: Icon(Icons.calendar_month_outlined, size: 50, color: Colors.black),
-            ),
+            const Icon(Icons.menu_book, size: 50, color: Colors.black),
+            const Icon(Icons.shopping_bag_outlined, size: 50, color: Colors.black),
+            const Icon(Icons.calendar_month_outlined, size: 50, color: Colors.black),
           ],
           indicator: BoxDecoration(
             color: TenkiColor2(),

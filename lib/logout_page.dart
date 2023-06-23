@@ -13,7 +13,7 @@ class LogoutPage extends StatelessWidget {
     await Auth().signOut();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
           (route) => false,
     );
 
@@ -24,7 +24,7 @@ class LogoutPage extends StatelessWidget {
   Widget _confirmationMessage() {
     return Text(
       'Möchtest du dich mit der E-Mail: \n${user?.email} \nabmelden?',
-      style: TextStyle(fontSize: 20, fontFamily: 'Pontana Sans'),
+      style: const TextStyle(fontSize: 20, fontFamily: 'Pontana Sans'),
       textAlign: TextAlign.center,
     );
   }
@@ -32,7 +32,6 @@ class LogoutPage extends StatelessWidget {
   Widget _signOutButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => signOut(context),
-      child: const Text('Log Out'),
       style: ElevatedButton.styleFrom(
         backgroundColor: TenkiColor2(),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -42,13 +41,13 @@ class LogoutPage extends StatelessWidget {
           color: TenkiColor1(),
         ),
       ),
+      child: const Text('Log Out'),
     );
   }
 
   Widget _abortButton(BuildContext context) {
     return ElevatedButton(
       onPressed: () => Navigator.of(context).pop(),
-      child: const Text('Abbrechen'),
       style: ElevatedButton.styleFrom(
         backgroundColor: TenkiColor4(),
         side: BorderSide(color: TenkiColor4()),
@@ -59,6 +58,7 @@ class LogoutPage extends StatelessWidget {
           fontSize: 20,
         ),
       ),
+      child: const Text('Abbrechen'),
     );
   }
 
@@ -67,7 +67,7 @@ class LogoutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBars.dropdownAppBar("Logout", context),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Color(0xFFE2DCCE), Color(0xFFFFFFFF)],
             begin: Alignment.bottomCenter,

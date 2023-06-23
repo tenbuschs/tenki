@@ -5,6 +5,8 @@ import 'firestore_interface.dart';
 import 'dart:async';
 
 class TenkiHomePage extends StatefulWidget {
+  const TenkiHomePage({super.key});
+
   @override
   _TenkiHomePageState createState() => _TenkiHomePageState();
 }
@@ -135,7 +137,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                                   const main_page.TenkiMainPage(initialIndex: 0,), // Use TwoColumnLocationView widget
                             ),);
                         },
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity,
                           child: Text(
                             'Vorrat',
@@ -168,7 +170,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                               const main_page.TenkiMainPage(initialIndex: 1)),
                           );
                         },
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity,
                           child: Text(
                             'Rezepte',
@@ -201,7 +203,7 @@ class _TenkiHomePageState extends State<TenkiHomePage> with SingleTickerProvider
                                     const main_page.TenkiMainPage(initialIndex: 2)),
                           );
                         },
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity,
                           child: Text(
                             'Einkaufsliste',

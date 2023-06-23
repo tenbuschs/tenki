@@ -18,7 +18,7 @@ class AppBars{
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+            MaterialPageRoute(builder: (context) => const homepage.TenkiHomePage()),
           );
         },
         child: TenkiIcons.tenki(size: 38),
@@ -106,7 +106,7 @@ class AppBars{
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => homepage.TenkiHomePage()),
+            MaterialPageRoute(builder: (context) => const homepage.TenkiHomePage()),
           );
         },
         child: TenkiIcons.tenki(size: 38),

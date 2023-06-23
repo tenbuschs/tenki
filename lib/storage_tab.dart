@@ -461,19 +461,19 @@ class StorageTabContentState extends State<StorageTabContent> {
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
-                                      child: Text(
-                                        'Verstanden',
-                                        style:
-                                        TextStyle(color: Colors.black87, letterSpacing: 1.5),
-                                      ),
                                       style: TextButton.styleFrom(
                                         backgroundColor: TenkiColor1(),
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(7.0),
                                         ),
-                                        padding: EdgeInsets.symmetric(
+                                        padding: const EdgeInsets.symmetric(
                                             horizontal: 1.0, vertical: 1.0),
                                         elevation: 3.0,
+                                      ),
+                                      child: const Text(
+                                        'Verstanden',
+                                        style:
+                                        TextStyle(color: Colors.black87, letterSpacing: 1.5),
                                       ),
                                     ),
                                   ),
@@ -482,19 +482,19 @@ class StorageTabContentState extends State<StorageTabContent> {
                             },
                           );
                         },
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.info_outline,
-                              color: Colors.black87,
-                            ),
-                          ],
-                        ),
                         style: ElevatedButton.styleFrom(
                           shape: const CircleBorder(),
                           side: const BorderSide(width: 1.0, color: Colors.black87),
                           elevation: 3.0,
                           backgroundColor: TenkiColor3(),
+                        ),
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.info_outline,
+                              color: Colors.black87,
+                            ),
+                          ],
                         ),
                       ),
                       Container(
@@ -720,9 +720,9 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                             updateStockQuantity(
                                                                 value, item),
                                                         decoration:
-                                                        InputDecoration(
+                                                        const InputDecoration(
                                                           contentPadding:
-                                                          const EdgeInsets
+                                                          EdgeInsets
                                                               .symmetric(
                                                               horizontal:
                                                               15.0),
@@ -732,7 +732,7 @@ class StorageTabContentState extends State<StorageTabContent> {
                                                         ),
                                                         textAlign:
                                                         TextAlign.center,
-                                                        style: TextStyle(),
+                                                        style: const TextStyle(),
                                                       ),
                                                     ),
                                                   ],
@@ -1068,13 +1068,13 @@ class PopupAddLocationState extends State<PopupAddLocation> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => TenkiMainPage()),
+                                  builder: (context) => const TenkiMainPage()),
                             );
                           } else {
                             // Show error message
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: const Text(
+                              const SnackBar(
+                                content: Text(
                                     'Bitte gib einen Namen und wähle ein Icon aus!'),
                               ),
                             );
@@ -1174,8 +1174,8 @@ class PopupAddItemState extends State<PopupAddItem> {
                     ),
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: const [
+                  const Row(
+                    children: [
                       Text('Mengen'),
                     ],
                   ),
@@ -1231,7 +1231,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                     },
                     decoration: InputDecoration(
                       labelText: 'Einheit',
-                      labelStyle: TextStyle(color: Colors.black87),
+                      labelStyle: const TextStyle(color: Colors.black87),
                       border: OutlineInputBorder(
                         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
                         borderSide: BorderSide(color: TenkiColor1()),
@@ -1330,9 +1330,9 @@ class PopupAddItemState extends State<PopupAddItem> {
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: Text('Fehler'),
+                        title: const Text('Fehler'),
                         backgroundColor: TenkiColor3(),
-                        content: Text('Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
+                        content: const Text('Bitte gib mindestens einen Namen, eine Soll-Menge und eine Einheit an!'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.of(context).pop(),
@@ -1346,7 +1346,7 @@ class PopupAddItemState extends State<PopupAddItem> {
                     );
                   }
                 },
-                child: Icon(Icons.check, color: Colors.black87, size: 35),
+                child: const Icon(Icons.check, color: Colors.black87, size: 35),
               ),
             ),
           ],
@@ -1361,6 +1361,7 @@ class PopupAddItemState extends State<PopupAddItem> {
 class HorizontalSelection extends StatefulWidget {
   final List<Widget> itemIcons;
   final Function(int) onSelect;
+  @override
   final Key? key;
 
   const HorizontalSelection({

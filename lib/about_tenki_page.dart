@@ -33,10 +33,10 @@ class _AboutTenkiState extends State<AboutTenki> {
                 children: [
 
 
-                  Text(
+                  const Text(
                     "Was steckt hinter TENKI?",
                     textAlign: TextAlign.left,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
@@ -46,10 +46,10 @@ class _AboutTenkiState extends State<AboutTenki> {
                   const SizedBox(height: 20),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.6,
-                    child: Text(
+                    child: const Text(
                       "Wir, das sind Simon Tenbusch, Julian Kirch und Pascal Klein Helmkamp. \nIn unserem Umfeld haben wir immer wieder Rufe nach einem gut gelösten, smarten Vorratsmanagement gehört - nun und das haben wir uns zum Projekt gemacht. So ist TENKI entstanden, wir haben einfach nur Vorratsmanagement weiter gedacht: \n\nDie Implementierung von Rezepten und einem (Wochen-)Planer - in Verbindung mit deinem Vorrat und deiner Einkaufsplanung macht TENKI so besonders.",
                       textAlign: TextAlign.left,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         color: Colors.black87,
                         letterSpacing: 1.2,

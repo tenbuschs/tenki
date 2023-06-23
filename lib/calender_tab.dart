@@ -21,7 +21,7 @@ class Calender extends StatelessWidget {
         children: [
           Icon(Icons.calendar_month_outlined,  size:150, color: TenkiColor1()),
           const SizedBox(height: 20.0),
-          Container(
+          SizedBox(
             width: MediaQuery.of(context).size.width * 0.5,
             child: const Text(
               'Hier kannst du bald deine Woche mit TENKI planen!',

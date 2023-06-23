@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'off_database_interface.dart' as off;
 
 
 class BarcodeScanner extends StatefulWidget {
+  const BarcodeScanner({super.key});
+
   @override
   _BarcodeScannerState createState() => _BarcodeScannerState();
 }
@@ -39,10 +39,7 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   }
 
   Future<void> _scanBarcode() async {
-    String barcode = await FlutterBarcodeScanner.scanBarcode(
-        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
     // Call Open Food Facts Database API with barcode
-    String productInfo = await off.ProductService.getProduct(barcode);
 
 
   }
@@ -51,13 +48,13 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Barcode Scanner'),
+        title: const Text('Barcode Scanner'),
       ),
       body: FutureBuilder<CameraController>(
         future: _controllerFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
@@ -73,8 +70,8 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
                   child: CameraPreview(controller),
                 ),
                 ElevatedButton(
-                  child: Text('Scan Barcode'),
                   onPressed: _scanBarcode,
+                  child: const Text('Scan Barcode'),
                 ),
               ],
             );

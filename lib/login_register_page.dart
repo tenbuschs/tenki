@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:TENKI/auth.dart';
 import 'firestore_interface.dart';
 import 'tenki_material/tenki_colors.dart';
@@ -94,7 +93,7 @@ class _ForgotPasswordDialogState extends State<ForgotPasswordDialog> {
                     duration: const Duration(seconds: 5),
                   ),
                 );
-              } on FirebaseAuthException catch (e) {
+              } on FirebaseAuthException {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(
@@ -144,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
           if (await dbInterface.doesUserMapExist()) {
             householdId = await dbInterface.getHouseholdId();
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => TenkiHomePage()),
+              MaterialPageRoute(builder: (context) => const TenkiHomePage()),
             );
           } else {
             //create or join household
@@ -180,7 +179,7 @@ class _LoginPageState extends State<LoginPage> {
         password: _controllerPassword.text,
       );
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => TenkiHomePage()),
+        MaterialPageRoute(builder: (context) => const TenkiHomePage()),
       );
     } on FirebaseAuthException catch (e) {
       setState(() {
@@ -289,7 +288,7 @@ class _LoginPageState extends State<LoginPage> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => RegisterPage()),
+            MaterialPageRoute(builder: (context) => const RegisterPage()),
           );
         },
         style: ElevatedButton.styleFrom(
